@@ -1,0 +1,23 @@
+.root {
+    border-bottom: 1px solid #ccc;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    position: relative;
+    padding: 20px 40px;
+    border-right: 1px solid #ccc;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+
+    &_active {
+        background-color: #eee;
+    }
+}
