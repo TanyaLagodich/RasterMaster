@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import { SubHeader } from "@/components/sub-header";
+import { ToolsHeader } from "@/components/tools-header";
 import { Sidebar } from "@/components/sidebar";
 import { Slide } from "@/components/slide";
 import { Notes } from "@/components/notes";
@@ -11,7 +11,7 @@ export function Layout() {
         <>
             <Header />
 
-            <SubHeader />
+            <ToolsHeader />
 
             <div className={s.body}>
                 <Sidebar />

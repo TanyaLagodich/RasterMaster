@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { Button, Dropdown } from "antd";
 
 import { TAB } from "@/context/appContext";
 import { useAppContext } from "@/hooks/useAppContext";
@@ -13,17 +13,29 @@ export function Header() {
     return (
         <nav className={s.root}>
             <ul className={s.tabs}>
-                {Object.keys(TAB).map((key) => (
-                    <li
-                        className={clsx(s.tab, {
-                            [s.tab_active]: key === activeTab,
-                        })}
-                        key={key}
-                        onClick={() => setActiveTab(key as TAB)}
-                    >
-                        {TAB[key as keyof typeof TAB]}
-                    </li>
-                ))}
+                <Dropdown
+                    menu={{ items: [{ key: "smth", label: "Smth" }] }}
+                    placement="bottomLeft"
+                    arrow={{ pointAtCenter: true }}
+                >
+                    <Button>{TAB.FILE}</Button>
+                </Dropdown>
+
+                <Dropdown
+                    menu={{ items: [{ key: "smth", label: "Smth" }] }}
+                    placement="bottomLeft"
+                    arrow={{ pointAtCenter: true }}
+                >
+                    <Button>{TAB.INSERTION}</Button>
+                </Dropdown>
+
+                {Object.keys(TAB)
+                    .slice(2)
+                    .map((tab: keyof typeof TAB) => (
+                        <Button onClick={() => setActiveTab(TAB[tab])}>
+                            {TAB[tab]}
+                        </Button>
+                    ))}
             </ul>
         </nav>
     );

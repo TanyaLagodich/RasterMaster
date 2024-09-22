@@ -10,10 +10,12 @@ export enum TAB {
 
 type AppContextType = {
     activeTab: TAB;
+    activeTabDropdown?: TAB;
 };
 
 type AppActionsContextType = {
     setActiveTab: (tab: TAB) => void;
+    setActiveTabDropdown: (tab: TAB | undefined) => void;
 };
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -22,15 +24,22 @@ export const AppActionsContext = createContext<AppActionsContextType | null>(
 );
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-    const [activeTab, setActiveTab] = useState(TAB.FILE);
+    const [activeTab, setActiveTab] = useState(TAB.DECORATION);
+    const [activeTabDropdown, setActiveTabDropdown] = useState<TAB | undefined>(
+        undefined
+    );
 
-    const values = useMemo(() => ({ activeTab }), [activeTab]);
+    const values = useMemo(
+        () => ({ activeTab, activeTabDropdown }),
+        [activeTab, activeTabDropdown]
+    );
 
     const actions = useMemo(
         () => ({
             setActiveTab,
+            setActiveTabDropdown,
         }),
-        [setActiveTab]
+        [setActiveTab, setActiveTabDropdown]
     );
 
     return (
