@@ -6,10 +6,6 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
-        errorElement: (
-            <div className={"w-full h-full flex justify-center items-center"}>
-                Something went wrong
-            </div>
-        ),
+        errorElement: <div>Something went wrong</div>,
     },
 ]);
