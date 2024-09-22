@@ -1,19 +1,11 @@
-.root {
-    position: relative;
-}
-
-.subHeader {
-    position: relative;
-}
-
 .body {
-    position: relative;
-}
-
-.sidebar {
-    position: relative;
+    width: 100%;
+    height: calc(100vh - var(--header-height) - var(--sub-header-height));
+    display: flex;
 }
 
 .content {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
