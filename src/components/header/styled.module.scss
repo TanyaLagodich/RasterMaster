@@ -1,0 +1,23 @@
+.root {
+    border-bottom: 1px solid #ccc;
+    height: var(--header-height);
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    position: relative;
+    transition: background-color 0.1s ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+
+    &_active {
+        background-color: purple !important;
+        color: white !important;
+    }
+}

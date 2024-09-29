@@ -117,7 +117,7 @@ export default function (env) {
             rules: buildLoaders(isDev),
         },
         resolve: {
-            extensions: [".tsx", ".ts", ".js", ".svg"],
+            extensions: [".tsx", ".ts", ".js", ".svg", ".scss"],
             modules: ["node_modules", paths.src],
             alias: {
                 "@": paths.src,
