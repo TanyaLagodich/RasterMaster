@@ -1,7 +1,7 @@
-import { FC, memo, useEffect, useRef, useState, MouseEvent } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import * as s from "./styled.module.scss";
-import { IOptionSlideOperations, ISlideProps, SlideOperation } from "../../types";
-import SlideOperatins from "../slide-operatins";
+import { IOptionSlideOperations, ISlideProps } from "../../types";
+import SlideOperations from "../slide-operations";
 
 export const Slide: FC<ISlideProps> = ({
     type,
@@ -69,7 +69,7 @@ export const Slide: FC<ISlideProps> = ({
 
             {areOptionsOpen && type === 'small' &&
                 <div ref={ref}>
-                    <SlideOperatins
+                    <SlideOperations
                         options={slideOperationsOptions}
                         id={id}
                         onClose={closeOptions}

@@ -1,5 +1,4 @@
 import { IOptionSlideOperations, SlideOperation } from "@/types";
-import { Dropdown } from "antd";
 import { FC } from "react";
 
 import * as s from "./styled.module.scss";
