@@ -2,6 +2,8 @@ import { FC, useEffect, useRef, useState } from "react";
 import * as s from "./styled.module.scss";
 import { IOptionSlideOperations, ISlideProps } from "../../types";
 import SlideOperations from "../slide-operations";
+import { SlideEditor } from "./slide-editor";
+import clsx from "clsx";
 
 export const Slide: FC<ISlideProps> = ({
     type,
@@ -11,29 +13,23 @@ export const Slide: FC<ISlideProps> = ({
     removeSlide,
     duplicateSlide,
 }) => {
-    const className = [
-        s.root,
-        type === 'big'? s.big : s.small,
-    ].join(' ')
-
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
     console.log(areOptionsOpen);
-    
 
     const toggleOptions = () => {
-        setAreOptionsOpen(prev => !prev);
-    }
+        setAreOptionsOpen((prev) => !prev);
+    };
 
     const closeOptions = () => {
         setAreOptionsOpen(false);
-    }
+    };
 
     const slideOperationsOptions: IOptionSlideOperations[] = [
-        {key: 'add', label: 'Создать', method: createSlide},
-        {key: 'duplicate', label: 'Дублировать', method: duplicateSlide},
-        {key: 'remove', label: 'Удалить', method: removeSlide},
-        {key: 'templates', label: 'Макеты'},           
-    ]
+        { key: "add", label: "Создать", method: createSlide },
+        { key: "duplicate", label: "Дублировать", method: duplicateSlide },
+        { key: "remove", label: "Удалить", method: removeSlide },
+        { key: "templates", label: "Макеты" },
+    ];
 
     const ref = useRef<HTMLDivElement>();
 
@@ -44,30 +40,34 @@ export const Slide: FC<ISlideProps> = ({
             if (event.target === ref.current) {
                 closeOptions();
             }
-        }
+        };
 
-        document.addEventListener('click', closeOutside);
+        document.addEventListener("click", closeOutside);
 
-        return () => document.removeEventListener('click', closeOutside);
+        return () => document.removeEventListener("click", closeOutside);
     }, []);
 
     return (
-        <div className={className} ref={ref}>
+        <div
+            className={clsx(s.root, {
+                [s.big]: type === "big",
+                [s.small]: type === "small",
+            })}
+            ref={ref}
+        >
             {/* На время разработки */}
             <p>{id.slice(0, 5)}</p>
-            
-            {type === 'small' &&
+            {type === "small" && (
                 // TODO: Найти SVG-иконку три точки
                 <p
                     className={s.settings}
-                    style={{fontSize: 20}}
+                    style={{ fontSize: 20 }}
                     onClick={toggleOptions}
                 >
                     ...
                 </p>
-            }
-
-            {areOptionsOpen && type === 'small' &&
+            )}
+            {areOptionsOpen && type === "small" && (
                 <div ref={ref}>
                     <SlideOperations
                         options={slideOperationsOptions}
@@ -75,11 +75,11 @@ export const Slide: FC<ISlideProps> = ({
                         onClose={closeOptions}
                     />
                 </div>
-            }
+            )}
 
-            {type === 'big' &&
-                <p className={s.page}>{(index ?? 0) + 1}</p>
-            }
+            <SlideEditor />
+
+            {type === "big" && <p className={s.page}>{(index ?? 0) + 1}</p>}
         </div>
-    )
-}
+    );
+};

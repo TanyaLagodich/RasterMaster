@@ -1,14 +1,15 @@
 .root {
     display: flex;
-    padding: .5rem;
-    border: .1rem solid var(--slide-border);
+    padding: 0.5rem;
+    border: 0.1rem solid var(--slide-border);
     border-radius: 5px;
     background: var(--slide-background);
+    position: relative;
 }
 
 .big {
-    height: 90%;
-    width: 90%;
+    width: 80%;
+    aspect-ratio: 500/270;
 }
 
 .small {
@@ -25,6 +26,7 @@
 }
 
 .page {
-    position: relative;
-    top: 95%;
+    position: absolute;
+    bottom: 3%;
+    left: 3%;
 }
