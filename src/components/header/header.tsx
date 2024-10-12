@@ -32,7 +32,7 @@ export function Header() {
                 {Object.keys(TAB)
                     .slice(2)
                     .map((tab: keyof typeof TAB) => (
-                        <Button onClick={() => setActiveTab(TAB[tab])}>
+                        <Button onClick={() => setActiveTab(TAB[tab])} key={tab}>
                             {TAB[tab]}
                         </Button>
                     ))}

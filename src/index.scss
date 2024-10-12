@@ -4,4 +4,13 @@
     // sizes
     --header-height: 40px;
     --sub-header-height: 40px;
+
+    // colors
+    --common-background: #eee;
+    --slide-background: #fff;
+    --slide-border: #333;
+}
+
+p {
+    height: min-content;
 }

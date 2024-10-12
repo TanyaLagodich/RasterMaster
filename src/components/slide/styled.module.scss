@@ -1,4 +1,30 @@
 .root {
-    background-color: red;
-    flex: 1 1 auto;
+    display: flex;
+    padding: .5rem;
+    border: .1rem solid var(--slide-border);
+    border-radius: 5px;
+    background: var(--slide-background);
+}
+
+.big {
+    height: 90%;
+    width: 90%;
+}
+
+.small {
+    height: 100px;
+    width: 100%;
+}
+
+.settings {
+    position: relative;
+    top: 75%;
+    left: 65%;
+    height: 6px;
+    cursor: pointer;
+}
+
+.page {
+    position: relative;
+    top: 95%;
 }

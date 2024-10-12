@@ -1,0 +1,19 @@
+.root {
+    position: absolute;
+    left: 200px;
+    height: auto;
+    width: 240px;
+    padding: 8px 4px;
+    box-sizing: border-box;
+    background-color: #ccc;
+    border-radius: 8px;
+}
+
+.option {
+    margin: 4px 0;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: aqua;
+}

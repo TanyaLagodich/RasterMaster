@@ -6,8 +6,9 @@ import { SlideshowTools } from "@/components/tools-rows/slideshow-tools";
 import { AnimationTools } from "@/components/tools-rows/animation-tools";
 
 import * as s from "./styled.module.scss";
+import { memo } from "react";
 
-export function ToolsHeader() {
+function ToolsHeader() {
     const { activeTab } = useAppContext();
 
     return (
@@ -22,3 +23,5 @@ export function ToolsHeader() {
         </div>
     );
 }
+
+export default memo(ToolsHeader);
