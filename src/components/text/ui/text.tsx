@@ -10,21 +10,20 @@ import clsx from "clsx";
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 import { Text } from "@/context/slideContext";
-import { calcDimension, isInsideElement } from "@/utils/sizes";
+import { calcDimensions, calcPosition, isInsideElement } from "@/utils/sizes";
 
 import * as s from "./text.module.scss";
 
 type TextProps = {
-    editorDimensions: { width: number; height: number };
     data: Text;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
 };
 
 export function Text(props: TextProps) {
-    const { editorDimensions, data, onDragStart, onDragEnd } = props;
+    const { data, onDragStart, onDragEnd } = props;
 
-    const { zIndex, selectedNode } = useSlideContext();
+    const { editorDimensions, zIndex, selectedNode } = useSlideContext();
     const { setSelectedNode, updateNodeData } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
@@ -36,19 +35,18 @@ export function Text(props: TextProps) {
         width: string | number;
         height: string | number;
     }>({ width: 0, height: 0 });
+    const [position, setPosition] = useState<{
+        x: string | number;
+        y: string | number;
+    }>({ x: 0, y: 0 });
 
     useEffect(() => {
         setIsSelected(data.id === selectedNode?.id);
     }, [data, selectedNode]);
 
     useEffect(() => {
-        setDimensions({
-            width: calcDimension(data.dimensions.width, editorDimensions.width),
-            height: calcDimension(
-                data.dimensions.height,
-                editorDimensions.height
-            ),
-        });
+        setDimensions(calcDimensions(data.dimensions, editorDimensions));
+        setPosition(calcPosition(data.position, editorDimensions));
     }, [data, editorDimensions]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
@@ -84,6 +82,8 @@ export function Text(props: TextProps) {
         const { clientX: startX, clientY: startY } = e;
         const { width: startWidth, height: startHeight } = data.dimensions;
         const { x: startLeft, y: startTop } = data.position;
+
+        console.log(startX, startY);
 
         function handleMouseMove(e: MouseEvent) {
             const { clientX: endX, clientY: endY } = e;
@@ -151,8 +151,8 @@ export function Text(props: TextProps) {
             style={{
                 width: dimensions.width,
                 height: dimensions.height,
-                left: data.position.x,
-                top: data.position.y,
+                left: position.x,
+                top: position.y,
                 zIndex: isSelected ? zIndex.max + 1 : data.zIndex,
             }}
             className={clsx(s.root, {

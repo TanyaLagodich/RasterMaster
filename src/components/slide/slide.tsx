@@ -56,7 +56,7 @@ export const Slide: FC<ISlideProps> = ({
             ref={ref}
         >
             {/* На время разработки */}
-            <p>{id.slice(0, 5)}</p>
+            <p className={s.id}>{id.slice(0, 5)}</p>
             {type === "small" && (
                 // TODO: Найти SVG-иконку три точки
                 <p

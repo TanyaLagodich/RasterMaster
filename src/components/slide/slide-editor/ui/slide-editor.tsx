@@ -10,15 +10,11 @@ import * as s from "./slide-editor.module.scss";
 
 export function SlideEditor() {
     const { nodes } = useSlideContext();
-    const { setSelectedNode, updateNodeData } = useSlideActionsContext();
+    const { setEditorDimensions, setSelectedNode, updateNodeData } =
+        useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
-
-    const [editorDimensions, setEditorDimensions] = useState({
-        width: 0,
-        height: 0,
-    });
 
     useEffect(() => {
         function onClick(e: MouseEvent) {
@@ -75,7 +71,6 @@ export function SlideEditor() {
             {nodes.map((node) =>
                 node.type === NodeType.TEXT ? (
                     <Text
-                        editorDimensions={editorDimensions}
                         data={node}
                         onDragStart={(e: IDragEvent<HTMLDivElement>) =>
                             dragStartHandler(e)

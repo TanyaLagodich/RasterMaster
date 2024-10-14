@@ -1,15 +1,11 @@
 .root {
-    display: flex;
-    padding: 0.5rem;
-    border: 0.1rem solid var(--slide-border);
-    border-radius: 5px;
-    background: var(--slide-background);
     position: relative;
 }
 
 .big {
     width: 80%;
     aspect-ratio: 500/270;
+    margin: 10px 0;
 }
 
 .small {
@@ -17,8 +13,16 @@
     width: 100%;
 }
 
+// remove later
+.id {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
 .settings {
-    position: relative;
+    position: absolute;
     top: 75%;
     left: 65%;
     height: 6px;

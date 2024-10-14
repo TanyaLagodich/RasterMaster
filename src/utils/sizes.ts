@@ -1,5 +1,29 @@
-export function calcDimension(nodeDimension: number, editorDimension: number) {
-    return (nodeDimension / editorDimension) * 100 + "%";
+// refactor types later
+export function calcDimensions(
+    nodeDimensions: {
+        width: number;
+        height: number;
+    },
+    editorDimensions: {
+        width: number;
+        height: number;
+    }
+) {
+    return {
+        width: (nodeDimensions.width / editorDimensions.width) * 100 + "%",
+        height: (nodeDimensions.height / editorDimensions.height) * 100 + "%",
+    };
+}
+
+// refactor types later
+export function calcPosition(
+    position: { x: number; y: number },
+    editorDimensions: { width: number; height: number }
+) {
+    return {
+        x: (position.x / editorDimensions.width) * 100 + "%",
+        y: (position.y / editorDimensions.height) * 100 + "%",
+    };
 }
 
 export function isInsideElement(

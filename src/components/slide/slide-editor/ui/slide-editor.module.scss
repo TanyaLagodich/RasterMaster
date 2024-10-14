@@ -1,8 +1,10 @@
 .root {
     background-color: #fff;
-    aspect-ratio: 500 / 270;
-    width: 80%;
-    margin: 10px 0;
+    width: 100%;
+    height: 100%;
     position: relative;
     overflow: hidden;
+    border: 0.1rem solid var(--slide-border);
+    border-radius: 5px;
+    background: var(--slide-background);
 }

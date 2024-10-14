@@ -1,6 +1,5 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
-import { clear } from "console";
 
 export enum NodeType {
     TEXT = "text",
@@ -42,12 +41,14 @@ export type Image = {
 export type Node = Text | Image;
 
 type SlideContextType = {
+    editorDimensions: Dimensions;
     selectedNode: Node | null;
     nodes: Node[];
     zIndex: ZIndex;
 };
 
 type SlideActionsContextType = {
+    setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
     addText: () => void;
     updateNodeData: (newData: Node) => void;
@@ -59,6 +60,10 @@ export const SlideActionsContext =
     createContext<SlideActionsContextType | null>(null);
 
 export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
+    const [editorDimensions, setEditorDimensions] = useState<Dimensions>({
+        width: 0,
+        height: 0,
+    });
     const [currNode, setCurrNode] = useState<Node | null>(null);
     const [nodes, setNodes] = useState<Node[]>([]);
     const [zIndex, setZIndex] = useState<ZIndex>({ max: 0, min: 0 });
@@ -98,13 +103,25 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const values = useMemo(
-        () => ({ selectedNode: currNode, nodes, zIndex }),
-        [currNode, nodes, zIndex]
+        () => ({ editorDimensions, selectedNode: currNode, nodes, zIndex }),
+        [editorDimensions, currNode, nodes, zIndex]
     );
 
     const actions = useMemo(
-        () => ({ setSelectedNode, addText, updateNodeData, addImage }),
-        [setSelectedNode, addText, updateNodeData, addImage]
+        () => ({
+            setEditorDimensions,
+            setSelectedNode,
+            addText,
+            updateNodeData,
+            addImage,
+        }),
+        [
+            setEditorDimensions,
+            setSelectedNode,
+            addText,
+            updateNodeData,
+            addImage,
+        ]
     );
 
     return (
