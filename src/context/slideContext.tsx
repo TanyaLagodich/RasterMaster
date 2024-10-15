@@ -23,8 +23,8 @@ type Dimensions = {
 
 type BaseNode = {
     id: string;
-    position: Position;
-    dimensions: Dimensions;
+    positionPercent: Position;
+    dimensionsPercent: Dimensions;
     zIndex: number;
 };
 
@@ -76,13 +76,13 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         const text: Text = {
             id: nanoid(),
             type: NodeType.TEXT,
-            position: {
+            positionPercent: {
                 x: 10,
                 y: 10,
             },
-            dimensions: {
-                width: 500,
-                height: 100,
+            dimensionsPercent: {
+                width: 30,
+                height: 20,
             },
             zIndex: zIndex.max + 1,
             value: "",

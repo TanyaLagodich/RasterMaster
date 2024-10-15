@@ -10,7 +10,7 @@ import clsx from "clsx";
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 import { Text } from "@/context/slideContext";
-import { calcDimensions, calcPosition, isInsideElement } from "@/utils/sizes";
+import { isInsideElement } from "@/utils/sizes";
 
 import * as s from "./text.module.scss";
 
@@ -19,6 +19,17 @@ type TextProps = {
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
 };
+
+const resizeDots = [
+    "topLeft",
+    "topMiddle",
+    "topRight",
+    "rightMiddle",
+    "rightBottom",
+    "bottomMiddle",
+    "bottomLeft",
+    "leftMiddle",
+];
 
 export function Text(props: TextProps) {
     const { data, onDragStart, onDragEnd } = props;
@@ -31,23 +42,10 @@ export function Text(props: TextProps) {
     const dotsRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
-    const [dimensions, setDimensions] = useState<{
-        width: string | number;
-        height: string | number;
-    }>({ width: 0, height: 0 });
-    const [position, setPosition] = useState<{
-        x: string | number;
-        y: string | number;
-    }>({ x: 0, y: 0 });
 
     useEffect(() => {
         setIsSelected(data.id === selectedNode?.id);
     }, [data, selectedNode]);
-
-    useEffect(() => {
-        setDimensions(calcDimensions(data.dimensions, editorDimensions));
-        setPosition(calcPosition(data.position, editorDimensions));
-    }, [data, editorDimensions]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
         if (!textareaRef.current || !dotsRef.current) return;
@@ -80,59 +78,70 @@ export function Text(props: TextProps) {
         corner: string
     ) {
         const { clientX: startX, clientY: startY } = e;
-        const { width: startWidth, height: startHeight } = data.dimensions;
-        const { x: startLeft, y: startTop } = data.position;
-
-        console.log(startX, startY);
+        const { width: startWidthPercent, height: startHeightPercent } =
+            data.dimensionsPercent;
+        const { x: startXPercent, y: startYPercent } = data.positionPercent;
 
         function handleMouseMove(e: MouseEvent) {
             const { clientX: endX, clientY: endY } = e;
-            let endWidth = startWidth,
-                endHeight = startHeight;
-            let endPositionY = startTop,
-                endPositionX = startLeft;
+            let finalWidth = startWidthPercent,
+                finalHeight = startHeightPercent;
+            let finalPositionX = startXPercent,
+                finalPositionY = startYPercent;
+
+            const endWidthPercent =
+                ((endX - startX) / editorDimensions.width) * 100;
+            const endHeightPercent =
+                ((endY - startY) / editorDimensions.height) * 100;
+            const endXPercent =
+                ((endX - startX) / editorDimensions.width) * 100;
+            const endYPercent =
+                ((endY - startY) / editorDimensions.height) * 100;
 
             switch (corner) {
                 case "topLeft":
-                    endWidth = startWidth - (endX - startX);
-                    endHeight = startHeight - (endY - startY);
-                    endPositionX = startLeft + (endX - startX);
-                    endPositionY = startTop + (endY - startY);
+                    finalWidth = startWidthPercent - endWidthPercent;
+                    finalHeight = startHeightPercent - endHeightPercent;
+                    finalPositionX = startXPercent + endXPercent;
+                    finalPositionY = startYPercent + endYPercent;
                     break;
                 case "topMiddle":
-                    endHeight = startHeight - (endY - startY);
-                    endPositionY = startTop + (endY - startY);
+                    finalHeight = startHeightPercent - endHeightPercent;
+                    finalPositionY = startYPercent + endYPercent;
                     break;
                 case "topRight":
-                    endWidth = startWidth + (endX - startX);
-                    endHeight = startHeight - (endY - startY);
-                    endPositionY = startTop + (endY - startY);
+                    finalWidth = startWidthPercent + endWidthPercent;
+                    finalHeight = startHeightPercent - endHeightPercent;
+                    finalPositionY = startYPercent + endYPercent;
                     break;
                 case "rightMiddle":
-                    endWidth = startWidth + (endX - startX);
+                    finalWidth = startWidthPercent + endWidthPercent;
                     break;
                 case "rightBottom":
-                    endWidth = startWidth + (endX - startX);
-                    endHeight = startHeight + (endY - startY);
+                    finalWidth = startWidthPercent + endWidthPercent;
+                    finalHeight = startHeightPercent + endHeightPercent;
                     break;
                 case "bottomMiddle":
-                    endHeight = startHeight + (endY - startY);
+                    finalHeight = startHeightPercent + endHeightPercent;
                     break;
                 case "bottomLeft":
-                    endWidth = startWidth - (endX - startX);
-                    endHeight = startHeight + (endY - startY);
-                    endPositionX = startLeft + (endX - startX);
+                    finalWidth = startWidthPercent - endWidthPercent;
+                    finalHeight = startHeightPercent + endHeightPercent;
+                    finalPositionX = startXPercent + endXPercent;
                     break;
                 case "leftMiddle":
-                    endWidth = startWidth - (endX - startX);
-                    endPositionX = startLeft + (endX - startX);
+                    finalWidth = startWidthPercent - endWidthPercent;
+                    finalPositionX = startXPercent + endXPercent;
                     break;
             }
 
             updateNodeData({
                 ...data,
-                dimensions: { width: endWidth, height: endHeight },
-                position: { x: endPositionX, y: endPositionY },
+                dimensionsPercent: {
+                    width: finalWidth,
+                    height: finalHeight,
+                },
+                positionPercent: { x: finalPositionX, y: finalPositionY },
             });
         }
 
@@ -149,10 +158,10 @@ export function Text(props: TextProps) {
         <div
             ref={outerRef}
             style={{
-                width: dimensions.width,
-                height: dimensions.height,
-                left: position.x,
-                top: position.y,
+                width: data.dimensionsPercent.width + "%",
+                height: data.dimensionsPercent.height + "%",
+                left: data.positionPercent.x + "%",
+                top: data.positionPercent.y + "%",
                 zIndex: isSelected ? zIndex.max + 1 : data.zIndex,
             }}
             className={clsx(s.root, {
@@ -174,38 +183,12 @@ export function Text(props: TextProps) {
             />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
-                <div
-                    className={clsx(s.resizeDot, s._topLeft)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "topLeft")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._topMiddle)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "topMiddle")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._topRight)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "topRight")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._rightMiddle)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "rightMiddle")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._rightBottom)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "rightBottom")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._bottomMiddle)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "bottomMiddle")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._bottomLeft)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "bottomLeft")}
-                />
-                <div
-                    className={clsx(s.resizeDot, s._leftMiddle)}
-                    onMouseDown={(e) => handleDotMouseDown(e, "leftMiddle")}
-                />
+                {resizeDots.map((resizeDot) => (
+                    <div
+                        className={clsx(s.resizeDot, s[`_${resizeDot}`])}
+                        onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
+                    />
+                ))}
             </div>
         </div>
     );

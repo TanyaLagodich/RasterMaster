@@ -38,12 +38,12 @@ export function SlideEditor() {
 
         document.addEventListener("mousedown", onClick);
         document.addEventListener("dragover", onDragOver);
-        document.addEventListener("resize", onResize);
+        window.addEventListener("resize", onResize);
         onResize();
         return () => {
             document.removeEventListener("mousedown", onClick);
             document.removeEventListener("dragover", onDragOver);
-            document.removeEventListener("resize", onResize);
+            window.removeEventListener("resize", onResize);
         };
     }, []);
 
@@ -60,9 +60,12 @@ export function SlideEditor() {
         const newX = e.clientX - editorRect.left - dragOffsetRef.current.x;
         const newY = e.clientY - editorRect.top - dragOffsetRef.current.y;
 
+        const newXPercent = (newX / editorRect.width) * 100;
+        const newYPercent = (newY / editorRect.height) * 100;
+
         updateNodeData({
             ...node,
-            position: { x: newX, y: newY },
+            positionPercent: { x: newXPercent, y: newYPercent },
         });
     }
 
