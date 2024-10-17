@@ -1,4 +1,4 @@
-import { ISlide } from "@/types";
+import { ISlide } from "@/entities/slides/types";
 import * as s from "./styled.module.scss";
 import { memo, FC } from "react";
 

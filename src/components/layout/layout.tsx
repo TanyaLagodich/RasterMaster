@@ -7,7 +7,7 @@ import {Slide} from "@/components/slide/slide";
 
 import * as s from "./styled.module.scss";
 import { FC, useCallback, useState } from "react";
-import { ICreateSlideOptions, ISlide } from "@/types";
+import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialSlide: ISlide = {
@@ -18,7 +18,7 @@ const initialSlide: ISlide = {
 export function Layout() {
     const [slides, setSlides] = useState<ISlide[]>([initialSlide]);
     const [currentSlide, setCurrentSlide] = useState<ISlide | null>(initialSlide);
-
+    
     const addSlide = useCallback((
         id?: string,
         options?: ICreateSlideOptions,
@@ -43,8 +43,6 @@ export function Layout() {
                 }
             });
         }
-
-        console.log(prevSlideIndex)
         
         setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
         setCurrentSlide(newSlide);
@@ -62,29 +60,34 @@ export function Layout() {
         addSlide(id, {duplicate: true});
     }, [addSlide])
 
-    const removeSlide = useCallback((id: string) => {        
-        if (slides.length === 0) {
-            setCurrentSlide(null);
+    const getNewCurrentSlide = useCallback((id: string) => {
+        if (currentSlide.id !== id) {
+            return;
         }
 
-        const getNextSlide = (id: string): ISlide => {
-            let result: ISlide;
+        let result: ISlide | null;
 
-            slides.forEach((el, index) => {
-                if (el.id === id) {
-                    result = slides[index + 1] ?? slides[slides.length - 1];
-                }
-            })
+        slides.forEach((slide, index, arr) => {
+            if (arr.length === 1) {
+                result = null
+            }
 
-            return result;
-        }
-
-        if (slides.length > 0 && currentSlide.id === id) {
-            setCurrentSlide(getNextSlide(id));    
-        }
-
+            if (index === arr.length - 1) {
+                result = slides[index - 1];
+            }
+            
+            if (slide.id === id) {
+                result = slides[index + 1];
+            }
+        })
+        
+        setCurrentSlide(result);
+    }, [slides, currentSlide, setCurrentSlide]);
+ 
+    const removeSlide = useCallback((id: string) => {
+        getNewCurrentSlide(id);
         setSlides(prevSides => prevSides.filter(slide => slide.id !== id));
-    }, [slides, currentSlide])
+    }, [slides, currentSlide, getNewCurrentSlide])
 
     const changeSlide = useCallback((slide: ISlide) => {
         setCurrentSlide(slide);

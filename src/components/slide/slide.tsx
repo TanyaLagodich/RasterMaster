@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import * as s from "./styled.module.scss";
-import { IOptionSlideOperations, ISlideProps } from "../../types";
+import { IOptionSlideOperations, ISlideProps } from "../../entities/slides/types";
 import SlideOperations from "../slide-operations";
 
 export const Slide: FC<ISlideProps> = ({
@@ -17,8 +17,6 @@ export const Slide: FC<ISlideProps> = ({
     ].join(' ')
 
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
-    console.log(areOptionsOpen);
-    
 
     const toggleOptions = () => {
         setAreOptionsOpen(prev => !prev);
