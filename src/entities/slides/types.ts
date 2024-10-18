@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, MouseEvent, RefObject } from "react";
 
-export type SlideOperation = (id: string) => void;
+export type SlideOperation = (event: MouseEvent, id: string) => void;
 
 export interface ISlideProps {
     type: 'big' | 'small';
@@ -9,6 +9,8 @@ export interface ISlideProps {
     createSlide?: SlideOperation;
     removeSlide?: SlideOperation;
     duplicateSlide?: SlideOperation;
+    changeSlide?: (slide: ISlide) => void;
+    ref?: RefObject<HTMLElement | null>;
 }
 
 export interface ISlide {
@@ -23,5 +25,5 @@ export interface ICreateSlideOptions {
 export interface IOptionSlideOperations {
     key: string;
     label: string;
-    method?: (...args: any[]) => void;
+    method?: SlideOperation;
 }

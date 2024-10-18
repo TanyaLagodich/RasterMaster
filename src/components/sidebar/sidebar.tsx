@@ -1,4 +1,4 @@
-import { memo, FC } from "react";
+import { memo, FC, RefObject } from "react";
 import * as s from "./styled.module.scss";
 import { ISlide, SlideOperation } from "@/entities/slides/types";
 import {Typography} from 'antd'
@@ -6,10 +6,11 @@ import {Typography} from 'antd'
 interface IProps {
     slides: ISlide[];
     changeSlide: (slide: ISlide) => void;
-    createSlide: SlideOperation;
     pushSlide: () => void;
+    createSlide: SlideOperation;
     removeSlide: SlideOperation;
     duplicateSlide: SlideOperation;
+    ref?: RefObject<HTMLElement | null>;
 }
 
 const Sidebar: FC<IProps> = ({
@@ -19,6 +20,7 @@ const Sidebar: FC<IProps> = ({
     pushSlide,
     removeSlide,
     duplicateSlide,
+    ref,
 }) => {
     return (
         <aside className={s.root}>
@@ -38,6 +40,7 @@ const Sidebar: FC<IProps> = ({
                             removeSlide={removeSlide}
                             duplicateSlide={duplicateSlide}
                             index={index}
+                            ref={ref}
                         />
                     </div>
                 )
