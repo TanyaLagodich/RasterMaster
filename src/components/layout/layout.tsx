@@ -6,7 +6,7 @@ import Notes from "@/components/notes";
 import {Slide} from "@/components/slide/slide";
 
 import * as s from "./styled.module.scss";
-import { FC, useCallback, useState } from "react";
+import { useCallback, useState, MouseEvent, useRef } from "react";
 import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -48,51 +48,60 @@ export function Layout() {
         setCurrentSlide(newSlide);
     }, [slides])
 
-    const createSlide = useCallback((id: string) => {
+    const createSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
         addSlide(id);
+    }, [addSlide])
+    
+    const duplicateSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
+        addSlide(id, {duplicate: true});
     }, [addSlide])
 
     const pushSlide = useCallback(() => {
         addSlide();
     }, [addSlide])
 
-    const duplicateSlide = useCallback((id: string) => {
-        addSlide(id, {duplicate: true});
-    }, [addSlide])
-
-    const getNewCurrentSlide = useCallback((id: string) => {
+    const setNewCurrentSlide = useCallback((id: string) => {
         if (currentSlide.id !== id) {
             return;
         }
 
         let result: ISlide | null;
 
-        slides.forEach((slide, index, arr) => {
+        for (let i = 0; i < slides.length; i += 1) {
+            const slide = slides[i];
+            const arr = slides;
+
             if (arr.length === 1) {
-                result = null
+                result = null;
+                break;
             }
 
-            if (index === arr.length - 1) {
-                result = slides[index - 1];
+            if (i === arr.length - 1) {
+                result = slides[i - 1];
+                break;
             }
-            
+
             if (slide.id === id) {
-                result = slides[index + 1];
+                result = slides[i + 1];
+                break;
             }
-        })
-        
+        }
+
         setCurrentSlide(result);
-    }, [slides, currentSlide, setCurrentSlide]);
- 
-    const removeSlide = useCallback((id: string) => {
-        getNewCurrentSlide(id);
+    }, [slides, currentSlide]);
+
+    const removeSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
+        setNewCurrentSlide(id);
         setSlides(prevSides => prevSides.filter(slide => slide.id !== id));
-    }, [slides, currentSlide, getNewCurrentSlide])
+    }, [setNewCurrentSlide])
 
     const changeSlide = useCallback((slide: ISlide) => {
         setCurrentSlide(slide);
     }, [])
-
+    
     const editSlide = useCallback((id: string) => {
        
     }, [])

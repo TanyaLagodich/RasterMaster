@@ -1,4 +1,4 @@
-import { memo, FC } from "react";
+import { memo, FC, RefObject } from "react";
 import * as s from "./styled.module.scss";
 import { ISlide, SlideOperation } from "@/entities/slides/types";
 import {Typography} from 'antd'
@@ -6,8 +6,8 @@ import {Typography} from 'antd'
 interface IProps {
     slides: ISlide[];
     changeSlide: (slide: ISlide) => void;
-    createSlide: SlideOperation;
     pushSlide: () => void;
+    createSlide: SlideOperation;
     removeSlide: SlideOperation;
     duplicateSlide: SlideOperation;
 }
