@@ -18,8 +18,6 @@ const initialSlide: ISlide = {
 export function Layout() {
     const [slides, setSlides] = useState<ISlide[]>([initialSlide]);
     const [currentSlide, setCurrentSlide] = useState<ISlide | null>(initialSlide);
-
-    const globalRef = useRef(null);
     
     const addSlide = useCallback((
         id?: string,
@@ -114,7 +112,7 @@ export function Layout() {
     const untouchSlide = useCallback(() => {}, [])
 
     return (
-        <div ref={globalRef}>
+        <>
             <Header />
 
             <ToolsHeader />
@@ -127,7 +125,6 @@ export function Layout() {
                     createSlide={createSlide}
                     removeSlide={removeSlide}
                     duplicateSlide={duplicateSlide}
-                    ref={globalRef}
                 />
 
                 <div className={s.content}>
@@ -136,6 +133,6 @@ export function Layout() {
                     <Notes />
                 </div>
             </div>
-        </div>
+        </>
     );
 }

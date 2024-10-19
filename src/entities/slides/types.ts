@@ -10,7 +10,6 @@ export interface ISlideProps {
     removeSlide?: SlideOperation;
     duplicateSlide?: SlideOperation;
     changeSlide?: (slide: ISlide) => void;
-    ref?: RefObject<HTMLElement | null>;
 }
 
 export interface ISlide {

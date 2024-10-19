@@ -10,7 +10,6 @@ interface IProps {
     createSlide: SlideOperation;
     removeSlide: SlideOperation;
     duplicateSlide: SlideOperation;
-    ref?: RefObject<HTMLElement | null>;
 }
 
 const Sidebar: FC<IProps> = ({
@@ -20,7 +19,6 @@ const Sidebar: FC<IProps> = ({
     pushSlide,
     removeSlide,
     duplicateSlide,
-    ref,
 }) => {
     return (
         <aside className={s.root}>
@@ -40,7 +38,6 @@ const Sidebar: FC<IProps> = ({
                             removeSlide={removeSlide}
                             duplicateSlide={duplicateSlide}
                             index={index}
-                            ref={ref}
                         />
                     </div>
                 )

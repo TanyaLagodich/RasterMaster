@@ -11,9 +11,9 @@ export const Slide: FC<ISlideProps> = ({
     createSlide,
     removeSlide,
     duplicateSlide,
-    ref,
 }) => {
     const isBig = type === 'big';
+    const isSmall = !isBig;
 
     const className = [
         s.root,
@@ -21,6 +21,8 @@ export const Slide: FC<ISlideProps> = ({
     ].join(' ')
 
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
+
+    const ref = useRef();
 
     const toggleOptions = (event: MouseEvent) => {
         event.stopPropagation();
@@ -46,10 +48,14 @@ export const Slide: FC<ISlideProps> = ({
 
     return (
         <div className={className}>
+            {isSmall && 
+                <div className={s.paranja} ref={ref}/>
+            }
+
             {/* На время разработки */}
             <p>{id.slice(0, 5)}</p>
             
-            {!isBig &&
+            {isSmall &&
                 // TODO: Найти SVG-иконку три точки
                 <p
                     className={s.settings}
@@ -60,7 +66,7 @@ export const Slide: FC<ISlideProps> = ({
                 </p>
             }
 
-            {areOptionsOpen && !isBig &&
+            {areOptionsOpen && isSmall &&
                 <SlideOperations
                     options={slideOperationsOptions}
                     id={id}
