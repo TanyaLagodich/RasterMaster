@@ -1,6 +1,8 @@
 .root {
     border-bottom: 1px solid #ccc;
     height: var(--header-height);
+    display: flex;
+    align-items: center;
 }
 
 .tabs {
