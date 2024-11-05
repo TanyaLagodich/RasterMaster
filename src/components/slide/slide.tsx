@@ -2,6 +2,8 @@ import { FC, MouseEvent, useEffect, useRef, useState } from "react";
 import * as s from "./styled.module.scss";
 import { IOptionSlideOperations, ISlideProps } from "../../entities/slides/types";
 import SlideOperations from "../slide-operations";
+import { SlideEditor } from "./slide-editor";
+import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export const Slide: FC<ISlideProps> = ({
@@ -26,19 +28,19 @@ export const Slide: FC<ISlideProps> = ({
 
     const toggleOptions = (event: MouseEvent) => {
         event.stopPropagation();
-        setAreOptionsOpen(prev => !prev);
-    }
+        setAreOptionsOpen((prev) => !prev);
+    };
 
     const closeOptions = () => {
         setAreOptionsOpen(false);
-    }
+    };
 
     const slideOperationsOptions: IOptionSlideOperations[] = [
-        {key: 'add', label: 'Создать', method: createSlide},
-        {key: 'duplicate', label: 'Дублировать', method: duplicateSlide},
-        {key: 'remove', label: 'Удалить', method: removeSlide},
-        {key: 'templates', label: 'Макеты'},           
-    ]
+        { key: "add", label: "Создать", method: createSlide },
+        { key: "duplicate", label: "Дублировать", method: duplicateSlide },
+        { key: "remove", label: "Удалить", method: removeSlide },
+        { key: "templates", label: "Макеты" },
+    ];
 
     useOutsideClick(
         ref,
@@ -46,20 +48,40 @@ export const Slide: FC<ISlideProps> = ({
         {isCancelled: !areOptionsOpen},
     )
 
+    useEffect(() => {
+        if (!areOptionsOpen) return;
+
+        const closeOutside = (event) => {
+            if (event.target === ref.current) {
+                closeOptions();
+            }
+        };
+
+        document.addEventListener("click", closeOutside);
+
+        return () => document.removeEventListener("click", closeOutside);
+    }, []);
+
     return (
-        <div className={className}>
-            {isSmall && 
+        <div
+            className={clsx(s.root, {
+            [s.big]: type === "big",
+            [s.small]: type === "small",
+        })}
+            ref={ref}
+        >
+            {isSmall &&
                 <div className={s.paranja} ref={ref}/>
             }
 
             {/* На время разработки */}
             <p>{id.slice(0, 5)}</p>
-            
+
             {isSmall &&
                 // TODO: Найти SVG-иконку три точки
                 <p
                     className={s.settings}
-                    style={{fontSize: 20}}
+                    style={{ fontSize: 20 }}
                     onClick={toggleOptions}
                 >
                     ...
@@ -67,16 +89,20 @@ export const Slide: FC<ISlideProps> = ({
             }
 
             {areOptionsOpen && isSmall &&
-                <SlideOperations
-                    options={slideOperationsOptions}
-                    id={id}
-                    onClose={closeOptions}
-                />
+                <div ref={ref}>
+                    <SlideOperations
+                        options={slideOperationsOptions}
+                        id={id}
+                        onClose={closeOptions}
+                    />
+                </div>
             }
+
+            <SlideEditor />
 
             {isBig &&
                 <p className={s.page}>{(index ?? 0) + 1}</p>
             }
         </div>
-    )
-}
+    );
+};
