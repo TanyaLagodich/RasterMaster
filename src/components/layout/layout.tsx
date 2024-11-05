@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import ToolsHeader from "../header/tools-header";
+import ToolsHeader from "@/components/header/tools-header";
 import Sidebar from "@/components/sidebar";
 import SlideArea from "@/components/slide-area";
 import Notes from "@/components/notes";
