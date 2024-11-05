@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import ToolsHeader from "@/components/tools-header";
+import ToolsHeader from "@/components/header/tools-header";
 import Sidebar from "@/components/sidebar";
 import SlideArea from "@/components/slide-area";
 import Notes from "@/components/notes";
@@ -18,7 +18,7 @@ const initialSlide: ISlide = {
 export function Layout() {
     const [slides, setSlides] = useState<ISlide[]>([initialSlide]);
     const [currentSlide, setCurrentSlide] = useState<ISlide | null>(initialSlide);
-    
+
     const addSlide = useCallback((
         id?: string,
         options?: ICreateSlideOptions,
@@ -43,7 +43,7 @@ export function Layout() {
                 }
             });
         }
-        
+
         setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
         setCurrentSlide(newSlide);
     }, [slides])
@@ -52,7 +52,7 @@ export function Layout() {
         event.stopPropagation();
         addSlide(id);
     }, [addSlide])
-    
+
     const duplicateSlide = useCallback((event: MouseEvent, id: string) => {
         event.stopPropagation();
         addSlide(id, {duplicate: true});
@@ -101,9 +101,9 @@ export function Layout() {
     const changeSlide = useCallback((slide: ISlide) => {
         setCurrentSlide(slide);
     }, [])
-    
+
     const editSlide = useCallback((id: string) => {
-       
+
     }, [])
 
     // Handlers for grag'n'drop
@@ -118,7 +118,7 @@ export function Layout() {
             <ToolsHeader />
 
             <div className={s.body}>
-                <Sidebar 
+                <Sidebar
                     slides={slides}
                     changeSlide={changeSlide}
                     pushSlide={pushSlide}

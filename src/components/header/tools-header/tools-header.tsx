@@ -1,7 +1,7 @@
 import { useAppContext } from "@/hooks/useAppContext";
 import { TAB } from "@/context/appContext";
 
-import { DecorationTools } from "@/components/tools-rows/decoration-tools";
+import { DecorationTools } from "./decoration-tools";
 import { SlideshowTools } from "@/components/tools-rows/slideshow-tools";
 import { AnimationTools } from "@/components/tools-rows/animation-tools";
 
