@@ -1,32 +1,29 @@
-import { IOptionSlideOperations, SlideOperation } from "@/types";
+import { IOptionSlideOperations } from "@/entities/slides/types";
 import { FC } from "react";
+import OperationItem from "../slide-operation/slide-operation";
 
 import * as s from "./styled.module.scss";
 
-interface IPropsMenu {
+interface IProps {
     options: IOptionSlideOperations[],
     id: string;
     onClose: () => void;
 }
 
-const SlideOperations: FC<IPropsMenu> = ({options, id, onClose}) => {
-    const onAction = (method: SlideOperation) => {
-        method(id);
-        onClose();
-    }
-
+const SlideOperations: FC<IProps> = ({options, id, onClose}) => {
     return (
-        <ul className={s.root}>
+        <div className={s.root}>
             {options.map(({key, label, method}) => (
-                <li
+                <OperationItem 
                     key={key}
-                    onClick={() => onAction(method)}
+                    method={method}
+                    onClose={onClose}
                     className={s.option}
-                >
-                    {label}
-                </li>
+                    label={label}
+                    id={id}
+                />
             ))}
-         </ul>
+         </div>
     )
 }
 

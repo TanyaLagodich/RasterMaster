@@ -1,9 +1,10 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, MouseEvent, useEffect, useRef, useState } from "react";
 import * as s from "./styled.module.scss";
-import { IOptionSlideOperations, ISlideProps } from "../../types";
+import { IOptionSlideOperations, ISlideProps } from "../../entities/slides/types";
 import SlideOperations from "../slide-operations";
 import { SlideEditor } from "./slide-editor";
 import clsx from "clsx";
+import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export const Slide: FC<ISlideProps> = ({
     type,
@@ -13,10 +14,20 @@ export const Slide: FC<ISlideProps> = ({
     removeSlide,
     duplicateSlide,
 }) => {
-    const [areOptionsOpen, setAreOptionsOpen] = useState(false);
-    console.log(areOptionsOpen);
+    const isBig = type === 'big';
+    const isSmall = !isBig;
 
-    const toggleOptions = () => {
+    const className = [
+        s.root,
+        isBig ? s.big : s.small,
+    ].join(' ')
+
+    const [areOptionsOpen, setAreOptionsOpen] = useState(false);
+
+    const ref = useRef();
+
+    const toggleOptions = (event: MouseEvent) => {
+        event.stopPropagation();
         setAreOptionsOpen((prev) => !prev);
     };
 
@@ -31,7 +42,11 @@ export const Slide: FC<ISlideProps> = ({
         { key: "templates", label: "Макеты" },
     ];
 
-    const ref = useRef<HTMLDivElement>();
+    useOutsideClick(
+        ref,
+        closeOptions,
+        {isCancelled: !areOptionsOpen},
+    )
 
     useEffect(() => {
         if (!areOptionsOpen) return;
@@ -50,14 +65,19 @@ export const Slide: FC<ISlideProps> = ({
     return (
         <div
             className={clsx(s.root, {
-                [s.big]: type === "big",
-                [s.small]: type === "small",
-            })}
+            [s.big]: type === "big",
+            [s.small]: type === "small",
+        })}
             ref={ref}
         >
+            {isSmall &&
+                <div className={s.paranja} ref={ref}/>
+            }
+
             {/* На время разработки */}
-            <p className={s.id}>{id.slice(0, 5)}</p>
-            {type === "small" && (
+            <p>{id.slice(0, 5)}</p>
+
+            {isSmall &&
                 // TODO: Найти SVG-иконку три точки
                 <p
                     className={s.settings}
@@ -66,8 +86,9 @@ export const Slide: FC<ISlideProps> = ({
                 >
                     ...
                 </p>
-            )}
-            {areOptionsOpen && type === "small" && (
+            }
+
+            {areOptionsOpen && isSmall &&
                 <div ref={ref}>
                     <SlideOperations
                         options={slideOperationsOptions}
@@ -75,11 +96,13 @@ export const Slide: FC<ISlideProps> = ({
                         onClose={closeOptions}
                     />
                 </div>
-            )}
+            }
 
             <SlideEditor />
 
-            {type === "big" && <p className={s.page}>{(index ?? 0) + 1}</p>}
+            {isBig &&
+                <p className={s.page}>{(index ?? 0) + 1}</p>
+            }
         </div>
     );
 };

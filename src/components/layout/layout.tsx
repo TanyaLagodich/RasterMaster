@@ -6,8 +6,8 @@ import Notes from "@/components/notes";
 import {Slide} from "@/components/slide/slide";
 
 import * as s from "./styled.module.scss";
-import { FC, useCallback, useState } from "react";
-import { ICreateSlideOptions, ISlide } from "@/types";
+import { useCallback, useState, MouseEvent, useRef } from "react";
+import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialSlide: ISlide = {
@@ -18,7 +18,7 @@ const initialSlide: ISlide = {
 export function Layout() {
     const [slides, setSlides] = useState<ISlide[]>([initialSlide]);
     const [currentSlide, setCurrentSlide] = useState<ISlide | null>(initialSlide);
-
+    
     const addSlide = useCallback((
         id?: string,
         options?: ICreateSlideOptions,
@@ -43,53 +43,65 @@ export function Layout() {
                 }
             });
         }
-
-        console.log(prevSlideIndex)
         
         setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
         setCurrentSlide(newSlide);
     }, [slides])
 
-    const createSlide = useCallback((id: string) => {
+    const createSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
         addSlide(id);
+    }, [addSlide])
+    
+    const duplicateSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
+        addSlide(id, {duplicate: true});
     }, [addSlide])
 
     const pushSlide = useCallback(() => {
         addSlide();
     }, [addSlide])
 
-    const duplicateSlide = useCallback((id: string) => {
-        addSlide(id, {duplicate: true});
-    }, [addSlide])
-
-    const removeSlide = useCallback((id: string) => {        
-        if (slides.length === 0) {
-            setCurrentSlide(null);
+    const setNewCurrentSlide = useCallback((id: string) => {
+        if (currentSlide.id !== id) {
+            return;
         }
 
-        const getNextSlide = (id: string): ISlide => {
-            let result: ISlide;
+        let result: ISlide | null;
 
-            slides.forEach((el, index) => {
-                if (el.id === id) {
-                    result = slides[index + 1] ?? slides[slides.length - 1];
-                }
-            })
+        for (let i = 0; i < slides.length; i += 1) {
+            const slide = slides[i];
+            const arr = slides;
 
-            return result;
+            if (arr.length === 1) {
+                result = null;
+                break;
+            }
+
+            if (i === arr.length - 1) {
+                result = slides[i - 1];
+                break;
+            }
+
+            if (slide.id === id) {
+                result = slides[i + 1];
+                break;
+            }
         }
 
-        if (slides.length > 0 && currentSlide.id === id) {
-            setCurrentSlide(getNextSlide(id));    
-        }
+        setCurrentSlide(result);
+    }, [slides, currentSlide]);
 
+    const removeSlide = useCallback((event: MouseEvent, id: string) => {
+        event.stopPropagation();
+        setNewCurrentSlide(id);
         setSlides(prevSides => prevSides.filter(slide => slide.id !== id));
-    }, [slides, currentSlide])
+    }, [setNewCurrentSlide])
 
     const changeSlide = useCallback((slide: ISlide) => {
         setCurrentSlide(slide);
     }, [])
-
+    
     const editSlide = useCallback((id: string) => {
        
     }, [])
