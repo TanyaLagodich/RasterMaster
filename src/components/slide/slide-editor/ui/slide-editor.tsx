@@ -1,6 +1,8 @@
 import { DragEvent as IDragEvent, useEffect, useRef, useState } from "react";
+import { toPng } from "html-to-image";
 
 import { useSlideContext } from "@/hooks/useSlideContext";
+import { useSlidesContext } from "@/hooks/useSlidesContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 import { Node as SlideNode, NodeType } from "@/context/slideContext";
 
@@ -9,14 +11,20 @@ import { Text } from "@/components/text";
 import * as s from "./slide-editor.module.scss";
 
 export function SlideEditor() {
+    const { currentSlide, updateSlide } = useSlidesContext();
     const { nodes } = useSlideContext();
-    const { setEditorDimensions, setSelectedNode, updateNodeData } =
+    const { setEditorDimensions, setSelectedNode, updateNodeData, updatePreview} =
         useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
     useEffect(() => {
+        generatePreview();
+    }, [nodes]);
+
+    useEffect(() => {
+
         function onClick(e: MouseEvent) {
             if (editorRef.current === e.target) {
                 setSelectedNode(null);
@@ -67,6 +75,14 @@ export function SlideEditor() {
             ...node,
             positionPercent: { x: newXPercent, y: newYPercent },
         });
+        generatePreview();
+    }
+
+    async function generatePreview() {
+        if (editorRef.current) {
+            const dataUrl = await toPng(editorRef.current);
+            updatePreview(dataUrl);
+        }
     }
 
     return (

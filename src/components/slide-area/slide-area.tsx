@@ -1,13 +1,13 @@
-import { ISlide } from "@/entities/slides/types";
+import { ISlideNew } from "@/entities/slides/types";
 import * as s from "./styled.module.scss";
 import { memo, FC } from "react";
+import { Slide } from '@/components/slide';
 
 interface IProps {
-    slide: ISlide | null;
+    slide: ISlideNew | null;
 }
 
 const SlideArea: FC<IProps> = ({slide}) => {
-    const {Component: Slide} = slide ?? {};
 
     if (!slide) {
         return null;
@@ -15,7 +15,7 @@ const SlideArea: FC<IProps> = ({slide}) => {
 
     return (
         <div className={s.root}>
-            {!!slide && 
+            {!!slide &&
                 <Slide
                     type="big"
                     id={slide.id}
