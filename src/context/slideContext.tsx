@@ -54,8 +54,8 @@ type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
     addText: () => void;
+    addImage: () => void;
     updateNodeData: (newData: Node) => void;
-    addImage: (image: Image) => void;
     updatePreview: (string) => void;
 };
 
@@ -64,13 +64,18 @@ export const SlideActionsContext =
     createContext<SlideActionsContextType | null>(null);
 
 export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
-    const { currentSlide, updateSlide, updateCurrentSlide } = useSlidesContext();
-    console.log('SlideContextProvider', currentSlide);
-    const [editorDimensions, setEditorDimensions] = useState<Dimensions>(currentSlide?.editorDimensions);
+    const { currentSlide, updateSlide, updateCurrentSlide } =
+        useSlidesContext();
+    console.log("SlideContextProvider", currentSlide);
+    const [editorDimensions, setEditorDimensions] = useState<Dimensions>(
+        currentSlide?.editorDimensions
+    );
     const [currNode, setCurrNode] = useState<Node | null>(null);
     const [nodes, setNodes] = useState<Node[]>(currentSlide?.nodes || []);
-    const [zIndex, setZIndex] = useState<ZIndex>(currentSlide?.zIndex || { min: 0, max: 100 });
-    const [preview, setPreview] = useState<string>(currentSlide?.preview || '');
+    const [zIndex, setZIndex] = useState<ZIndex>(
+        currentSlide?.zIndex || { min: 0, max: 100 }
+    );
+    const [preview, setPreview] = useState<string>(currentSlide?.preview || "");
     const [id] = useState<string>(currentSlide?.id || nanoid());
 
     function setSelectedNode(node: Node | null) {
@@ -112,6 +117,62 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         // });
     }
 
+    function addImage() {
+        const image: Image = {
+            id: nanoid(),
+            type: NodeType.IMAGE,
+            positionPercent: {
+                x: 30,
+                y: 30,
+            },
+            dimensionsPercent: {
+                width: 20,
+                height: 20,
+            },
+            zIndex: zIndex.max + 1,
+            src: "",
+        };
+
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+
+        fileInput.addEventListener("change", (e) => {
+            const file = (e.target as HTMLInputElement).files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const result = e.target?.result;
+
+                    if (typeof result === "string") {
+                        image.src = result;
+                    } else if (result instanceof ArrayBuffer) {
+                        const blob = new Blob([result], { type: e.type });
+                        image.src = URL.createObjectURL(blob);
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        fileInput.click();
+
+        setNodes([...nodes, image]);
+        updateSlide({
+            ...currentSlide,
+            nodes,
+            zIndex,
+        });
+        updateCurrentSlide({
+            ...currentSlide,
+            nodes,
+            zIndex,
+        });
+    }
+
     function updateNodeData(newData: Node) {
         setNodes((prevNodes) =>
             prevNodes.map((n) => (n.id === newData.id ? newData : n))
@@ -119,19 +180,23 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         updateSlide({
             ...currentSlide,
             nodes,
-        })
+        });
         updateCurrentSlide({
             ...currentSlide,
             nodes,
         });
     }
 
-    function addImage(image: Image) {
-        setNodes([...nodes, image]);
-    }
-
     const values = useMemo(
-        () => ({ editorDimensions, selectedNode: currNode, nodes, zIndex, preview, id, currentSlide }),
+        () => ({
+            editorDimensions,
+            selectedNode: currNode,
+            nodes,
+            zIndex,
+            preview,
+            id,
+            currentSlide,
+        }),
         [editorDimensions, currNode, nodes, zIndex, preview, id, currentSlide]
     );
 
