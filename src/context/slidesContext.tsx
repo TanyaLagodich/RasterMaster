@@ -1,15 +1,15 @@
 import { createContext, ReactNode, useState, useContext } from "react";
-import { Slide } from '@/types';
+import { Slide, SlideTypes } from '@/types';
 import { SlideFactory  } from '@/factories/slide';
 
-type SlidesContextType = {
+export type SlidesContextType = {
     slides: Slide[];
     currentSlide: Slide;
     setCurrentSlide: (currentSlide: Slide) => void;
     currentSlideId: string | null;
     setCurrentSlideId: (id: string) => void;
-    addSlide: () => void;
-    removeSlide: (e, id: string) => void;
+    addSlide: (slide: Slide) => void;
+    removeSlide: (id: string) => Slide;
     updateSlide: (updatedSlide: Slide) => void;
     updateCurrentSlide: (updatedSlide: Slide) => void;
     changeSlide: (slide: Slide) => void;
@@ -22,18 +22,25 @@ export const SlidesContextProvider = ({ children }: { children: ReactNode }) => 
     const [currentSlideId, setCurrentSlideId] = useState<string | null>(null);
     const [currentSlide, setCurrentSlide] = useState<Slide>(null);
 
-    function addSlide() {
-      const newSlide: Slide = SlideFactory.createSlide();
+    function addSlide(newSlide: Slide) {
         setSlides((prev) => [...prev, newSlide]);
         setCurrentSlideId(newSlide.id);
         setCurrentSlide(newSlide);
     }
 
     function removeSlide(id: string) {
-        setSlides((prev) => prev.filter((slide) => slide.id !== id));
-        if (currentSlideId === id) {
-            setCurrentSlideId(null);
-        }
+      let removedSlide: Slide | undefined;
+   
+       setSlides((prev) => {
+           removedSlide = prev.find((slide) => slide.id === id);
+           return prev.filter((slide) => slide.id !== id);
+       });
+   
+       if (currentSlideId === id) {
+           setCurrentSlideId(null);
+       }
+   
+       return removedSlide;
     }
 
     function updateSlide(updatedSlide: Slide) {

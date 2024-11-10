@@ -1,0 +1,1 @@
+export { SlideFactory } from './slide';

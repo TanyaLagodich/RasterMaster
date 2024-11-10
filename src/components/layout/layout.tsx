@@ -9,10 +9,26 @@ import { useCallback, useState, MouseEvent, useRef } from "react";
 import { ICreateSlideOptions, ISlide, ISlideNew } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
 import { useSlidesContext } from "@/hooks/useSlidesContext";
-
+import { AddSlideCommand, RemoveSlideCommand, DuplicateSlideCommand } from "@/commands";
+import { SlideTypes, Slide } from '@/types';
 
 export function Layout() {
-    const { slides, currentSlide, addSlide,removeSlide, changeSlide } = useSlidesContext();
+  const { slides, currentSlide, changeSlide } = useSlidesContext();
+  const slidesContext = useSlidesContext();
+    
+  const addSlide = () => {
+    const addSlideCommand = new AddSlideCommand(slidesContext);
+    addSlideCommand.execute(SlideTypes.EMPTY);
+  }
+  const removeSlide = (id: string) => {
+    const removeSlideCommand = new RemoveSlideCommand(slidesContext, id);
+    removeSlideCommand.execute();
+  }
+  
+  const duplicateSlide = (slide: Slide) => {
+    const duplicateSlideCommand = new DuplicateSlideCommand(slidesContext, slide);
+    duplicateSlideCommand.execute();
+  }
 
     // const addSlide = useCallback((
     //     id?: string,
@@ -120,7 +136,7 @@ export function Layout() {
                     pushSlide={addSlide}
                     createSlide={addSlide}
                     removeSlide={removeSlide}
-                    duplicateSlide={addSlide}
+                    duplicateSlide={duplicateSlide}
                 />
 
                 <div className={s.content}>

@@ -1,17 +1,56 @@
-import { ISlideNew } from '@/entities/slides/types';
+import { EllipsisOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Card } from 'antd';
+import type { MenuProps } from 'antd';
+import { Slide } from '@/types';
 import * as s from './slide-preview.module.scss';
+
+interface SlidePreviewProps {
+  slide: Slide;
+  isActive: boolean;
+  onCreateSlide: () => void;
+  onRemoveSlide: (id: string) => void;
+  onDuplicateSlide: (slide: Slide) => void;
+}
 
 export function SlidePreview ({
     slide,
     isActive,
-}: {slide: ISlideNew; isActive: boolean}) {
+    onCreateSlide,
+    onRemoveSlide,
+    onDuplicateSlide,
+}: SlidePreviewProps) {
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 'Создать',
+      onClick: () => onCreateSlide(),
+    },
+    {
+      key: '2',
+      label: 'Дублировать',
+      onClick: () => onDuplicateSlide(slide),
+    },
+    {
+      key: '3',
+      label: 'Удалить',
+      onClick: () => onRemoveSlide(slide.id),
+    },
+  ];
+  
   return (
-      <div className={`${s.root} ${isActive ? s.active : ''}`}>
-        {slide.preview && <img
-            width={200}
-            height={100}
-            src={slide.preview}
-        />}
-      </div>
+    <Card
+      hoverable
+      cover={slide.preview ? <img src={slide.preview} alt="Preview" /> : null}
+      className={`${s.root} ${isActive ? s.active : ''}`}
+    >
+      {isActive &&
+        <Dropdown menu={{ items }} placement="bottomLeft">
+          <Button
+            className={s.settings}
+            icon={<EllipsisOutlined />}
+          />
+        </Dropdown>
+      }
+    </Card>
   );
 }

@@ -1,17 +1,17 @@
 import { memo, FC } from "react";
 import * as s from "./styled.module.scss";
-import { ISlide, ISlideNew, SlideOperation } from "@/entities/slides/types";
-import {Typography} from 'antd'
+import { Typography } from 'antd';
+import { Slide } from '@/types';
 import { SlidePreview } from '@/components/slide/slide-preview';
 
 interface IProps {
-    currentSlide: ISlideNew;
-    slides: ISlideNew[];
-    changeSlide: (slide: ISlideNew) => void;
+    currentSlide: Slide;
+    slides: Slide[];
+    changeSlide: (slide: Slide) => void;
     pushSlide: () => void;
-    createSlide: SlideOperation;
-    removeSlide: SlideOperation;
-    duplicateSlide: SlideOperation;
+    createSlide: () => void;
+    removeSlide: (id: string) => void;
+    duplicateSlide: (slide: Slide) => void;
 }
 
 const Sidebar: FC<IProps> = ({
@@ -34,10 +34,12 @@ const Sidebar: FC<IProps> = ({
                         key={id}
                         onClick={() => changeSlide(slide)}
                     >
-                        {slide.id}
                         <SlidePreview
                             isActive={currentSlide.id === slide.id}
                             slide={slide}
+                            onCreateSlide={createSlide}
+                            onRemoveSlide={removeSlide}
+                            onDuplicateSlide={duplicateSlide}
                         />
                     </div>
                 )

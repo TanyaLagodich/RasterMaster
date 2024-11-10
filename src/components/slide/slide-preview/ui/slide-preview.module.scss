@@ -1,4 +1,5 @@
 .root {
+  position: relative;
   width: 200px;
   height: 100px;
   background-color: white;
@@ -12,5 +13,12 @@
   &.active {
     outline: 4px solid #c43e1c;
   }
+}
+
+.settings {
+    position: absolute;
+    top: 60%;
+    left: 80%;
+    cursor: pointer;
 }
 
