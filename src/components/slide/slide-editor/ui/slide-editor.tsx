@@ -4,7 +4,7 @@ import { toPng } from "html-to-image";
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlidesContext } from "@/hooks/useSlidesContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Node as SlideNode, NodeType } from '@/types';
+import { Node as SlideNode, NodeType } from "@/types";
 
 import { Text } from "@/components/text";
 import { Image } from "@/components/image";
@@ -95,7 +95,7 @@ export function SlideEditor() {
 
     return (
         <div ref={editorRef} className={s.root}>
-            {nodes.map((node) =>
+            {nodes.map((node: SlideNode) =>
                 node.type === NodeType.TEXT ? (
                     <Text
                         data={node}

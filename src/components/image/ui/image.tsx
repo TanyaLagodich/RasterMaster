@@ -5,14 +5,16 @@ import {
     useRef,
     useState,
 } from "react";
+import { Checkbox, InputNumber, Select } from "antd";
 import clsx from "clsx";
 
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Image } from "@/context/slideContext";
+import { Image } from "@/types";
 import { isInsideElement } from "@/utils/sizes";
 
 import * as s from "./image.module.scss";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 type ImageProps = {
     data: Image;
@@ -39,6 +41,7 @@ export function Image(props: ImageProps) {
 
     const outerRef = useRef<HTMLDivElement | null>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
+    const stylerRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
 
@@ -47,7 +50,7 @@ export function Image(props: ImageProps) {
     }, [data, selectedNode]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
-        if (!dotsRef.current) return;
+        if (!dotsRef.current || !stylerRef.current) return;
 
         const isDot = [...dotsRef.current.children].some(
             (dot: HTMLDivElement) =>
@@ -57,8 +60,13 @@ export function Image(props: ImageProps) {
                     dot.getBoundingClientRect()
                 )
         );
+        const isStyler = isInsideElement(
+            e.clientX,
+            e.clientY,
+            stylerRef.current.getBoundingClientRect()
+        );
 
-        if (isDot) {
+        if (isDot || isStyler) {
             e.preventDefault();
             return;
         }
@@ -147,6 +155,41 @@ export function Image(props: ImageProps) {
         window.addEventListener("mouseup", handleMouseUp);
     }
 
+    function handleBRNumberChange(value: number) {
+        const digits = value ? String(value) : "0";
+        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? "px";
+
+        updateNodeData({
+            ...data,
+            style: {
+                ...data.style,
+                borderRadius: digits + unit,
+            },
+        });
+    }
+
+    function handleBRUnitChange(unit: string) {
+        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? "0";
+
+        updateNodeData({
+            ...data,
+            style: {
+                ...data.style,
+                borderRadius: digits + unit,
+            },
+        });
+    }
+
+    function handleCoverChange(e: CheckboxChangeEvent) {
+        updateNodeData({
+            ...data,
+            style: {
+                ...data.style,
+                cover: e.target.checked,
+            },
+        });
+    }
+
     return (
         <div
             ref={outerRef}
@@ -159,13 +202,20 @@ export function Image(props: ImageProps) {
             }}
             className={clsx(s.root, {
                 [s._selected]: isSelected,
+                [s._cover]: data.style.cover,
             })}
+            onClick={() => setSelectedNode(data)}
             draggable
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
-            onClick={() => setSelectedNode(data)}
         >
-            <img className={s.image} src={data.src} />
+            <img
+                className={s.image}
+                style={{
+                    borderRadius: data.style.borderRadius,
+                }}
+                src={data.src}
+            />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
                 {resizeDots.map((resizeDot) => (
@@ -175,6 +225,26 @@ export function Image(props: ImageProps) {
                         onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
                     />
                 ))}
+            </div>
+
+            <div ref={stylerRef} className={s.styler}>
+                <InputNumber
+                    defaultValue={0}
+                    style={{ width: "66px" }}
+                    onChange={handleBRNumberChange}
+                />
+                <Select
+                    defaultValue="px"
+                    style={{ width: "60px" }}
+                    options={[
+                        { value: "px", label: "px" },
+                        { value: "%", label: "%" },
+                    ]}
+                    onChange={handleBRUnitChange}
+                />
+                <Checkbox onChange={handleCoverChange}>
+                    Пропорционально
+                </Checkbox>
             </div>
         </div>
     );

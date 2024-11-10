@@ -83,6 +83,10 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             },
             zIndex: zIndex.max + 1,
             src: "",
+            style: {
+                borderRadius: "0px",
+                cover: false,
+            },
         };
 
         const fileInput = document.createElement("input");
@@ -104,6 +108,21 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
                         const blob = new Blob([result], { type: e.type });
                         image.src = URL.createObjectURL(blob);
                     }
+
+                    const updatedZIndex = { ...zIndex, max: image.zIndex };
+                    setZIndex(updatedZIndex);
+                    const updatedNodes = [...nodes, image];
+                    setNodes(updatedNodes);
+                    updateSlide({
+                        ...currentSlide,
+                        nodes: updatedNodes,
+                        zIndex: updatedZIndex,
+                    });
+                    updateCurrentSlide({
+                        ...currentSlide,
+                        nodes: updatedNodes,
+                        zIndex: updatedZIndex,
+                    });
                 };
 
                 reader.readAsDataURL(file);
@@ -111,18 +130,6 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         });
 
         fileInput.click();
-
-        setNodes([...nodes, image]);
-        updateSlide({
-            ...currentSlide,
-            nodes,
-            zIndex,
-        });
-        updateCurrentSlide({
-            ...currentSlide,
-            nodes,
-            zIndex,
-        });
     }
 
     function updateNodeData(newData: Node) {
