@@ -12,8 +12,7 @@ import { useSlidesContext } from "@/hooks/useSlidesContext";
 
 
 export function Layout() {
-    const { slides, currentSlide, setCurrentSlide, addSlide,removeSlide, updateSlide, changeSlide } = useSlidesContext();
-    console.log({ currentSlide });
+    const { slides, currentSlide, addSlide,removeSlide, changeSlide } = useSlidesContext();
 
     // const addSlide = useCallback((
     //     id?: string,

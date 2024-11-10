@@ -1,36 +1,29 @@
 import { createContext, ReactNode, useState, useContext } from "react";
-import { nanoid } from "nanoid";
-import { SlideContextType } from "./slideContext";
+import { Slide } from '@/types';
+import { SlideFactory  } from '@/factories/slide';
 
 type SlidesContextType = {
-    slides: SlideContextType[];
-    currentSlide: SlideContextType;
-    setCurrentSlide: (currentSlide: SlideContextType) => void;
+    slides: Slide[];
+    currentSlide: Slide;
+    setCurrentSlide: (currentSlide: Slide) => void;
     currentSlideId: string | null;
     setCurrentSlideId: (id: string) => void;
     addSlide: () => void;
     removeSlide: (e, id: string) => void;
-    updateSlide: (updatedSlide: SlideContextType) => void;
-    updateCurrentSlide: (updatedSlide: SlideContextType) => void;
-    changeSlide: (slide: SlideContextType) => void;
+    updateSlide: (updatedSlide: Slide) => void;
+    updateCurrentSlide: (updatedSlide: Slide) => void;
+    changeSlide: (slide: Slide) => void;
 };
 
 export const SlidesContext = createContext<SlidesContextType | null>(null);
 
 export const SlidesContextProvider = ({ children }: { children: ReactNode }) => {
-    const [slides, setSlides] = useState<SlideContextType[]>([]);
+    const [slides, setSlides] = useState<Slide[]>([]);
     const [currentSlideId, setCurrentSlideId] = useState<string | null>(null);
-    const [currentSlide, setCurrentSlide] = useState<SlideContextType>(null);
+    const [currentSlide, setCurrentSlide] = useState<Slide>(null);
 
     function addSlide() {
-        const newSlide: SlideContextType = {
-            id: nanoid(),
-            preview: '',
-            nodes: [],
-            editorDimensions: { width: 0, height: 0 },
-            zIndex: { max: 0, min: 0 },
-            selectedNode: null,
-        };
+      const newSlide: Slide = SlideFactory.createSlide();
         setSlides((prev) => [...prev, newSlide]);
         setCurrentSlideId(newSlide.id);
         setCurrentSlide(newSlide);
@@ -43,17 +36,17 @@ export const SlidesContextProvider = ({ children }: { children: ReactNode }) => 
         }
     }
 
-    function updateSlide(updatedSlide: SlideContextType) {
+    function updateSlide(updatedSlide: Slide) {
         setSlides((prev) =>
             prev.map((slide) => (slide.id === updatedSlide.id ? updatedSlide : slide))
         );
     }
 
-    function updateCurrentSlide(updatedSlide: SlideContextType) {
+    function updateCurrentSlide(updatedSlide: Slide) {
         setCurrentSlide(updatedSlide);
     }
 
-    function changeSlide(slide: SlideContextType) {
+    function changeSlide(slide: Slide) {
         setCurrentSlide(slide);
     }
 
