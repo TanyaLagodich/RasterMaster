@@ -1,5 +1,4 @@
 import { FC, MouseEvent, RefObject } from "react";
-import { SlideContextType } from "@/context/slideContext";
 
 export type SlideOperation = (event: MouseEvent, id: string) => void;
 
