@@ -5,14 +5,12 @@ import SlideArea from "@/components/slide-area";
 import Notes from "@/components/notes";
 
 import * as s from "./styled.module.scss";
-import { useCallback, useState, MouseEvent, useRef } from "react";
-import { ICreateSlideOptions, ISlide, ISlideNew } from "@/entities/slides/types";
-import { v4 as uuidv4 } from 'uuid';
+import { useCallback } from "react";
 import { useSlidesContext } from "@/hooks/useSlidesContext";
 
 
 export function Layout() {
-    const { slides, currentSlide, addSlide,removeSlide, changeSlide } = useSlidesContext();
+    const { slides, currentSlide, addSlide,removeSlide, updateCurrentSlide } = useSlidesContext();
 
     // const addSlide = useCallback((
     //     id?: string,
@@ -116,7 +114,7 @@ export function Layout() {
                 <Sidebar
                     currentSlide={currentSlide}
                     slides={slides}
-                    changeSlide={changeSlide}
+                    changeSlide={updateCurrentSlide}
                     pushSlide={addSlide}
                     createSlide={addSlide}
                     removeSlide={removeSlide}
