@@ -40,7 +40,7 @@ export type Node = Text | Image;
 export interface Slide {
   id: string;
   preview: string,
-  nodes: Node[] | [],
+  nodes: Node[],
   editorDimensions: Dimensions,
   zIndex: ZIndex,
 }

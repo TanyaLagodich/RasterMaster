@@ -13,7 +13,7 @@ import { AddSlideCommand, RemoveSlideCommand, DuplicateSlideCommand } from "@/co
 import { SlideTypes, Slide } from '@/types';
 
 export function Layout() {
-  const { slides, currentSlide, changeSlide } = useSlidesContext();
+  const { slides, currentSlide, updateCurrentSlide } = useSlidesContext();
   const slidesContext = useSlidesContext();
     
   const addSlide = () => {
@@ -132,7 +132,7 @@ export function Layout() {
                 <Sidebar
                     currentSlide={currentSlide}
                     slides={slides}
-                    changeSlide={changeSlide}
+                    changeSlide={updateCurrentSlide}
                     pushSlide={addSlide}
                     createSlide={addSlide}
                     removeSlide={removeSlide}
