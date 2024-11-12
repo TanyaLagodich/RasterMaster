@@ -17,11 +17,6 @@ export const Slide: FC<ISlideProps> = ({
     const isBig = type === 'big';
     const isSmall = !isBig;
 
-    const className = [
-        s.root,
-        isBig ? s.big : s.small,
-    ].join(' ')
-
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
 
     const ref = useRef();

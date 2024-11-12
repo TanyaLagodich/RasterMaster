@@ -1,11 +1,13 @@
-import { memo, FC, RefObject } from "react";
+import { memo, FC } from "react";
 import * as s from "./styled.module.scss";
-import { ISlide, SlideOperation } from "@/entities/slides/types";
+import { ISlide, ISlideNew, SlideOperation } from "@/entities/slides/types";
 import {Typography} from 'antd'
+import { SlidePreview } from '@/components/slide/slide-preview';
 
 interface IProps {
-    slides: ISlide[];
-    changeSlide: (slide: ISlide) => void;
+    currentSlide: ISlideNew;
+    slides: ISlideNew[];
+    changeSlide: (slide: ISlideNew) => void;
     pushSlide: () => void;
     createSlide: SlideOperation;
     removeSlide: SlideOperation;
@@ -13,6 +15,7 @@ interface IProps {
 }
 
 const Sidebar: FC<IProps> = ({
+    currentSlide,
     slides,
     changeSlide,
     createSlide,
@@ -23,21 +26,18 @@ const Sidebar: FC<IProps> = ({
     return (
         <aside className={s.root}>
             {slides.map((slide, index) => {
-                const {Component: Slide, id} = slide;
+                const {preview, nodes, id} = slide;
 
                 return (
-                    <div 
+                    <div
                         className={s.slideWrapper}
                         key={id}
                         onClick={() => changeSlide(slide)}
                     >
-                        <Slide
-                            type="small"
-                            id={id}
-                            createSlide={createSlide}
-                            removeSlide={removeSlide}
-                            duplicateSlide={duplicateSlide}
-                            index={index}
+                        {slide.id}
+                        <SlidePreview
+                            isActive={currentSlide.id === slide.id}
+                            slide={slide}
                         />
                     </div>
                 )

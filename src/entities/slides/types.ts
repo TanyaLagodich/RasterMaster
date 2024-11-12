@@ -9,7 +9,7 @@ export interface ISlideProps {
     createSlide?: SlideOperation;
     removeSlide?: SlideOperation;
     duplicateSlide?: SlideOperation;
-    changeSlide?: (slide: ISlide) => void;
+    changeSlide?: (slide: ISlideNew) => void;
 }
 
 export interface ISlide {
@@ -26,3 +26,10 @@ export interface IOptionSlideOperations {
     label: string;
     method?: SlideOperation;
 }
+
+export interface ISlideNew {
+    id: string;
+    preview: string;
+    nodes: any[],
+}
+

@@ -1,50 +1,11 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
+import { useSlidesContext } from "@/hooks/useSlidesContext";
+import type { Slide, Dimensions, Image, Text } from '@/types';
+import { ZIndex, NodeType, Node } from '@/types';
 
-export enum NodeType {
-    TEXT = "text",
-    IMAGE = "image",
-}
-
-type ZIndex = {
-    max: number;
-    min: number;
-};
-
-type Position = {
-    x: number;
-    y: number;
-};
-
-type Dimensions = {
-    width: number;
-    height: number;
-};
-
-type BaseNode = {
-    id: string;
-    positionPercent: Position;
-    dimensionsPercent: Dimensions;
-    zIndex: number;
-};
-
-export type Text = {
-    type: NodeType.TEXT;
-    value: string;
-} & BaseNode;
-
-export type Image = {
-    type: NodeType.IMAGE;
-    src: string;
-} & BaseNode;
-
-export type Node = Text | Image;
-
-type SlideContextType = {
-    editorDimensions: Dimensions;
-    selectedNode: Node | null;
-    nodes: Node[];
-    zIndex: ZIndex;
+interface SlideContext extends Slide {
+   selectedNode: Node | null;
 };
 
 type SlideActionsContextType = {
@@ -53,20 +14,21 @@ type SlideActionsContextType = {
     addText: () => void;
     updateNodeData: (newData: Node) => void;
     addImage: (image: Image) => void;
+    updatePreview: (preview: string) => void;
 };
 
-export const SlideContext = createContext<SlideContextType | null>(null);
+export const SlideContext = createContext<SlideContext | null>(null);
 export const SlideActionsContext =
     createContext<SlideActionsContextType | null>(null);
 
 export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
-    const [editorDimensions, setEditorDimensions] = useState<Dimensions>({
-        width: 0,
-        height: 0,
-    });
+    const { currentSlide, updateSlide, updateCurrentSlide } = useSlidesContext();
+    const [editorDimensions, setEditorDimensions] = useState<Dimensions>(currentSlide?.editorDimensions);
     const [currNode, setCurrNode] = useState<Node | null>(null);
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [zIndex, setZIndex] = useState<ZIndex>({ max: 0, min: 0 });
+    const [nodes, setNodes] = useState<Node[]>(currentSlide?.nodes || []);
+    const [zIndex, setZIndex] = useState<ZIndex>(currentSlide?.zIndex || { min: 0, max: 100 });
+    const [preview] = useState<string>(currentSlide?.preview || '');
+    const [id] = useState<string>(currentSlide?.id || nanoid());
 
     function setSelectedNode(node: Node | null) {
         setCurrNode(node);
@@ -90,12 +52,30 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
 
         setZIndex((prevZIndex) => ({ ...prevZIndex, max: text.zIndex }));
         setNodes((prevNodes) => [...prevNodes, text]);
+        updateSlide({
+            ...currentSlide,
+            nodes,
+            zIndex,
+        });
+        updateCurrentSlide({
+            ...currentSlide,
+            nodes,
+            zIndex,
+        });
     }
 
     function updateNodeData(newData: Node) {
         setNodes((prevNodes) =>
             prevNodes.map((n) => (n.id === newData.id ? newData : n))
         );
+        updateSlide({
+            ...currentSlide,
+            nodes,
+        })
+        updateCurrentSlide({
+            ...currentSlide,
+            nodes,
+        });
     }
 
     function addImage(image: Image) {
@@ -103,8 +83,8 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const values = useMemo(
-        () => ({ editorDimensions, selectedNode: currNode, nodes, zIndex }),
-        [editorDimensions, currNode, nodes, zIndex]
+        () => ({ editorDimensions, selectedNode: currNode, nodes, zIndex, preview, id, currentSlide }),
+        [editorDimensions, currNode, nodes, zIndex, preview, id, currentSlide]
     );
 
     const actions = useMemo(
@@ -114,6 +94,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             addText,
             updateNodeData,
             addImage,
+            updatePreview,
         }),
         [
             setEditorDimensions,
@@ -121,8 +102,16 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             addText,
             updateNodeData,
             addImage,
+            updatePreview,
         ]
     );
+
+    function updatePreview(dataUrl: string) {
+        updateCurrentSlide({
+            ...currentSlide,
+            preview: dataUrl,
+        });
+    }
 
     return (
         <SlideContext.Provider value={values}>

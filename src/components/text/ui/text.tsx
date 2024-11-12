@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Text } from "@/context/slideContext";
+import { Text } from '@/types';
 import { isInsideElement } from "@/utils/sizes";
 
 import * as s from "./text.module.scss";
