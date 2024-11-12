@@ -3,64 +3,75 @@ import ToolsHeader from "@/components/header/tools-header";
 import Sidebar from "@/components/sidebar";
 import SlideArea from "@/components/slide-area";
 import Notes from "@/components/notes";
-import {Slide} from "@/components/slide/slide";
-
-import * as s from "./styled.module.scss";
-import { useCallback, useState, MouseEvent, useRef } from "react";
+import { Slide } from "@/components/slide/slide";
+import { useCallback, useState, MouseEvent } from "react";
 import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
+import { SlideFactory } from "../../entities/slides/utils";
+import { Node, NodeType } from "../../context/slideContext";
+import * as s from "./styled.module.scss";
+import { Template } from "@/entities/templates/types";
+
+const initialSlideContent = SlideFactory.createSlide();
 
 const initialSlide: ISlide = {
-    Component: Slide,
+    content: initialSlideContent,
     id: uuidv4(),
 }
 
-export function Layout() {
+export function App() {
     const [slides, setSlides] = useState<ISlide[]>([initialSlide]);
     const [currentSlide, setCurrentSlide] = useState<ISlide | null>(initialSlide);
 
-    const addSlide = useCallback((
-        id?: string,
-        options?: ICreateSlideOptions,
-    ) => {
-        const {duplicate} = options ?? {};
+    const createSlide = useCallback((event: MouseEvent, id: string, template: Template = 'Default') => {
+        event.stopPropagation();
 
         const newSlide: ISlide = {
-            Component: duplicate ? currentSlide.Component : Slide,
+            content: SlideFactory.createSlide(template),
             id: uuidv4(),
         }
 
         let prevSlideIndex: number;
 
-        if (!id) {
-            prevSlideIndex = slides.length;
-        } else {
-            // TODO: Попробовать оптимизировать до константной сложности
-            slides.forEach((slide, index) => {
-                if (slide.id === id) {
-                    prevSlideIndex = index;
-                    return;
-                }
-            });
-        }
-
+        slides.forEach((slide, index) => {
+            if (slide.id === id) {
+                prevSlideIndex = index;
+                return;
+            }
+        });
         setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
         setCurrentSlide(newSlide);
     }, [slides])
 
-    const createSlide = useCallback((event: MouseEvent, id: string) => {
-        event.stopPropagation();
-        addSlide(id);
-    }, [addSlide])
-
     const duplicateSlide = useCallback((event: MouseEvent, id: string) => {
         event.stopPropagation();
-        addSlide(id, {duplicate: true});
-    }, [addSlide])
 
-    const pushSlide = useCallback(() => {
-        addSlide();
-    }, [addSlide])
+        let prevSlideIndex: number;
+
+        slides.forEach((slide, index) => {
+            if (slide.id === id) {
+                prevSlideIndex = index;
+                return;
+            }
+        });
+
+        const prevSlide = slides[prevSlideIndex];
+        const newSlide: ISlide = {
+            content: [...prevSlide.content],
+            id: uuidv4(),
+        }
+        setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
+        setCurrentSlide(newSlide);
+    }, [slides])
+
+    const pushSlide = useCallback((template: Template = 'Default') => {
+        const newSlide: ISlide = {
+            content: SlideFactory.createSlide(template),
+            id: uuidv4(),
+        }
+        setSlides(prevSlides => [...prevSlides, newSlide]);
+        setCurrentSlide(newSlide);
+    }, [])
 
     const setNewCurrentSlide = useCallback((id: string) => {
         if (currentSlide.id !== id) {
@@ -102,9 +113,27 @@ export function Layout() {
         setCurrentSlide(slide);
     }, [])
 
-    const editSlide = useCallback((id: string) => {
+    const addText = useCallback((zIndex: number): Node => {
+        return {
+            id: uuidv4(),
+            type: NodeType.TEXT,
+            positionPercent: {x: 10, y: 10},
+            dimensionsPercent: {width: 30, height: 20},
+            zIndex: zIndex + 1,
+            value: '',
+        };
+    }, []);
 
-    }, [])
+    const editSlide = useCallback((id: string) => {
+        const slideToEdit = slides.find(slide => slide.id === id);
+
+        if (!slideToEdit) return;
+
+        const textNode = addText(slideToEdit.content[0].zIndex)
+        slideToEdit.content.push(textNode);
+
+        setSlides(prev => prev.map(slide => slide.id === id ? slideToEdit : slide))
+    }, [slides, addText])
 
     // Handlers for grag'n'drop
     const touchSlide = useCallback(() => {}, [])
@@ -115,7 +144,7 @@ export function Layout() {
         <>
             <Header />
 
-            <ToolsHeader />
+            <ToolsHeader addText={addText} pushSlide={pushSlide}/>
 
             <div className={s.body}>
                 <Sidebar

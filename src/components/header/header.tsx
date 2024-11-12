@@ -27,7 +27,6 @@ export function Header() {
         { key: 'figure', label: 'Фигура' },
     ];
 
-
     return (
         <nav className={s.root}>
             <ul className={s.tabs}>

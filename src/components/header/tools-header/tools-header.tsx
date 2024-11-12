@@ -7,8 +7,14 @@ import { AnimationTools } from "@/components/tools-rows/animation-tools";
 
 import * as s from "./styled.module.scss";
 import { memo } from "react";
+import { Node } from "@/context/slideContext";
 
-function ToolsHeader() {
+interface IToolsProps {
+    addText: (zIndex: number) => Node;
+    pushSlide: Function;
+}
+
+const ToolsHeader = ({ pushSlide }: IToolsProps) => {
     const { activeTab } = useAppContext();
 
     return (
@@ -18,7 +24,7 @@ function ToolsHeader() {
             ) : activeTab === TAB.ANIMATION ? (
                 <AnimationTools />
             ) : (
-                <DecorationTools />
+                <DecorationTools pushSlide={pushSlide}/>
             )}
         </div>
     );

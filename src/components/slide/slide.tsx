@@ -5,24 +5,24 @@ import SlideOperations from "../slide-operations";
 import { SlideEditor } from "./slide-editor";
 import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
+import EditIcon from '@/assets/edittt.svg';
 
 export const Slide: FC<ISlideProps> = ({
-    type,
+    view,
     id,
+    nodes = [],
     index,
     createSlide,
     removeSlide,
     duplicateSlide,
 }) => {
-    const isBig = type === 'big';
+    const isBig = view === 'big';
     const isSmall = !isBig;
 
-    const className = [
-        s.root,
-        isBig ? s.big : s.small,
-    ].join(' ')
-
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
+    const [areTemplatesShown, setAreTemplatesShown] = useState(false);
+
+    console.log(areTemplatesShown)
 
     const ref = useRef();
 
@@ -32,14 +32,15 @@ export const Slide: FC<ISlideProps> = ({
     };
 
     const closeOptions = () => {
+        console.log('call closeOptions');
         setAreOptionsOpen(false);
     };
 
     const slideOperationsOptions: IOptionSlideOperations[] = [
-        { key: "add", label: "Создать", method: createSlide },
-        { key: "duplicate", label: "Дублировать", method: duplicateSlide },
-        { key: "remove", label: "Удалить", method: removeSlide },
-        { key: "templates", label: "Макеты" },
+        { key: "add", label: "Создать", method: createSlide, close: true },
+        { key: "duplicate", label: "Дублировать", method: duplicateSlide, close: true },
+        { key: "remove", label: "Удалить", method: removeSlide, close: true },
+        { key: "templates", label: "Макеты", method: () => setAreTemplatesShown(prev => !prev), close: false },
     ];
 
     useOutsideClick(
@@ -48,40 +49,25 @@ export const Slide: FC<ISlideProps> = ({
         {isCancelled: !areOptionsOpen},
     )
 
-    useEffect(() => {
-        if (!areOptionsOpen) return;
-
-        const closeOutside = (event) => {
-            if (event.target === ref.current) {
-                closeOptions();
-            }
-        };
-
-        document.addEventListener("click", closeOutside);
-
-        return () => document.removeEventListener("click", closeOutside);
-    }, []);
-
     return (
         <div
             className={clsx(s.root, {
-            [s.big]: type === "big",
-            [s.small]: type === "small",
-        })}
-            ref={ref}
+                [s.big]: view === "big",
+                [s.small]: view === "small",
+            })}
         >
             {isSmall &&
                 <div className={s.paranja} ref={ref}/>
             }
 
             {/* На время разработки */}
-            <p>{id.slice(0, 5)}</p>
+            {/* <p style={{zIndex: 1000}}>{id.slice(0, 5)}</p> */}
 
             {isSmall &&
                 // TODO: Найти SVG-иконку три точки
                 <p
                     className={s.settings}
-                    style={{ fontSize: 20 }}
+                    style={{ fontSize: 20, zIndex: 100 }}
                     onClick={toggleOptions}
                 >
                     ...
@@ -89,20 +75,20 @@ export const Slide: FC<ISlideProps> = ({
             }
 
             {areOptionsOpen && isSmall &&
-                <div ref={ref}>
-                    <SlideOperations
-                        options={slideOperationsOptions}
-                        id={id}
-                        onClose={closeOptions}
-                    />
-                </div>
+                <SlideOperations
+                    options={slideOperationsOptions}
+                    id={id}
+                    onClose={closeOptions}
+                    areTemplatesShown={areTemplatesShown}
+                    createSlide={createSlide}
+                />
             }
 
-            <SlideEditor />
+            <SlideEditor nodes={nodes} isEditable={view === 'big'} />
 
-            {isBig &&
+            {/* {isBig &&
                 <p className={s.page}>{(index ?? 0) + 1}</p>
-            }
+            } */}
         </div>
     );
 };

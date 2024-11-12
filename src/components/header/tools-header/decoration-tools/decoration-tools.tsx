@@ -4,8 +4,7 @@ import { BackgroundPicker } from './background-piker';
 import { ThemeSelect } from './theme-select';
 import { LayoutSelect } from './layout-select';
 
-
-export function DecorationTools() {
+export function DecorationTools({pushSlide}) {
     return (
         <div style={{ padding: '10px 20px', backgroundColor: '#f9f9f9' }}>
             <Row gutter={16} align="middle">
@@ -26,7 +25,7 @@ export function DecorationTools() {
                 {/* Макет */}
                 <Col>
                     <Space>
-                        <LayoutSelect />
+                        <LayoutSelect pushSlide={pushSlide} />
                     </Space>
                 </Col>
 

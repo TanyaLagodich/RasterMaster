@@ -1,5 +1,5 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
-import { nanoid } from "nanoid";
+import { createContext, CSSProperties, ReactNode, useMemo, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export enum NodeType {
     TEXT = "text",
@@ -21,24 +21,15 @@ type Dimensions = {
     height: number;
 };
 
-type BaseNode = {
+export type Node = {
     id: string;
+    type: NodeType;
     positionPercent: Position;
     dimensionsPercent: Dimensions;
     zIndex: number;
-};
-
-export type Text = {
-    type: NodeType.TEXT;
     value: string;
-} & BaseNode;
-
-export type Image = {
-    type: NodeType.IMAGE;
-    src: string;
-} & BaseNode;
-
-export type Node = Text | Image;
+    style?: CSSProperties
+};
 
 type SlideContextType = {
     editorDimensions: Dimensions;
@@ -47,12 +38,20 @@ type SlideContextType = {
     zIndex: ZIndex;
 };
 
+export interface ISlideContent {
+    id: string;
+    preview: string,
+    nodes: Node[] | [],
+    editorDimensions: Dimensions,
+    zIndex: ZIndex,
+  }
+
 type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
     addText: () => void;
     updateNodeData: (newData: Node) => void;
-    addImage: (image: Image) => void;
+    addImage: (image: Node) => void;
 };
 
 export const SlideContext = createContext<SlideContextType | null>(null);
@@ -73,8 +72,8 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     function addText() {
-        const text: Text = {
-            id: nanoid(),
+        const text: Node = {
+            id: uuidv4(),
             type: NodeType.TEXT,
             positionPercent: {
                 x: 10,
@@ -98,8 +97,8 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         );
     }
 
-    function addImage(image: Image) {
-        setNodes([...nodes, image]);
+    function addImage(image: Node) {
+        setNodes(prevNodes => [...prevNodes, image]);
     }
 
     const values = useMemo(

@@ -1,15 +1,17 @@
-import { memo, FC, RefObject } from "react";
+import { memo, FC, MouseEvent } from "react";
 import * as s from "./styled.module.scss";
-import { ISlide, SlideOperation } from "@/entities/slides/types";
+import { ISlide } from "@/entities/slides/types";
 import {Typography} from 'antd'
+import { Template } from "@/entities/templates/types";
+import { Slide } from "../slide";
 
 interface IProps {
     slides: ISlide[];
     changeSlide: (slide: ISlide) => void;
-    pushSlide: () => void;
-    createSlide: SlideOperation;
-    removeSlide: SlideOperation;
-    duplicateSlide: SlideOperation;
+    pushSlide: (template: Template) => void;
+    createSlide: (event: MouseEvent, id: string, template: Template) => void;
+    removeSlide: (event: MouseEvent, id: string) => void;
+    duplicateSlide:(event: MouseEvent, id: string) => void;
 }
 
 const Sidebar: FC<IProps> = ({
@@ -23,7 +25,7 @@ const Sidebar: FC<IProps> = ({
     return (
         <aside className={s.root}>
             {slides.map((slide, index) => {
-                const {Component: Slide, id} = slide;
+                const {id, content: nodes} = slide;
 
                 return (
                     <div 
@@ -32,8 +34,10 @@ const Sidebar: FC<IProps> = ({
                         onClick={() => changeSlide(slide)}
                     >
                         <Slide
-                            type="small"
+                            view="small"
                             id={id}
+                            nodes={nodes}
+                            template="Default"
                             createSlide={createSlide}
                             removeSlide={removeSlide}
                             duplicateSlide={duplicateSlide}
@@ -43,7 +47,7 @@ const Sidebar: FC<IProps> = ({
                 )
             })}
 
-            <Typography className={s.text} onClick={pushSlide}>Новый слайд</Typography>
+            <Typography className={s.text} onClick={() => pushSlide('Default')}>Новый слайд</Typography>
         </aside>
     );
 }

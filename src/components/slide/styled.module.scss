@@ -1,11 +1,13 @@
 .root {
-    position: relative;
+    // display: flex;
+    border: .1rem solid var(--slide-border);
+    border-radius: 5px;
+    background: var(--slide-background);
 }
 
 .big {
-    width: 80%;
-    aspect-ratio: 500/270;
-    margin: 10px 0;
+    height: 90%;
+    width: 90%;
 }
 
 .small {
@@ -13,16 +15,8 @@
     width: 100%;
 }
 
-// remove later
-.id {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    z-index: 10;
-}
-
 .settings {
-    position: absolute;
+    position: relative;
     top: 75%;
     left: 65%;
     height: 6px;
@@ -30,9 +24,8 @@
 }
 
 .page {
-    position: absolute;
-    bottom: 3%;
-    left: 3%;
+    position: relative;
+    top: 95%;
 }
 
 .paranja {

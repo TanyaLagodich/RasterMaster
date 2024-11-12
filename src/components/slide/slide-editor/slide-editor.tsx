@@ -1,15 +1,15 @@
-import { DragEvent as IDragEvent, useEffect, useRef, useState } from "react";
-
-import { useSlideContext } from "@/hooks/useSlideContext";
+import { DragEvent as IDragEvent, useEffect, useRef } from "react";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Node as SlideNode, NodeType } from "@/context/slideContext";
-
-import { Text } from "@/components/text";
-
+import { Node } from "@/context/slideContext";
+import { NodeFactory } from "@/entities/templates/utils";
 import * as s from "./slide-editor.module.scss";
 
-export function SlideEditor() {
-    const { nodes } = useSlideContext();
+interface IProps {
+    nodes: Node[];
+    isEditable: boolean;
+}
+
+export const SlideEditor = ({ nodes, isEditable }: IProps) => {
     const { setEditorDimensions, setSelectedNode, updateNodeData } =
         useSlideActionsContext();
 
@@ -48,13 +48,16 @@ export function SlideEditor() {
     }, []);
 
     function dragStartHandler(e: IDragEvent<HTMLDivElement>) {
+        if (!isEditable) return;
+
         const nodeRect = e.currentTarget.getBoundingClientRect();
         dragOffsetRef.current.x = e.clientX - nodeRect.left;
         dragOffsetRef.current.y = e.clientY - nodeRect.top;
     }
 
-    function dragEndHandler(e: IDragEvent<HTMLDivElement>, node: SlideNode) {
+    function dragEndHandler(e: IDragEvent<HTMLDivElement>, node: Node) {
         if (!editorRef.current) return;
+        if (!isEditable) return;
 
         const editorRect = editorRef.current.getBoundingClientRect();
         const newX = e.clientX - editorRect.left - dragOffsetRef.current.x;
@@ -72,19 +75,12 @@ export function SlideEditor() {
     return (
         <div ref={editorRef} className={s.root}>
             {nodes.map((node) =>
-                node.type === NodeType.TEXT ? (
-                    <Text
-                        data={node}
-                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
-                            dragStartHandler(e)
-                        }
-                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
-                        }}
-                    />
-                ) : (
-                    <div></div>
-                )
+                NodeFactory.createNode({
+                    node,
+                    onDragStart: (e: IDragEvent<HTMLDivElement>) => dragStartHandler(e),
+                    onDragEnd: (e: IDragEvent<HTMLDivElement>) => dragEndHandler(e, node),
+                    isEditable,
+                })
             )}
         </div>
     );

@@ -1,38 +1,32 @@
 import { useState } from 'react';
 import { Select, Row, Col, Button } from 'antd';
+import { templatesDict } from '@/entities/templates/utils';
+import { Template } from '@/entities/templates/types';
 
 const { Option } = Select;
 
-export function LayoutSelect() {
-    const [selectedLayout, setSelectedLayout] = useState<string>('Макет 1');
+interface IProps {
+    pushSlide: (template: Template) => void;
+}
 
-    const handleLayoutSelect = (layout: string) => {
-        setSelectedLayout(layout);
+export const LayoutSelect = ({pushSlide}: IProps) => {
+    const [selectedLayout, setSelectedLayout] = useState<string>('Создать слайд');
+
+    const handleLayoutSelect = (layout: Template) => {
+        pushSlide(layout);
+        setSelectedLayout(templatesDict[layout]);
     };
 
     const dropdownRender = () => (
         <div style={{ padding: '10px' }}>
-            <Row gutter={[8, 8]}>
-                <Col span={12}>
-                    <Button block onClick={() => handleLayoutSelect('Макет 1')}>
-                        Макет 1
-                    </Button>
-                </Col>
-                <Col span={12}>
-                    <Button block onClick={() => handleLayoutSelect('Макет 2')}>
-                        Макет 2
-                    </Button>
-                </Col>
-                <Col span={12}>
-                    <Button block onClick={() => handleLayoutSelect('Макет 3')}>
-                        Макет 3
-                    </Button>
-                </Col>
-                <Col span={12}>
-                    <Button block onClick={() => handleLayoutSelect('Макет 4')}>
-                        Макет 4
-                    </Button>
-                </Col>
+            <Row gutter={[16, 16]}>
+                {Object.entries(templatesDict).map(([template, name]) => (
+                    <Col span={24} key={template}>
+                        <Button block onClick={() => handleLayoutSelect(template as Template)}>
+                            {name}
+                        </Button>
+                    </Col>
+                ))}
             </Row>
         </div>
     );
