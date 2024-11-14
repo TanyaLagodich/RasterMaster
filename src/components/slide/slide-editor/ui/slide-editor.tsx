@@ -1,19 +1,19 @@
-import { DragEvent as IDragEvent, useEffect, useRef, useState } from "react";
+import { DragEvent as IDragEvent, useEffect, useRef } from "react";
 import { toPng } from "html-to-image";
-
 import { useSlideContext } from "@/hooks/useSlideContext";
-import { useSlidesContext } from "@/hooks/useSlidesContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 import { Node as SlideNode, NodeType } from '@/types';
 
 import { Text } from "@/components/text";
 
 import * as s from "./slide-editor.module.scss";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 export function SlideEditor() {
-    const { currentSlide, updateSlide } = useSlidesContext();
-    const { nodes } = useSlideContext();
-    const { setEditorDimensions, setSelectedNode, updateNodeData, updatePreview} =
+  const { currentSlide } = useSlideMediator();
+  const { nodes } = currentSlide;
+  const { addNode } = useSlideContext();
+    const { setEditorDimensions, setSelectedNode, updateNode, updatePreview} =
         useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
@@ -71,7 +71,7 @@ export function SlideEditor() {
         const newXPercent = (newX / editorRect.width) * 100;
         const newYPercent = (newY / editorRect.height) * 100;
 
-        updateNodeData({
+        updateNode({
             ...node,
             positionPercent: { x: newXPercent, y: newYPercent },
         });
@@ -86,16 +86,19 @@ export function SlideEditor() {
     }
 
     return (
+      <>
+      <button onClick={() => addNode(NodeType.TEXT)}>Add Text</button>
         <div ref={editorRef} className={s.root}>
             {nodes.map((node) =>
                 node.type === NodeType.TEXT ? (
                     <Text
+                        key={node.id}
                         data={node}
                         onDragStart={(e: IDragEvent<HTMLDivElement>) =>
-                            dragStartHandler(e)
+                        dragStartHandler(e)
                         }
                         onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
+                        dragEndHandler(e, node);
                         }}
                     />
                 ) : (
@@ -103,5 +106,6 @@ export function SlideEditor() {
                 )
             )}
         </div>
+      </>
     );
 }

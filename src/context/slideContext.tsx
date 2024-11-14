@@ -1,10 +1,11 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
-import { useSlidesContext } from "@/hooks/useSlidesContext";
+import { NodeStrategyFactory } from '@/factories/node-strategy';
 import type { Slide, Dimensions, Image, Text } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
+import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
 
-interface SlideContext extends Slide {
+interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
    selectedNode: Node | null;
 };
 
@@ -12,7 +13,7 @@ type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
     addText: () => void;
-    updateNodeData: (newData: Node) => void;
+    updateNode: (newData: Node) => void;
     addImage: (image: Image) => void;
     updatePreview: (preview: string) => void;
 };
@@ -22,7 +23,7 @@ export const SlideActionsContext =
     createContext<SlideActionsContextType | null>(null);
 
 export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
-    const { currentSlide, updateSlide, updateCurrentSlide } = useSlidesContext();
+    const { currentSlide, mediator } = useSlideMediator();
     const [editorDimensions, setEditorDimensions] = useState<Dimensions>(currentSlide?.editorDimensions);
     const [currNode, setCurrNode] = useState<Node | null>(null);
     const [nodes, setNodes] = useState<Node[]>(currentSlide?.nodes || []);
@@ -33,49 +34,61 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     function setSelectedNode(node: Node | null) {
         setCurrNode(node);
     }
+    
+    function addNode(type: NodeType): Node {
+      const newNode = currentSlide.addNode(type);
+      mediator.editCurrentSlide(currentSlide);
+      return newNode;
+          // const strategy = NodeStrategyFactory.createStrategy(type);
+          // const newNode = strategy.addNode();
+
+          // setZIndex((prevZIndex) => ({ ...prevZIndex, max: newNode.zIndex }));
+          // setNodes((prevNodes) => [...prevNodes, newNode]);
+          // mediator.editCurrentSlide({
+          //   ...currentSlide,
+          //   nodes: [...currentSlide.nodes, newNode],
+          // });
+      }
 
     function addText() {
-        const text: Text = {
-            id: nanoid(),
-            type: NodeType.TEXT,
-            positionPercent: {
-                x: 10,
-                y: 10,
-            },
-            dimensionsPercent: {
-                width: 30,
-                height: 20,
-            },
-            zIndex: zIndex.max + 1,
-            value: "",
-        };
+      // const text = NodeFactory.createNode(NodeType.TEXT);
+        // const text: Text = {
+        //     id: nanoid(),
+        //     type: NodeType.TEXT,
+        //     positionPercent: {
+        //         x: 10,
+        //         y: 10,
+        //     },
+        //     dimensionsPercent: {
+        //         width: 30,
+        //         height: 20,
+        //     },
+        //     zIndex: zIndex.max + 1,
+        //     value: "",
+        // };
+        // 
+        // console.log(text);
 
-        setZIndex((prevZIndex) => ({ ...prevZIndex, max: text.zIndex }));
-        setNodes((prevNodes) => [...prevNodes, text]);
-        updateSlide({
-            ...currentSlide,
-            nodes,
-            zIndex,
-        });
-        updateCurrentSlide({
-            ...currentSlide,
-            nodes,
-            zIndex,
-        });
+        // setZIndex((prevZIndex) => ({ ...prevZIndex, max: text.zIndex }));
+        // setNodes((prevNodes) => [...prevNodes, text]);
+        // updateSlide({
+        //     ...currentSlide,
+        //     nodes,
+        //     zIndex,
+        // });
+        // updateCurrentSlide({
+        //     ...currentSlide,
+        //     nodes,
+        //     zIndex,
+        // });
     }
 
-    function updateNodeData(newData: Node) {
+    function updateNode(newData: Node) {
+      currentSlide.updateNode(newData);
         setNodes((prevNodes) =>
             prevNodes.map((n) => (n.id === newData.id ? newData : n))
         );
-        updateSlide({
-            ...currentSlide,
-            nodes,
-        })
-        updateCurrentSlide({
-            ...currentSlide,
-            nodes,
-        });
+        mediator.editCurrentSlide(currentSlide);
     }
 
     function addImage(image: Image) {
@@ -83,8 +96,30 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const values = useMemo(
-        () => ({ editorDimensions, selectedNode: currNode, nodes, zIndex, preview, id, currentSlide }),
-        [editorDimensions, currNode, nodes, zIndex, preview, id, currentSlide]
+        () => ({
+            editorDimensions,
+            selectedNode: currNode,
+            nodes,
+            zIndex,
+            preview,
+            id,
+            currentSlide,
+            addNode,
+            updateNode,
+            updatePreview,
+        }),
+        [
+            editorDimensions,
+            currNode,
+            nodes,
+            zIndex,
+            preview,
+            id,
+            currentSlide,
+            addNode,
+            updateNode,
+            updatePreview,
+        ]
     );
 
     const actions = useMemo(
@@ -92,7 +127,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             setEditorDimensions,
             setSelectedNode,
             addText,
-            updateNodeData,
+            updateNode,
             addImage,
             updatePreview,
         }),
@@ -100,17 +135,18 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             setEditorDimensions,
             setSelectedNode,
             addText,
-            updateNodeData,
+            updateNode,
             addImage,
             updatePreview,
         ]
     );
 
-    function updatePreview(dataUrl: string) {
-        updateCurrentSlide({
+    function updatePreview(preview: string) {
+        currentSlide.update({
             ...currentSlide,
-            preview: dataUrl,
+            preview,
         });
+        mediator.editCurrentSlide(currentSlide);
     }
 
     return (

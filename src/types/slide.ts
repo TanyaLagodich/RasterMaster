@@ -43,6 +43,10 @@ export interface Slide {
   nodes: Node[] | [],
   editorDimensions: Dimensions,
   zIndex: ZIndex,
+  addNode: (type: NodeType) => Node;
+  updateNode: (node: Node) => void;
+  update: (newData: Partial<Slide>) => void;
+  clone: () => Slide;
 }
 
 export enum SlideTypes {

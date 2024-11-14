@@ -1,26 +1,23 @@
-import { ISlideNew } from "@/entities/slides/types";
 import * as s from "./styled.module.scss";
 import { memo, FC } from "react";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { Slide } from '@/components/slide';
 
-interface IProps {
-    slide: ISlideNew | null;
-}
 
-const SlideArea: FC<IProps> = ({slide}) => {
+const SlideArea: FC = () => {
+  const { currentSlide } = useSlideMediator();
 
-    if (!slide) {
+    if (!currentSlide) {
         return null;
     }
 
     return (
         <div className={s.root}>
-            {!!slide &&
-                <Slide
-                    type="big"
-                    id={slide.id}
-                />
-            }
+          {currentSlide.id}
+            {/* <Slide
+                type="big"
+                id={currentSlide.id}
+            /> */}
         </div>
     )
 }
