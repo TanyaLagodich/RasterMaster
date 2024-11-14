@@ -12,7 +12,6 @@ interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
 type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
-    addText: () => void;
     updateNode: (newData: Node) => void;
     addImage: (image: Image) => void;
     updatePreview: (preview: string) => void;
@@ -49,39 +48,6 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
           //   nodes: [...currentSlide.nodes, newNode],
           // });
       }
-
-    function addText() {
-      // const text = NodeFactory.createNode(NodeType.TEXT);
-        // const text: Text = {
-        //     id: nanoid(),
-        //     type: NodeType.TEXT,
-        //     positionPercent: {
-        //         x: 10,
-        //         y: 10,
-        //     },
-        //     dimensionsPercent: {
-        //         width: 30,
-        //         height: 20,
-        //     },
-        //     zIndex: zIndex.max + 1,
-        //     value: "",
-        // };
-        // 
-        // console.log(text);
-
-        // setZIndex((prevZIndex) => ({ ...prevZIndex, max: text.zIndex }));
-        // setNodes((prevNodes) => [...prevNodes, text]);
-        // updateSlide({
-        //     ...currentSlide,
-        //     nodes,
-        //     zIndex,
-        // });
-        // updateCurrentSlide({
-        //     ...currentSlide,
-        //     nodes,
-        //     zIndex,
-        // });
-    }
 
     function updateNode(newData: Node) {
       currentSlide.updateNode(newData);
@@ -126,7 +92,6 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         () => ({
             setEditorDimensions,
             setSelectedNode,
-            addText,
             updateNode,
             addImage,
             updatePreview,
@@ -134,7 +99,6 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         [
             setEditorDimensions,
             setSelectedNode,
-            addText,
             updateNode,
             addImage,
             updatePreview,

@@ -24,7 +24,7 @@ export function SlidePreview ({
     {
       key: 3,
       label: 'Удалить',
-      // onClick: (slideId: string) => mediator.deleteSlide(slideId),
+      onClick: () => mediator.deleteSlide(slide.id),
     },
   ];
   

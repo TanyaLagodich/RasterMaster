@@ -12,7 +12,6 @@ import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 export function SlideEditor() {
   const { currentSlide } = useSlideMediator();
   const { nodes } = currentSlide;
-  const { addNode } = useSlideContext();
     const { setEditorDimensions, setSelectedNode, updateNode, updatePreview} =
         useSlideActionsContext();
 
@@ -86,8 +85,6 @@ export function SlideEditor() {
     }
 
     return (
-      <>
-      <button onClick={() => addNode(NodeType.TEXT)}>Add Text</button>
         <div ref={editorRef} className={s.root}>
             {nodes.map((node) =>
                 node.type === NodeType.TEXT ? (
@@ -106,6 +103,5 @@ export function SlideEditor() {
                 )
             )}
         </div>
-      </>
     );
 }

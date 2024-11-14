@@ -10,7 +10,7 @@ const Sidebar: FC = () => {
   
     return (
         <aside className={s.root}>
-            {slides.map((slide, index) => {
+            {slides.map((slide) => {
                 const { id } = slide;
 
                 return (

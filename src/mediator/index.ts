@@ -33,21 +33,14 @@ export class SlideMediator {
 
   deleteSlide(slideId: string) {
       this.setSlides(prev => prev.filter(slide => slide.id !== slideId));
+      // TODO надо чтобы выбирался другой активный слайд. ниже не работает
+      this.setCurrentSlide(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, this.slides[this.slides.length - 1]));
   }
 
   editCurrentSlide(slide: Partial<Slide>) {
     // TODO: need refactoring
     this.setCurrentSlide(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, slide));
     this.setSlides(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));  
-  }
-
-  editSlide(slideId: string, newData: Partial<Slide>) {
-      this.setSlides(prev => {
-        const updatedSlides = prev.map(slide => (slide.id === slideId ? { ...slide, ...newData } : slide));
-        this.setSlidesList(updatedSlides);
-        this.setCurrentSlide(updatedSlides.find(slide => slide.id === slideId));
-        return updatedSlides;
-      });
   }
 
   selectSlide(slideId: string) {
