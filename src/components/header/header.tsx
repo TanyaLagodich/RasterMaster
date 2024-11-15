@@ -1,6 +1,6 @@
 import { Button, Dropdown, Space } from "antd";
-import type { MenuProps } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import type { MenuProps } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import { TAB } from "@/context/appContext";
 import { useAppActionsContext } from "@/hooks/useAppActionsContext";
 import { useSlideContext } from "@/hooks/useSlideContext";
@@ -14,19 +14,18 @@ export function Header() {
     const { setActiveTab } = useAppActionsContext();
     const { addNode } = useSlideContext();
 
-    const fileMenuItems: MenuProps['items'] = [
-        { key: 'new', label: 'Создать' },
-        { key: 'open', label: 'Экспорт в PDF' },
-        { key: 'save', label: 'Пригласить' },
+    const fileMenuItems: MenuProps["items"] = [
+        { key: "new", label: "Создать" },
+        { key: "open", label: "Экспорт в PDF" },
+        { key: "save", label: "Пригласить" },
     ];
 
-    const insertionMenuItems: MenuProps['items'] = [
-        { key: 'text', label: 'Текст', onClick: () => addNode(NodeType.TEXT) },
-        { key: 'image', label: 'Изображение' },
-        { key: 'table', label: 'Таблица' },
-        { key: 'figure', label: 'Фигура' },
+    const insertionMenuItems: MenuProps["items"] = [
+        { key: "text", label: "Текст", onClick: () => addNode(NodeType.TEXT) },
+        { key: "image", label: "Изображение", onClick: () => addNode(NodeType.IMAGE) },
+        { key: "table", label: "Таблица" },
+        { key: "figure", label: "Фигура" },
     ];
-
 
     return (
         <nav className={s.root}>
@@ -45,28 +44,32 @@ export function Header() {
                         </Button>
                     </Dropdown>
 
-                <Dropdown
-                    menu={{ items: insertionMenuItems }}
-                    placement="bottomLeft"
-                    arrow={{ pointAtCenter: true }}
-                >
-                    <Button type="text">
-                        <Space>
-                            {TAB.INSERTION}
-                            <DownOutlined />
-                        </Space>
-                    </Button>
-                </Dropdown>
-
-                {Object.keys(TAB)
-                    .slice(2)
-                    .map((tab: keyof typeof TAB) => (
-                        <Button type={activeTab === TAB[tab] ? 'primary' : 'text'} onClick={() => setActiveTab(TAB[tab])}
-                            key={tab}
-                        >
-                            {TAB[tab]}
+                    <Dropdown
+                        menu={{ items: insertionMenuItems }}
+                        placement="bottomLeft"
+                        arrow={{ pointAtCenter: true }}
+                    >
+                        <Button type="text">
+                            <Space>
+                                {TAB.INSERTION}
+                                <DownOutlined />
+                            </Space>
                         </Button>
-                    ))}
+                    </Dropdown>
+
+                    {Object.keys(TAB)
+                        .slice(2)
+                        .map((tab: keyof typeof TAB) => (
+                            <Button
+                                type={
+                                    activeTab === TAB[tab] ? "primary" : "text"
+                                }
+                                onClick={() => setActiveTab(TAB[tab])}
+                                key={tab}
+                            >
+                                {TAB[tab]}
+                            </Button>
+                        ))}
                 </Space>
             </ul>
         </nav>

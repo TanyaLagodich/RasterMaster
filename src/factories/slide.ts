@@ -18,9 +18,9 @@ class Slide implements SlideType {
         this.zIndex = { max: 0, min: 0 };
     }
 
-    addNode(type: NodeType): Node {
-      const strategy = NodeStrategyFactory.createStrategy(type);
-      const node = strategy.addNode();
+    async addNode(type: NodeType): Promise<Node> {
+      const strategy = await NodeStrategyFactory.createStrategy(type);
+      const node = await strategy.addNode();
       this.nodes.push(node);
       return node;
     }
