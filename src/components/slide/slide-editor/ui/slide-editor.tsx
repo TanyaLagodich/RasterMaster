@@ -4,17 +4,23 @@ import { toPng } from "html-to-image";
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlidesContext } from "@/hooks/useSlidesContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Node as SlideNode, NodeType } from '@/types';
+
+import { Node as SlideNode, NodeType } from "@/types";
 
 import { Text } from "@/components/text";
+import { Image } from "@/components/image";
 
 import * as s from "./slide-editor.module.scss";
 
 export function SlideEditor() {
     const { currentSlide, updateSlide } = useSlidesContext();
     const { nodes } = useSlideContext();
-    const { setEditorDimensions, setSelectedNode, updateNodeData, updatePreview} =
-        useSlideActionsContext();
+    const {
+        setEditorDimensions,
+        setSelectedNode,
+        updateNodeData,
+        updatePreview,
+    } = useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
@@ -24,7 +30,6 @@ export function SlideEditor() {
     }, [nodes]);
 
     useEffect(() => {
-
         function onClick(e: MouseEvent) {
             if (editorRef.current === e.target) {
                 setSelectedNode(null);
@@ -79,17 +84,31 @@ export function SlideEditor() {
     }
 
     async function generatePreview() {
-        if (editorRef.current) {
-            const dataUrl = await toPng(editorRef.current);
-            updatePreview(dataUrl);
+        try {
+            if (editorRef.current) {
+                const dataUrl = await toPng(editorRef.current);
+                updatePreview(dataUrl);
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
     return (
         <div ref={editorRef} className={s.root}>
-            {nodes.map((node) =>
+            {nodes.map((node: SlideNode) =>
                 node.type === NodeType.TEXT ? (
                     <Text
+                        data={node}
+                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
+                            dragStartHandler(e)
+                        }
+                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
+                            dragEndHandler(e, node);
+                        }}
+                    />
+                ) : node.type === NodeType.IMAGE ? (
+                    <Image
                         data={node}
                         onDragStart={(e: IDragEvent<HTMLDivElement>) =>
                             dragStartHandler(e)
