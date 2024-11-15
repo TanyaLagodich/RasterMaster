@@ -1,6 +1,5 @@
 import { DragEvent as IDragEvent, useEffect, useRef } from "react";
 import { toPng } from "html-to-image";
-import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 
 import { Node as SlideNode, NodeType } from "@/types";
@@ -15,8 +14,12 @@ import { useDebounce } from "@/hooks/useDebounce";
 export function SlideEditor() {
   const { currentSlide } = useSlideMediator();
   const { nodes } = currentSlide;
-    const { setEditorDimensions, setSelectedNode, updateNode, updatePreview} =
-        useSlideActionsContext();
+    const {
+        setEditorDimensions,
+        setSelectedNode,
+        updateNode,
+        updatePreview,
+    } = useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });

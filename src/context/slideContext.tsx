@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
 import { NodeStrategyFactory } from '@/factories/node-strategy';
-
 import type { Slide, Dimensions, Image, Text } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
