@@ -1,12 +1,13 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
 import { useSlidesContext } from "@/hooks/useSlidesContext";
-import type { Slide, Dimensions, Image, Text } from "@/types";
-import { ZIndex, NodeType, Node } from "@/types";
+
+import type { Slide, Dimensions, Image, Text } from '@/types';
+import { ZIndex, NodeType, Node } from '@/types';
 
 interface SlideContext extends Slide {
-    selectedNode: Node | null;
-}
+   selectedNode: Node | null;
+};
 
 type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
@@ -67,6 +68,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             nodes,
             zIndex,
         });
+
     }
 
     function addImage() {

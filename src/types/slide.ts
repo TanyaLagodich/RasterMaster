@@ -15,15 +15,15 @@ type BaseNode = {
     zIndex: number;
 };
 
+export enum NodeType {
+    TEXT = 'text',
+    IMAGE = 'image',
+}
+
 export type ZIndex = {
     max: number;
     min: number;
 };
-
-export enum NodeType {
-    TEXT = "text",
-    IMAGE = "image",
-}
 
 type ImageStyle = {
     borderRadius: string;

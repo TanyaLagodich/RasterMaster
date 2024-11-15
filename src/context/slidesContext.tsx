@@ -12,7 +12,6 @@ type SlidesContextType = {
     removeSlide: (e, id: string) => void;
     updateSlide: (updatedSlide: Slide) => void;
     updateCurrentSlide: (updatedSlide: Slide) => void;
-    changeSlide: (slide: Slide) => void;
 };
 
 export const SlidesContext = createContext<SlidesContextType | null>(null);
@@ -46,14 +45,10 @@ export const SlidesContextProvider = ({ children }: { children: ReactNode }) => 
         setCurrentSlide(updatedSlide);
     }
 
-    function changeSlide(slide: Slide) {
-        setCurrentSlide(slide);
-    }
-
     return (
         <SlidesContext.Provider
             value={{
-                slides, currentSlide, setCurrentSlide, currentSlideId, setCurrentSlideId, addSlide, removeSlide, updateSlide, changeSlide, updateCurrentSlide }}
+                slides, currentSlide, setCurrentSlide, currentSlideId, setCurrentSlideId, addSlide, removeSlide, updateSlide, updateCurrentSlide }}
         >
             {children}
         </SlidesContext.Provider>
