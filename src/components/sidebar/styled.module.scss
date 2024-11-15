@@ -7,14 +7,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
 
 .slideWrapper {
     width: 90%;
     height: auto;
     margin: 8px;
+    position: relative;
+    transition: opacity .1s ease;
+}
+
+.draggableSlideWrapper {
+    opacity: 0;
 }
 
 .text {
     cursor: pointer;
+}
+
+.dropLine {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #c43e1c;
+    z-index: 1;
+}
+
+.dropLineBefore {
+    bottom: 85%;
+    top: auto;
+}
+
+.dropLineAfter {
+    top: 85%;
+    bottom: auto;
 }
