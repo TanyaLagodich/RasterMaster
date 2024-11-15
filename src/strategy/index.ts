@@ -1,2 +1,2 @@
 export { TextNodeStrategy } from './text-node';
-export type { NodeStrategy } from './node';
+export { ImageNodeStrategy } from './image-node';

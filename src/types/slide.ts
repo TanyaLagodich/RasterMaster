@@ -3,6 +3,11 @@ type Position = {
     y: number;
 };
 
+export type Dimensions = {
+    width: number;
+    height: number;
+};
+
 type BaseNode = {
     id: string;
     positionPercent: Position;
@@ -20,9 +25,9 @@ export type ZIndex = {
     min: number;
 };
 
-export type Dimensions = {
-    width: number;
-    height: number;
+type ImageStyle = {
+    borderRadius: string;
+    cover: boolean;
 };
 
 export type Text = {
@@ -33,6 +38,7 @@ export type Text = {
 export type Image = {
     type: NodeType.IMAGE;
     src: string;
+    style: ImageStyle;
 } & BaseNode;
 
 export type Node = Text | Image;
@@ -43,12 +49,12 @@ export interface Slide {
   nodes: Node[] | [],
   editorDimensions: Dimensions,
   zIndex: ZIndex,
-  addNode: (type: NodeType) => Node;
+  addNode: (type: NodeType) => Promise<Node>;
   updateNode: (node: Node) => void;
   update: (newData: Partial<Slide>) => void;
   clone: () => Slide;
 }
 
 export enum SlideTypes {
-  EMPTY = 'empty',
-};
+    EMPTY = "empty",
+}
