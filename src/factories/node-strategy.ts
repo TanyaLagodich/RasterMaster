@@ -9,7 +9,7 @@ export class NodeStrategyFactory {
 
       case NodeType.IMAGE:
         return new ImageNodeStrategy();
-        
+
       default:
         throw new Error(`Unknown node type: ${type}`);
     }

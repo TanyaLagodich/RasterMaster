@@ -12,7 +12,6 @@ import * as s from "./styled.module.scss";
 export function Header() {
     const { activeTab } = useAppContext();
     const { setActiveTab } = useAppActionsContext();
-    // const { addText, addImage } = useSlideActionsContext();
     const { addNode } = useSlideContext();
 
     const fileMenuItems: MenuProps["items"] = [

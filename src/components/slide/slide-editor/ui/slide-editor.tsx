@@ -112,10 +112,10 @@ export function SlideEditor() {
                     <Image
                         data={node}
                         onDragStart={(e: IDragEvent<HTMLDivElement>) =>
-                            dragStartHandler(e)
+                        dragStartHandler(e)
                         }
                         onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
+                        dragEndHandler(e, node);
                         }}
                     />
                 ) : (

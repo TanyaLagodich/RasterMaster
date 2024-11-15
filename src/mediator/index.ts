@@ -16,7 +16,10 @@ export class SlideMediator {
   }
   
   setSlidesList(slides: Slide[]) {
+    if (this.setSlides && JSON.stringify(slides) !== JSON.stringify(this.slides)) {
       this.slides = slides;
+      this.setSlides(slides);
+    }
   }
 
   addSlide(type: SlideTypes = SlideTypes.EMPTY) {
