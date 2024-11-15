@@ -4,15 +4,15 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { AppContextProvider } from "./context/appContext";
 import "./index.scss";
-import { SlidesContextProvider } from "@/context/slidesContext";
 import { SlideContextProvider } from "@/context/slideContext";
+import { SlideMediatorProvider } from '@/context/slideMediator';
 
 createRoot(document.getElementById("root")!).render(
     <AppContextProvider>
-        <SlidesContextProvider>
-            <SlideContextProvider>
-                <RouterProvider router={router} />
-            </SlideContextProvider>
-        </SlidesContextProvider>
+      <SlideMediatorProvider>
+          <SlideContextProvider>
+              <RouterProvider router={router} />
+          </SlideContextProvider>
+      </SlideMediatorProvider>
     </AppContextProvider>
 );

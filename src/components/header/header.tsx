@@ -3,16 +3,17 @@ import type { MenuProps } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { TAB } from "@/context/appContext";
 import { useAppActionsContext } from "@/hooks/useAppActionsContext";
-import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
+import { useSlideContext } from "@/hooks/useSlideContext";
 import { useAppContext } from "@/hooks/useAppContext";
+import { NodeType } from '@/types';
 
 import * as s from "./styled.module.scss";
 
 export function Header() {
-    // TODO не уверена, что так стоит делать
     const { activeTab } = useAppContext();
     const { setActiveTab } = useAppActionsContext();
-    const { addText, addImage } = useSlideActionsContext();
+    // const { addText, addImage } = useSlideActionsContext();
+    const { addNode } = useSlideContext();
 
     const fileMenuItems: MenuProps["items"] = [
         { key: "new", label: "Создать" },
@@ -21,8 +22,8 @@ export function Header() {
     ];
 
     const insertionMenuItems: MenuProps["items"] = [
-        { key: "text", label: "Текст", onClick: addText },
-        { key: "image", label: "Изображение", onClick: addImage },
+        { key: "text", label: "Текст", onClick: () => addNode(NodeType.TEXT) },
+        { key: "image", label: "Изображение", onClick: () => addNode(NodeType.IMAGE) },
         { key: "table", label: "Таблица" },
         { key: "figure", label: "Фигура" },
     ];

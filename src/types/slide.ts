@@ -44,11 +44,15 @@ export type Image = {
 export type Node = Text | Image;
 
 export interface Slide {
-    id: string;
-    preview: string;
-    nodes: Node[] | [];
-    editorDimensions: Dimensions;
-    zIndex: ZIndex;
+  id: string;
+  preview: string;
+  nodes: Node[] | [];
+  editorDimensions: Dimensions;
+  zIndex: ZIndex;
+  addNode: (type: NodeType) => Promise<Node>;
+  updateNode: (node: Node) => void;
+  update: (newData: Partial<Slide>) => void;
+  clone: () => Slide;
 }
 
 export enum SlideTypes {

@@ -37,7 +37,7 @@ export function Image(props: ImageProps) {
     const { data, onDragStart, onDragEnd } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
-    const { setSelectedNode, updateNodeData } = useSlideActionsContext();
+    const { setSelectedNode, updateNode } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
@@ -136,7 +136,7 @@ export function Image(props: ImageProps) {
                     break;
             }
 
-            updateNodeData({
+            updateNode({
                 ...data,
                 dimensionsPercent: {
                     width: finalWidth,
@@ -159,7 +159,7 @@ export function Image(props: ImageProps) {
         const digits = value ? String(value) : "0";
         const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? "px";
 
-        updateNodeData({
+        updateNode({
             ...data,
             style: {
                 ...data.style,
@@ -171,7 +171,7 @@ export function Image(props: ImageProps) {
     function handleBRUnitChange(unit: string) {
         const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? "0";
 
-        updateNodeData({
+        updateNode({
             ...data,
             style: {
                 ...data.style,
@@ -181,7 +181,7 @@ export function Image(props: ImageProps) {
     }
 
     function handleCoverChange(e: CheckboxChangeEvent) {
-        updateNodeData({
+        updateNode({
             ...data,
             style: {
                 ...data.style,

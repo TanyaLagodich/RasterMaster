@@ -1,100 +1,15 @@
+import { Space } from 'antd';
 import { Header } from "@/components/header";
 import ToolsHeader from "@/components/header/tools-header";
 import Sidebar from "@/components/sidebar";
-import SlideArea from "@/components/slide-area";
+import { Slide } from '@/components/slide';
 import Notes from "@/components/notes";
 
 import * as s from "./styled.module.scss";
 import { useCallback } from "react";
-import { useSlidesContext } from "@/hooks/useSlidesContext";
 
 
 export function Layout() {
-    const { slides, currentSlide, addSlide,removeSlide, updateCurrentSlide } = useSlidesContext();
-
-    // const addSlide = useCallback((
-    //     id?: string,
-    //     options?: ICreateSlideOptions,
-    // ) => {
-    //
-    //     const newSlide: ISlideNew = {
-    //         preview: '',
-    //         id: uuidv4(),
-    //         nodes: [],
-    //     }
-    //
-    //     let prevSlideIndex: number;
-    //
-    //     if (!id) {
-    //         prevSlideIndex = slides.length;
-    //     } else {
-    //         // TODO: Попробовать оптимизировать до константной сложности
-    //         slides.forEach((slide, index) => {
-    //             if (slide.id === id) {
-    //                 prevSlideIndex = index;
-    //                 return;
-    //             }
-    //         });
-    //     }
-    //
-    //     setSlides(prevSlides => [...prevSlides.slice(0, prevSlideIndex + 1), newSlide, ...prevSlides.slice(prevSlideIndex + 1)]);
-    //     setCurrentSlide(newSlide);
-    // }, [slides])
-
-    // const createSlide = useCallback((event: MouseEvent, id: string) => {
-    //     event.stopPropagation();
-    //     addSlide(id);
-    // }, [addSlide])
-
-    // const duplicateSlide = useCallback((event: MouseEvent, id: string) => {
-    //     event.stopPropagation();
-    //     addSlide(id, {duplicate: true});
-    // }, [addSlide])
-    //
-    // const pushSlide = useCallback(() => {
-    //     addSlide();
-    // }, [addSlide])
-
-    // const setNewCurrentSlide = useCallback((id: string) => {
-    //     if (currentSlide.id !== id) {
-    //         return;
-    //     }
-    //
-    //     let result: ISlideNew | null;
-    //
-    //     for (let i = 0; i < slides.length; i += 1) {
-    //         const slide = slides[i];
-    //         const arr = slides;
-    //
-    //         if (arr.length === 1) {
-    //             result = null;
-    //             break;
-    //         }
-    //
-    //         if (i === arr.length - 1) {
-    //             result = slides[i - 1];
-    //             break;
-    //         }
-    //
-    //         if (slide.id === id) {
-    //             result = slides[i + 1];
-    //             break;
-    //         }
-    //     }
-    //
-    //     setCurrentSlide(result);
-    // }, [slides, currentSlide]);
-
-    // const removeSlide = useCallback((event: MouseEvent, id: string) => {
-    //     event.stopPropagation();
-    //     setNewCurrentSlide(id);
-    //     setSlides(prevSides => prevSides.filter(slide => slide.id !== id));
-    // }, [setNewCurrentSlide])
-
-    // const changeSlide = useCallback((slide: ISlideNew) => {
-    //     setCurrentSlide(slide);
-    // }, [])
-
     const editSlide = useCallback((id: string) => {
 
     }, [])
@@ -111,21 +26,13 @@ export function Layout() {
             <ToolsHeader />
 
             <div className={s.body}>
-                <Sidebar
-                    currentSlide={currentSlide}
-                    slides={slides}
-                    changeSlide={updateCurrentSlide}
-                    pushSlide={addSlide}
-                    createSlide={addSlide}
-                    removeSlide={removeSlide}
-                    duplicateSlide={addSlide}
-                />
+              <Sidebar />
 
-                <div className={s.content}>
-                    <SlideArea slide={currentSlide}/>
+              <div className={s.content}>
+                  <Slide />
 
-                    <Notes />
-                </div>
+                  <Notes />
+              </div>
             </div>
         </>
     );

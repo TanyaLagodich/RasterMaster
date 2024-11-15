@@ -35,7 +35,7 @@ export function Text(props: TextProps) {
     const { data, onDragStart, onDragEnd } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
-    const { setSelectedNode, updateNodeData } = useSlideActionsContext();
+    const { setSelectedNode, updateNode } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -135,7 +135,7 @@ export function Text(props: TextProps) {
                     break;
             }
 
-            updateNodeData({
+            updateNode({
                 ...data,
                 dimensionsPercent: {
                     width: finalWidth,
@@ -178,13 +178,14 @@ export function Text(props: TextProps) {
                 placeholder="Введите текст"
                 value={data.value}
                 onChange={(e) =>
-                    updateNodeData({ ...data, value: e.target.value })
+                    updateNode({ ...data, value: e.target.value })
                 }
             />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
-                {resizeDots.map((resizeDot) => (
-                    <div
+          {resizeDots.map((resizeDot, index) => (
+            <div
+                        key={index}
                         className={clsx(s.resizeDot, s[`_${resizeDot}`])}
                         onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
                     />

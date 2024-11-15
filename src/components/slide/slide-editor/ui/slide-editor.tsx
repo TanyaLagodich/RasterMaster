@@ -1,8 +1,5 @@
-import { DragEvent as IDragEvent, useEffect, useRef, useState } from "react";
+import { DragEvent as IDragEvent, useEffect, useRef } from "react";
 import { toPng } from "html-to-image";
-
-import { useSlideContext } from "@/hooks/useSlideContext";
-import { useSlidesContext } from "@/hooks/useSlidesContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
 
 import { Node as SlideNode, NodeType } from "@/types";
@@ -11,22 +8,26 @@ import { Text } from "@/components/text";
 import { Image } from "@/components/image";
 
 import * as s from "./slide-editor.module.scss";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import { useDebounce } from "@/hooks/useDebounce";
 
 export function SlideEditor() {
-    const { currentSlide, updateSlide } = useSlidesContext();
-    const { nodes } = useSlideContext();
+  const { currentSlide } = useSlideMediator();
+  const { nodes } = currentSlide;
     const {
         setEditorDimensions,
         setSelectedNode,
-        updateNodeData,
+        updateNode,
         updatePreview,
     } = useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
+    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
+
     useEffect(() => {
-        generatePreview();
+        debouncedGeneratePreview();
     }, [nodes]);
 
     useEffect(() => {
@@ -76,11 +77,10 @@ export function SlideEditor() {
         const newXPercent = (newX / editorRect.width) * 100;
         const newYPercent = (newY / editorRect.height) * 100;
 
-        updateNodeData({
+        updateNode({
             ...node,
             positionPercent: { x: newXPercent, y: newYPercent },
         });
-        generatePreview();
     }
 
     async function generatePreview() {
@@ -99,6 +99,7 @@ export function SlideEditor() {
             {nodes.map((node: SlideNode) =>
                 node.type === NodeType.TEXT ? (
                     <Text
+                        key={node.id}
                         data={node}
                         onDragStart={(e: IDragEvent<HTMLDivElement>) =>
                             dragStartHandler(e)
