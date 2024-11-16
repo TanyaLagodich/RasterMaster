@@ -4,14 +4,14 @@ import {
     useEffect,
     useRef,
     useState,
-} from "react";
-import ReactQuill from "react-quill";
-import clsx from "clsx";
+} from 'react';
+import ReactQuill from 'react-quill';
+import clsx from 'clsx';
 
-import { useSlideContext } from "@/hooks/useSlideContext";
-import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Text } from "@/types";
-import { isInsideElement } from "@/utils/sizes";
+import { useSlideContext } from '@/hooks/useSlideContext';
+import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
+import { Text } from '@/types';
+import { isInsideElement } from '@/utils/sizes';
 
 import * as s from './text.module.scss';
 
@@ -196,19 +196,21 @@ export function Text(props: TextProps) {
 
             <ReactQuill
                 ref={textFieldRef}
-                className={s.textField}
+                className={clsx(s.textField, {
+                    [s._toolbarBottom]: data.positionPercent.y < 20,
+                })}
                 theme="snow"
                 value={data.value}
                 onChange={(value) => textareaHandlers.onChange(value)}
                 modules={{
                     toolbar: [
                         [{ font: [] }, { size: [] }],
-                        [{ header: "1" }, { header: "2" }, { font: [] }],
-                        ["bold", "italic", "underline", "strike"], // Make sure bold, italic, underline are in the toolbar
-                        [{ list: "ordered" }, { list: "bullet" }],
+                        [{ header: '1' }, { header: '2' }, { font: [] }],
+                        ['bold', 'italic', 'underline', 'strike'], // Make sure bold, italic, underline are in the toolbar
+                        [{ list: 'ordered' }, { list: 'bullet' }],
                         [{ align: [] }],
-                        ["link"],
-                        ["clean"],
+                        ['link'],
+                        ['clean'],
                     ],
                 }}
             />

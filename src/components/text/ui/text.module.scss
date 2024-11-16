@@ -58,6 +58,13 @@
     :global(.ql-container) {
         border: none;
     }
+
+    &._toolbarBottom {
+        :global(.ql-toolbar) {
+            top: unset;
+            bottom: -74px;
+        }
+    }
 }
 
 .resizeDotsContainer {
