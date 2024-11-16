@@ -11,6 +11,12 @@
         .resizeDotsContainer {
             display: block;
         }
+
+        .textField {
+            :global(.ql-toolbar) {
+                display: block;
+            }
+        }
     }
 }
 
@@ -34,6 +40,7 @@
         top: -74px;
         height: 60px;
         width: 420px;
+        display: none;
     }
 
     :global(.ql-editor) {
