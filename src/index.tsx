@@ -1,18 +1,16 @@
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-
-import { router } from "./router";
 import { AppContextProvider } from "./context/appContext";
-import "./index.scss";
 import { SlideContextProvider } from "@/context/slideContext";
-import { SlideMediatorProvider } from '@/context/slideMediator';
+import { SlideMediatorProvider } from "@/context/slideMediator";
+import "./index.scss";
+import { App } from "./app";
 
 createRoot(document.getElementById("root")!).render(
     <AppContextProvider>
-      <SlideMediatorProvider>
-          <SlideContextProvider>
-              <RouterProvider router={router} />
-          </SlideContextProvider>
-      </SlideMediatorProvider>
+        <SlideMediatorProvider>
+            <SlideContextProvider>
+                <App />
+            </SlideContextProvider>
+        </SlideMediatorProvider>
     </AppContextProvider>
 );
