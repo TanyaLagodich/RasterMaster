@@ -4,13 +4,13 @@ import {
     useEffect,
     useRef,
     useState,
-    ChangeEvent,
 } from "react";
+import ReactQuill from "react-quill";
 import clsx from "clsx";
 
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Text } from '@/types';
+import { Text } from "@/types";
 import { isInsideElement } from "@/utils/sizes";
 
 import * as s from "./text.module.scss";
@@ -19,7 +19,7 @@ type TextProps = {
     data: Text;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
-    isEditable?: boolean
+    isEditable?: boolean;
 };
 
 const resizeDots = [
@@ -40,7 +40,7 @@ export function Text(props: TextProps) {
     const { setSelectedNode, updateNode } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+    const textFieldRef = useRef<ReactQuill>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
@@ -52,12 +52,12 @@ export function Text(props: TextProps) {
     }, [data, selectedNode, isEditable]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
-        if (!textareaRef.current || !dotsRef.current) return;
+        if (!textFieldRef.current || !dotsRef.current) return;
 
-        const isTextArea = isInsideElement(
+        const isTextField = isInsideElement(
             e.clientX,
             e.clientY,
-            textareaRef.current.getBoundingClientRect()
+            textFieldRef.current.getEditor().root.getBoundingClientRect()
         );
 
         const isDot = [...dotsRef.current.children].some(
@@ -69,7 +69,7 @@ export function Text(props: TextProps) {
                 )
         );
 
-        if (isTextArea || isDot) {
+        if (isTextField || isDot) {
             e.preventDefault();
             return;
         }
@@ -162,12 +162,11 @@ export function Text(props: TextProps) {
         onClick: () => setSelectedNode(data),
         onDragStart: handleDragStart,
         onDragEnd,
-    }
+    };
 
     const textareaHandlers = {
-        onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
-            updateNode({ ...data, value: e.target.value }),
-    }
+        onChange: (value: string) => updateNode({ ...data, value }),
+    };
 
     return (
         <div
@@ -183,16 +182,35 @@ export function Text(props: TextProps) {
                 [s._selected]: isSelected,
             })}
             draggable={isEditable}
-            {...(isEditable && {...wrapperHandlers})}
+            {...(isEditable && { ...wrapperHandlers })}
         >
-            <textarea
+            {/*            <textarea
                 ref={textareaRef}
                 className={s.textarea}
                 placeholder="Введите текст"
                 value={data.value}
-                {...(isEditable && {...textareaHandlers})}
-                {...(!!data.style && {style: data.style})}
+                {...(isEditable && { ...textareaHandlers })}
+                {...(!!data.style && { style: data.style })}
                 onChange={(e) => textareaHandlers.onChange(e)}
+            /> */}
+
+            <ReactQuill
+                ref={textFieldRef}
+                className={s.textField}
+                theme="snow"
+                value={data.value}
+                onChange={(value) => textareaHandlers.onChange(value)}
+                modules={{
+                    toolbar: [
+                        [{ font: [] }, { size: [] }],
+                        [{ header: "1" }, { header: "2" }, { font: [] }],
+                        ["bold", "italic", "underline", "strike"], // Make sure bold, italic, underline are in the toolbar
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        [{ align: [] }],
+                        ["link"],
+                        ["clean"],
+                    ],
+                }}
             />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>

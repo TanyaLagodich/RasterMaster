@@ -14,22 +14,48 @@
     }
 }
 
-.textarea {
-    border: none;
-    outline: none;
-    resize: none;
-    position: relative;
-    background-color: transparent;
+// .textarea {
+//     border: none;
+//     outline: none;
+//     resize: none;
+//     position: relative;
+//     background-color: transparent;
+//     overflow: hidden;
+//     padding: 2px;
+//     font-size: 16px;
+// }
+
+.textField {
     width: calc(100% - 7px);
     height: calc(100% - 7px);
-    overflow: hidden;
-    padding: 2px;
-    font-size: 16px;
+
+    :global(.ql-toolbar) {
+        position: absolute;
+        top: -74px;
+        height: 60px;
+        width: 420px;
+    }
+
+    :global(.ql-editor) {
+        cursor: text;
+
+        strong {
+            font-weight: 600;
+        }
+
+        em {
+            font-style: italic;
+        }
+    }
+
+    :global(.ql-container) {
+        border: none;
+    }
 }
 
 .resizeDotsContainer {
     display: none;
-    border: 1px solid black;
+    border: 1px dashed black;
     position: absolute;
     right: -6px;
     bottom: -6px;
