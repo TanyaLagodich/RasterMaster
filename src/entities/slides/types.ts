@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from "react";
 import { Template } from "../templates/types";
-import { Node } from "@/context/slideContext";
+import { Node } from "@/types";
 
 export type SlideOperation = (event: MouseEvent, id: string, Template: Template) => void;
 
@@ -12,7 +12,7 @@ export interface ISlideProps {
     createSlide?: (event: MouseEvent, id: string, template: Template) => void;
     removeSlide?: (event: MouseEvent, id: string) => void;
     duplicateSlide?:(event: MouseEvent, id: string) => void;
-    changeSlide?: (slide: ISlide) => void;
+    changeSlide?: (slide: ISlideNew) => void;
     template?: Template; // To remove
 }
 
@@ -32,3 +32,10 @@ export interface IOptionSlideOperations {
     method?: (...args: any[]) => void;
     close?: boolean;
 }
+
+export interface ISlideNew {
+    id: string;
+    preview: string;
+    nodes: any[],
+}
+

@@ -1,10 +1,9 @@
-import React from 'react';
 import { Space, Row, Col, Checkbox } from "antd";
 import { BackgroundPicker } from './background-piker';
 import { ThemeSelect } from './theme-select';
 import { LayoutSelect } from './layout-select';
 
-export function DecorationTools({pushSlide}) {
+export function DecorationTools() {
     return (
         <div style={{ padding: '10px 20px', backgroundColor: '#f9f9f9' }}>
             <Row gutter={16} align="middle">
@@ -25,7 +24,7 @@ export function DecorationTools({pushSlide}) {
                 {/* Макет */}
                 <Col>
                     <Space>
-                        <LayoutSelect pushSlide={pushSlide} />
+                        <LayoutSelect />
                     </Space>
                 </Col>
 

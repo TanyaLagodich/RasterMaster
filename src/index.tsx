@@ -3,13 +3,16 @@ import { RouterProvider } from "react-router-dom";
 
 import { router } from "./router";
 import { AppContextProvider } from "./context/appContext";
-import { SlideContextProvider } from "./context/slideContext";
 import "./index.scss";
+import { SlideContextProvider } from "@/context/slideContext";
+import { SlideMediatorProvider } from '@/context/slideMediator';
 
 createRoot(document.getElementById("root")!).render(
     <AppContextProvider>
-        <SlideContextProvider>
-            <RouterProvider router={router} />
-        </SlideContextProvider>
+      <SlideMediatorProvider>
+          <SlideContextProvider>
+              <RouterProvider router={router} />
+          </SlideContextProvider>
+      </SlideMediatorProvider>
     </AppContextProvider>
 );

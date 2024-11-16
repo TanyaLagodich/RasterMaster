@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import { Select, Row, Col, Button } from 'antd';
 import { templatesDict } from '@/entities/templates/utils';
-import { Template } from '@/entities/templates/types';
+import { Template } from '@/types';
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 const { Option } = Select;
 
-interface IProps {
-    pushSlide: (template: Template) => void;
-}
-
-export const LayoutSelect = ({pushSlide}: IProps) => {
+export const LayoutSelect = () => {
+    const { mediator } = useSlideMediator();
     const [selectedLayout, setSelectedLayout] = useState<string>('Создать слайд');
 
     const handleLayoutSelect = (layout: Template) => {
-        pushSlide(layout);
+        mediator.addSlide(layout);
         setSelectedLayout(templatesDict[layout]);
     };
 

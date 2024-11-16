@@ -4,22 +4,22 @@ import {
     useEffect,
     useRef,
     useState,
-    ChangeEvent,
 } from "react";
+import { Checkbox, InputNumber, Select } from "antd";
 import clsx from "clsx";
 
 import { useSlideContext } from "@/hooks/useSlideContext";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Text } from '@/types';
+import { Image } from "@/types";
 import { isInsideElement } from "@/utils/sizes";
 
-import * as s from "./text.module.scss";
+import * as s from "./image.module.scss";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
-type TextProps = {
-    data: Text;
+type ImageProps = {
+    data: Image;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
-    isEditable?: boolean
 };
 
 const resizeDots = [
@@ -33,32 +33,24 @@ const resizeDots = [
     "leftMiddle",
 ];
 
-export function Text(props: TextProps) {
-    const { data, onDragStart, onDragEnd, isEditable = true } = props;
+export function Image(props: ImageProps) {
+    const { data, onDragStart, onDragEnd } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
     const { setSelectedNode, updateNode } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
+    const stylerRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        if (isEditable) {
-            setIsSelected(data.id === selectedNode?.id);
-        }
-    }, [data, selectedNode, isEditable]);
+        setIsSelected(data.id === selectedNode?.id);
+    }, [data, selectedNode]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
-        if (!textareaRef.current || !dotsRef.current) return;
-
-        const isTextArea = isInsideElement(
-            e.clientX,
-            e.clientY,
-            textareaRef.current.getBoundingClientRect()
-        );
+        if (!dotsRef.current || !stylerRef.current) return;
 
         const isDot = [...dotsRef.current.children].some(
             (dot: HTMLDivElement) =>
@@ -68,8 +60,13 @@ export function Text(props: TextProps) {
                     dot.getBoundingClientRect()
                 )
         );
+        const isStyler = isInsideElement(
+            e.clientX,
+            e.clientY,
+            stylerRef.current.getBoundingClientRect()
+        );
 
-        if (isTextArea || isDot) {
+        if (isDot || isStyler) {
             e.preventDefault();
             return;
         }
@@ -158,15 +155,39 @@ export function Text(props: TextProps) {
         window.addEventListener("mouseup", handleMouseUp);
     }
 
-    const wrapperHandlers = {
-        onClick: () => setSelectedNode(data),
-        onDragStart: handleDragStart,
-        onDragEnd,
+    function handleBRNumberChange(value: number) {
+        const digits = value ? String(value) : "0";
+        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? "px";
+
+        updateNode({
+            ...data,
+            style: {
+                ...data.style,
+                borderRadius: digits + unit,
+            },
+        });
     }
 
-    const textareaHandlers = {
-        onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
-            updateNode({ ...data, value: e.target.value }),
+    function handleBRUnitChange(unit: string) {
+        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? "0";
+
+        updateNode({
+            ...data,
+            style: {
+                ...data.style,
+                borderRadius: digits + unit,
+            },
+        });
+    }
+
+    function handleCoverChange(e: CheckboxChangeEvent) {
+        updateNode({
+            ...data,
+            style: {
+                ...data.style,
+                cover: e.target.checked,
+            },
+        });
     }
 
     return (
@@ -181,18 +202,19 @@ export function Text(props: TextProps) {
             }}
             className={clsx(s.root, {
                 [s._selected]: isSelected,
+                [s._cover]: data.style.cover,
             })}
-            draggable={isEditable}
-            {...(isEditable && {...wrapperHandlers})}
+            onClick={() => setSelectedNode(data)}
+            draggable
+            onDragStart={handleDragStart}
+            onDragEnd={onDragEnd}
         >
-            <textarea
-                ref={textareaRef}
-                className={s.textarea}
-                placeholder="Введите текст"
-                value={data.value}
-                {...(isEditable && {...textareaHandlers})}
-                {...(!!data.style && {style: data.style})}
-                onChange={(e) => textareaHandlers.onChange(e)}
+            <img
+                className={s.image}
+                style={{
+                    borderRadius: data.style.borderRadius,
+                }}
+                src={data.src}
             />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
@@ -203,6 +225,26 @@ export function Text(props: TextProps) {
                         onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
                     />
                 ))}
+            </div>
+
+            <div ref={stylerRef} className={s.styler}>
+                <InputNumber
+                    defaultValue={0}
+                    style={{ width: "66px" }}
+                    onChange={handleBRNumberChange}
+                />
+                <Select
+                    defaultValue="px"
+                    style={{ width: "60px" }}
+                    options={[
+                        { value: "px", label: "px" },
+                        { value: "%", label: "%" },
+                    ]}
+                    onChange={handleBRUnitChange}
+                />
+                <Checkbox onChange={handleCoverChange}>
+                    Пропорционально
+                </Checkbox>
             </div>
         </div>
     );

@@ -1,20 +1,34 @@
 import { DragEvent as IDragEvent, useEffect, useRef } from "react";
+import { toPng } from "html-to-image";
 import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Node } from "@/context/slideContext";
-import { NodeFactory } from "@/entities/templates/utils";
+
+import { Node as SlideNode, NodeType } from "@/types";
+
+import { Text } from "@/components/text";
+import { Image } from "@/components/image";
+
 import * as s from "./slide-editor.module.scss";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import { useDebounce } from "@/hooks/useDebounce";
 
-interface IProps {
-    nodes: Node[];
-    isEditable: boolean;
-}
-
-export const SlideEditor = ({ nodes, isEditable }: IProps) => {
-    const { setEditorDimensions, setSelectedNode, updateNodeData } =
-        useSlideActionsContext();
+export function SlideEditor() {
+  const { currentSlide } = useSlideMediator();
+  const { nodes } = currentSlide;
+    const {
+        setEditorDimensions,
+        setSelectedNode,
+        updateNode,
+        updatePreview,
+    } = useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
+
+    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
+
+    useEffect(() => {
+        debouncedGeneratePreview();
+    }, [nodes]);
 
     useEffect(() => {
         function onClick(e: MouseEvent) {
@@ -48,16 +62,13 @@ export const SlideEditor = ({ nodes, isEditable }: IProps) => {
     }, []);
 
     function dragStartHandler(e: IDragEvent<HTMLDivElement>) {
-        if (!isEditable) return;
-
         const nodeRect = e.currentTarget.getBoundingClientRect();
         dragOffsetRef.current.x = e.clientX - nodeRect.left;
         dragOffsetRef.current.y = e.clientY - nodeRect.top;
     }
 
-    function dragEndHandler(e: IDragEvent<HTMLDivElement>, node: Node) {
+    function dragEndHandler(e: IDragEvent<HTMLDivElement>, node: SlideNode) {
         if (!editorRef.current) return;
-        if (!isEditable) return;
 
         const editorRect = editorRef.current.getBoundingClientRect();
         const newX = e.clientX - editorRect.left - dragOffsetRef.current.x;
@@ -66,21 +77,50 @@ export const SlideEditor = ({ nodes, isEditable }: IProps) => {
         const newXPercent = (newX / editorRect.width) * 100;
         const newYPercent = (newY / editorRect.height) * 100;
 
-        updateNodeData({
+        updateNode({
             ...node,
             positionPercent: { x: newXPercent, y: newYPercent },
         });
     }
 
+    async function generatePreview() {
+        try {
+            if (editorRef.current) {
+                const dataUrl = await toPng(editorRef.current);
+                updatePreview(dataUrl);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     return (
         <div ref={editorRef} className={s.root}>
-            {nodes.map((node) =>
-                NodeFactory.createNode({
-                    node,
-                    onDragStart: (e: IDragEvent<HTMLDivElement>) => dragStartHandler(e),
-                    onDragEnd: (e: IDragEvent<HTMLDivElement>) => dragEndHandler(e, node),
-                    isEditable,
-                })
+            {nodes.map((node: SlideNode) =>
+                node.type === NodeType.TEXT ? (
+                    <Text
+                        key={node.id}
+                        data={node}
+                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
+                            dragStartHandler(e)
+                        }
+                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
+                            dragEndHandler(e, node);
+                        }}
+                    />
+                ) : node.type === NodeType.IMAGE ? (
+                    <Image
+                        data={node}
+                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
+                        dragStartHandler(e)
+                        }
+                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
+                        dragEndHandler(e, node);
+                        }}
+                    />
+                ) : (
+                    <div></div>
+                )
             )}
         </div>
     );

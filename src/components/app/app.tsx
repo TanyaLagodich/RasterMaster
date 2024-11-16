@@ -1,14 +1,13 @@
 import { Header } from "@/components/header";
 import ToolsHeader from "@/components/header/tools-header";
 import Sidebar from "@/components/sidebar";
-import SlideArea from "@/components/slide-area";
 import Notes from "@/components/notes";
 import { Slide } from "@/components/slide/slide";
 import { useCallback, useState, MouseEvent } from "react";
 import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
 import { v4 as uuidv4 } from 'uuid';
 import { SlideFactory } from "../../entities/slides/utils";
-import { Node, NodeType } from "../../context/slideContext";
+import { Node, NodeType } from "@/types";
 import * as s from "./styled.module.scss";
 import { Template } from "@/entities/templates/types";
 
@@ -135,29 +134,17 @@ export function App() {
         setSlides(prev => prev.map(slide => slide.id === id ? slideToEdit : slide))
     }, [slides, addText])
 
-    // Handlers for grag'n'drop
-    const touchSlide = useCallback(() => {}, [])
-    const moveSlide = useCallback(() => {}, [])
-    const untouchSlide = useCallback(() => {}, [])
-
     return (
         <>
             <Header />
 
-            <ToolsHeader addText={addText} pushSlide={pushSlide}/>
+            <ToolsHeader />
 
             <div className={s.body}>
-                <Sidebar
-                    slides={slides}
-                    changeSlide={changeSlide}
-                    pushSlide={pushSlide}
-                    createSlide={createSlide}
-                    removeSlide={removeSlide}
-                    duplicateSlide={duplicateSlide}
-                />
+                <Sidebar />
 
                 <div className={s.content}>
-                    <SlideArea slide={currentSlide}/>
+                    <Slide />
 
                     <Notes />
                 </div>

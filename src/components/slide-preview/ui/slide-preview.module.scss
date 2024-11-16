@@ -1,0 +1,27 @@
+.root {
+  width: 200px;
+  height: 100px;
+  background-color: white;
+  outline: 1px solid #d2d2ce;
+  overflow: hidden;
+
+  &:hover {
+    border-width: 2px;
+    outline: 2px solid #777777
+  }
+
+  &.active {
+    outline: 4px solid #c43e1c;
+  }
+}
+
+.button {
+    position: absolute;
+    right: 5%;
+    bottom: 8%;
+}
+
+.img {
+  height: 100%;
+  object-fit: cover;
+}

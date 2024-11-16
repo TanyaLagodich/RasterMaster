@@ -1,4 +1,7 @@
 .root {
+    position: relative;
+    flex-grow: 1;
+    background-color: rgb(245, 245, 245);
     // display: flex;
     border: .1rem solid var(--slide-border);
     border-radius: 5px;

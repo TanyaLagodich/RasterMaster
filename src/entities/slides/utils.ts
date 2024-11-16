@@ -1,6 +1,6 @@
-import { Node, NodeType } from "@/context/slideContext"
 import { Template } from "../templates/types"
 import { v4 as uuidv4 } from 'uuid';
+import { Node, NodeType } from '@/types';
 
 export class SlideFactory {
     static createSlide(type: Template = 'Default'): Node[] {
