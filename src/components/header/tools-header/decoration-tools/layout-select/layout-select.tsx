@@ -11,7 +11,7 @@ export const LayoutSelect = () => {
     const [selectedLayout, setSelectedLayout] = useState<string>('Создать слайд');
 
     const handleLayoutSelect = (layout: Template) => {
-        mediator.addSlide(layout);
+        mediator.pushSlide(layout);
         setSelectedLayout(templatesDict[layout]);
     };
 

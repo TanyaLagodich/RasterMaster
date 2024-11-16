@@ -15,7 +15,6 @@ class Slide implements SlideType {
       this.editorDimensions = { width: 0, height: 0 };
       this.zIndex = { max: 0, min: 0 };
 
-      console.log(type, SlideTypes.DEFAULT);
       switch (type) {
         case SlideTypes.DEFAULT:
           this.nodes = [
