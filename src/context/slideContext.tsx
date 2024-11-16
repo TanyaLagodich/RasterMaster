@@ -1,13 +1,12 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
-import { nanoid } from "nanoid";
-import { NodeStrategyFactory } from '@/factories/node-strategy';
-import type { Slide, Dimensions, Image, Text } from '@/types';
+import { createContext, ReactNode, useMemo, useState } from 'react';
+import { nanoid } from 'nanoid';
+import type { Slide, Dimensions } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
-import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
    selectedNode: Node | null;
-};
+}
 
 export interface ISlideContent {
     id: string;
@@ -38,7 +37,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     const [zIndex, setZIndex] = useState<ZIndex>(
         currentSlide?.zIndex || { min: 0, max: 100 }
     );
-    const [preview] = useState<string>(currentSlide?.preview || "");
+    const [preview] = useState<string>(currentSlide?.preview || '');
     const [id] = useState<string>(currentSlide?.id || nanoid());
 
     function setSelectedNode(node: Node | null) {

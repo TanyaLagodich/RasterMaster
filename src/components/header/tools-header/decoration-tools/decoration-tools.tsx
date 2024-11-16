@@ -1,4 +1,4 @@
-import { Space, Row, Col, Checkbox } from "antd";
+import { Space, Row, Col, Checkbox } from 'antd';
 import { BackgroundPicker } from './background-piker';
 import { ThemeSelect } from './theme-select';
 import { LayoutSelect } from './layout-select';

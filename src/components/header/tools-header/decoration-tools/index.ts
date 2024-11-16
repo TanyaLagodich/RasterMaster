@@ -1,1 +1,1 @@
-export { DecorationTools } from "./decoration-tools";
+export { DecorationTools } from './decoration-tools';

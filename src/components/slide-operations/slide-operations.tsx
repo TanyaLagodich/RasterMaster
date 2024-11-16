@@ -1,9 +1,9 @@
-import { IOptionSlideOperations } from "@/entities/slides/types";
-import { FC, MouseEvent, useMemo, useState } from "react";
-import OperationItem from "../slide-operation/slide-operation";
-import { templatesDict } from "@/entities/templates/utils";
-import { Template } from "@/entities/templates/types";
-import * as s from "./styled.module.scss";
+import { IOptionSlideOperations } from '@/entities/slides/types';
+import { FC, MouseEvent, useMemo, useState } from 'react';
+import OperationItem from '../slide-operation/slide-operation';
+import { templatesDict } from '@/entities/templates/utils';
+import { Template } from '@/entities/templates/types';
+import * as s from './styled.module.scss';
 
 interface IProps {
     options: IOptionSlideOperations[],

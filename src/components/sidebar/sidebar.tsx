@@ -1,5 +1,5 @@
-import { memo, FC, useState, useRef } from "react";
-import * as s from "./styled.module.scss";
+import { memo, FC, useState, useRef } from 'react';
+import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { Divider, Typography } from 'antd';
 import { SlidePreview } from '@/components/slide-preview';
@@ -55,7 +55,7 @@ const Sidebar: FC = () => {
 
     const updatedSlides = [...slides];
 
-    let targetIndex = hoverableIndex.index;
+    const targetIndex = hoverableIndex.index;
 
     const temp = updatedSlides[draggableIndex];
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];
@@ -95,7 +95,7 @@ const Sidebar: FC = () => {
                         key={id}
                         data-index={index}
                         draggable={true}
-                        onClick={() => mediator.selectSlide(id)}
+                        onClick={() => mediator.selectSlide(slide)}
                         onDragStart={(event) => dragStart(event, index)}
                         onDragOver={(event) => onDragOver(event, index)}
                     >
@@ -113,7 +113,7 @@ const Sidebar: FC = () => {
                 )
             })}
 
-            <Typography className={s.text} onClick={() => mediator.addSlide()}>Новый слайд</Typography>
+            <Typography className={s.text} onClick={() => mediator.pushSlide()}>Новый слайд</Typography>
         </aside>
     );
 }

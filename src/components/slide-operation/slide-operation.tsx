@@ -1,5 +1,5 @@
-import { SlideOperation } from "@/entities/slides/types";
-import { FC, MouseEvent } from "react";
+import { SlideOperation } from '@/entities/slides/types';
+import { FC, MouseEvent } from 'react';
 
 interface IOperationProps {
     label: string;

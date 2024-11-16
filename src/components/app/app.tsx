@@ -1,15 +1,15 @@
-import { Header } from "@/components/header";
-import ToolsHeader from "@/components/header/tools-header";
-import Sidebar from "@/components/sidebar";
-import Notes from "@/components/notes";
-import { Slide } from "@/components/slide/slide";
-import { useCallback, useState, MouseEvent } from "react";
-import { ICreateSlideOptions, ISlide } from "@/entities/slides/types";
+import { Header } from '@/components/header';
+import ToolsHeader from '@/components/header/tools-header';
+import Sidebar from '@/components/sidebar';
+import Notes from '@/components/notes';
+import { Slide } from '@/components/slide/slide';
+import { useCallback, useState, MouseEvent } from 'react';
+import { ICreateSlideOptions, ISlide } from '@/entities/slides/types';
 import { v4 as uuidv4 } from 'uuid';
-import { SlideFactory } from "../../entities/slides/utils";
-import { Node, NodeType } from "@/types";
-import * as s from "./styled.module.scss";
-import { Template } from "@/entities/templates/types";
+import { SlideFactory } from '../../entities/slides/utils';
+import { Node, NodeType } from '@/types';
+import * as s from './styled.module.scss';
+import { Template } from '@/entities/templates/types';
 
 const initialSlideContent = SlideFactory.createSlide();
 

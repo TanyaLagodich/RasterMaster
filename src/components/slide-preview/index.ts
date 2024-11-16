@@ -1,1 +1,1 @@
-export { SlidePreview } from "./ui/slide-preview";
+export { SlidePreview } from './ui/slide-preview';

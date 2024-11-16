@@ -1,1 +1,1 @@
-export { Image } from "./ui/image";
+export { Image } from './ui/image';

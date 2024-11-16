@@ -34,6 +34,7 @@ export const SlideMediatorProvider = ({ children }) => {
     }
 
     mediatorRef.current.setSlidesList(slides);
+    mediatorRef.current.setSlide(currentSlide);
 
     useEffect(() => {
         localStorage.setItem('slides', JSON.stringify(slides));

@@ -1,7 +1,7 @@
-import { Node } from "@/types";
-import { Template } from "@/types";
-import { Text } from "@/components/text";
-import { DragEvent } from "react";
+import { Node } from '@/types';
+import { Template } from '@/types';
+import { Text } from '@/components/text';
+import { DragEvent } from 'react';
 import { NodeType,SlideTypes } from '@/types';
 
 export const templatesDict: Record<Template, string> = {

@@ -1,6 +1,6 @@
-import { FC, MouseEvent } from "react";
-import { Template } from "../templates/types";
-import { Node } from "@/types";
+import { FC, MouseEvent } from 'react';
+import { Template } from '../templates/types';
+import { Node } from '@/types';
 
 export type SlideOperation = (event: MouseEvent, id: string, Template: Template) => void;
 

@@ -15,20 +15,20 @@ export class ImageNodeStrategy implements NodeStrategy {
         height: 20,
       },
       zIndex: 1,
-      src: "",
+      src: '',
       style: {
-        borderRadius: "0px",
+        borderRadius: '0px',
         cover: false,
       },
     };
 
     // Открываем выбор файла и обновляем src после загрузки
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
 
     return new Promise((resolve) => {
-      fileInput.addEventListener("change", (e) => {
+      fileInput.addEventListener('change', (e) => {
         const file = (e.target as HTMLInputElement).files?.[0];
         if (file) {
           const reader = new FileReader();
@@ -36,7 +36,7 @@ export class ImageNodeStrategy implements NodeStrategy {
           reader.onload = (event) => {
             const result = event.target?.result;
 
-            if (typeof result === "string") {
+            if (typeof result === 'string') {
               imageNode.src = result;
             }
 

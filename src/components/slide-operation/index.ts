@@ -1,1 +1,1 @@
-export { default } from "./slide-operation";
+export { default } from './slide-operation';

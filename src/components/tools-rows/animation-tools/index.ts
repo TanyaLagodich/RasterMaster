@@ -1,1 +1,1 @@
-export { AnimationTools } from "./animation-tools";
+export { AnimationTools } from './animation-tools';

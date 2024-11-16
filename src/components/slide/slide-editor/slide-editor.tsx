@@ -1,15 +1,15 @@
-import { DragEvent as IDragEvent, useEffect, useRef } from "react";
-import { toPng } from "html-to-image";
-import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
+import { DragEvent as IDragEvent, useEffect, useRef } from 'react';
+import { toPng } from 'html-to-image';
+import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 
-import { Node as SlideNode, NodeType } from "@/types";
+import { Node as SlideNode, NodeType } from '@/types';
 
-import { Text } from "@/components/text";
-import { Image } from "@/components/image";
+import { Text } from '@/components/text';
+import { Image } from '@/components/image';
 
-import * as s from "./slide-editor.module.scss";
+import * as s from './slide-editor.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from '@/hooks/useDebounce';
 
 export function SlideEditor() {
   const { currentSlide } = useSlideMediator();
@@ -26,9 +26,9 @@ export function SlideEditor() {
 
     const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
 
-    useEffect(() => {
-        debouncedGeneratePreview();
-    }, [nodes]);
+    useEffect(() => debouncedGeneratePreview(), []);
+
+    useEffect(() => debouncedGeneratePreview(), [nodes]);
 
     useEffect(() => {
         function onClick(e: MouseEvent) {
@@ -50,14 +50,14 @@ export function SlideEditor() {
             });
         }
 
-        document.addEventListener("mousedown", onClick);
-        document.addEventListener("dragover", onDragOver);
-        window.addEventListener("resize", onResize);
+        document.addEventListener('mousedown', onClick);
+        document.addEventListener('dragover', onDragOver);
+        window.addEventListener('resize', onResize);
         onResize();
         return () => {
-            document.removeEventListener("mousedown", onClick);
-            document.removeEventListener("dragover", onDragOver);
-            window.removeEventListener("resize", onResize);
+            document.removeEventListener('mousedown', onClick);
+            document.removeEventListener('dragover', onDragOver);
+            window.removeEventListener('resize', onResize);
         };
     }, []);
 

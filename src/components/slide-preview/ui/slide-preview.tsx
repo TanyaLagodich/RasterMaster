@@ -14,12 +14,12 @@ export function SlidePreview ({
     {
       key: 1,
       label: 'Создать',
-      onClick: () => mediator.addSlide(),
+      onClick: () => mediator.createSlide(slide.id),
     },
     {
       key: 2,
       label: 'Дублировать',
-      onClick: () => mediator.duplicateSlide(slide),
+      onClick: () => mediator.duplicateSlide(slide.id, slide),
     },
     {
       key: 3,
