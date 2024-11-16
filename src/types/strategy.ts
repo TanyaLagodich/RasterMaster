@@ -4,3 +4,7 @@ export interface NodeStrategy {
   addNode(): Promise<Node> | Node;
   updateNode(node: Node, newData: any): Node;
 }
+
+export interface SlideStrategy {
+  generateNodes(): Node[];
+}
