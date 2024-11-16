@@ -9,6 +9,14 @@ interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
    selectedNode: Node | null;
 };
 
+export interface ISlideContent {
+    id: string;
+    preview: string,
+    nodes: Node[] | [],
+    editorDimensions: Dimensions,
+    zIndex: ZIndex,
+  }
+
 type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;

@@ -23,7 +23,8 @@ export class SlideMediator {
   }
 
   addSlide(type: SlideTypes = SlideTypes.EMPTY) {
-      const newSlide = SlideFactory.createSlide(type);
+      const newSlide = SlideFactory.createSlide(type)
+      console.log(this);
       this.setSlides(prev => [...prev, newSlide]);
       this.setCurrentSlide(newSlide);
   }

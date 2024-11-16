@@ -46,7 +46,7 @@ const Sidebar: FC = () => {
           setHoverableIndex({ index, position: 'after' });
         }
       }
-  
+
   }
 
   const drop = () => {
@@ -54,13 +54,13 @@ const Sidebar: FC = () => {
     if (draggableIndex === null || hoverableIndex === null) return;
 
     const updatedSlides = [...slides];
-  
+
     let targetIndex = hoverableIndex.index;
-  
+
     const temp = updatedSlides[draggableIndex];
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];
     updatedSlides[targetIndex] = temp;
-  
+
     mediator.setSlidesList(updatedSlides);
     setDraggableIndex(null);
     setHoverableIndex(null);
@@ -78,7 +78,7 @@ const Sidebar: FC = () => {
 
         setHoverableIndex(null);
     };
-  
+
     return (
         <aside
             ref={sidebarRef}

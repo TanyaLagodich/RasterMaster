@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 type Position = {
     x: number;
     y: number;
@@ -10,9 +12,11 @@ export type Dimensions = {
 
 type BaseNode = {
     id: string;
+    type: NodeType;
     positionPercent: Position;
     dimensionsPercent: Dimensions;
     zIndex: number;
+    style?: CSSProperties;
 };
 
 export enum NodeType {
@@ -56,5 +60,19 @@ export interface Slide {
 }
 
 export enum SlideTypes {
-    EMPTY = "empty",
+    DEFAULT = 'default',
+    EMPTY = 'empty',
+    TEXT_LEFT_TEXT_RIGHT = 'TextLeftTextRight',
+    TEXT_X4 = 'TextX4',
 }
+
+export type Template =
+    SlideTypes.DEFAULT |
+    SlideTypes.EMPTY |
+    SlideTypes.TEXT_LEFT_TEXT_RIGHT |
+    SlideTypes.TEXT_X4;
+    // 'Image',
+    // 'TextLeftImageRight',
+    // 'ImageLeftTextRight',
+    // 'ImageLeftImageRight',
+    // 'ImageX4'

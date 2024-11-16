@@ -8,7 +8,7 @@ import { AnimationTools } from "@/components/tools-rows/animation-tools";
 import * as s from "./styled.module.scss";
 import { memo } from "react";
 
-function ToolsHeader() {
+const ToolsHeader = () => {
     const { activeTab } = useAppContext();
 
     return (
