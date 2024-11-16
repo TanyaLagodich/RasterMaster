@@ -21,7 +21,7 @@ export class SlideMediator {
       this.setCurrentSlide(slide);
     }
   }
-  
+
   setSlidesList(slides: Slide[]) {
     if (this.setSlides && JSON.stringify(slides) !== JSON.stringify(this.slides)) {
       this.slides = slides;
@@ -49,8 +49,8 @@ export class SlideMediator {
   }
 
   pushSlide(type: SlideTypes = SlideTypes.EMPTY) {
-    const newSlide = SlideFactory.createSlide(type);
-    this.setSlides(prev => [...prev, newSlide]);
+    const newSlide = SlideFactory.createSlide(type)
+    console.log(this);this.setSlides(prev => [...prev, newSlide]);
     this.setCurrentSlide(newSlide);
   }
 
@@ -77,7 +77,7 @@ export class SlideMediator {
       for (let i = 0; i < this.slides.length; i += 1) {
         const slide = this.slides[i];
         const arr = this.slides;
-  
+
         if (i === arr.length - 1) {
             result = this.slides[i - 1];
             break;
@@ -100,7 +100,7 @@ export class SlideMediator {
   editCurrentSlide(slide: Partial<Slide>) {
     // TODO: need refactoring
     this.setCurrentSlide(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, slide));
-    this.setSlides(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));  
+    this.setSlides(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));
   }
 
   selectSlide(slide: Slide) {

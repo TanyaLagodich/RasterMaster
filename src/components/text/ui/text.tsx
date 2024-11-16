@@ -4,6 +4,7 @@ import {
     useEffect,
     useRef,
     useState,
+    ChangeEvent,
 } from "react";
 import clsx from "clsx";
 
@@ -18,6 +19,7 @@ type TextProps = {
     data: Text;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
+    isEditable?: boolean
 };
 
 const resizeDots = [
@@ -32,7 +34,7 @@ const resizeDots = [
 ];
 
 export function Text(props: TextProps) {
-    const { data, onDragStart, onDragEnd } = props;
+    const { data, onDragStart, onDragEnd, isEditable = true } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
     const { setSelectedNode, updateNode } = useSlideActionsContext();
@@ -44,8 +46,10 @@ export function Text(props: TextProps) {
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        setIsSelected(data.id === selectedNode?.id);
-    }, [data, selectedNode]);
+        if (isEditable) {
+            setIsSelected(data.id === selectedNode?.id);
+        }
+    }, [data, selectedNode, isEditable]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
         if (!textareaRef.current || !dotsRef.current) return;
@@ -154,6 +158,17 @@ export function Text(props: TextProps) {
         window.addEventListener("mouseup", handleMouseUp);
     }
 
+    const wrapperHandlers = {
+        onClick: () => setSelectedNode(data),
+        onDragStart: handleDragStart,
+        onDragEnd,
+    }
+
+    const textareaHandlers = {
+        onChange: (e: ChangeEvent<HTMLTextAreaElement>) =>
+            updateNode({ ...data, value: e.target.value }),
+    }
+
     return (
         <div
             ref={outerRef}
@@ -167,25 +182,23 @@ export function Text(props: TextProps) {
             className={clsx(s.root, {
                 [s._selected]: isSelected,
             })}
-            draggable
-            onDragStart={handleDragStart}
-            onDragEnd={onDragEnd}
-            onClick={() => setSelectedNode(data)}
+            draggable={isEditable}
+            {...(isEditable && {...wrapperHandlers})}
         >
             <textarea
                 ref={textareaRef}
                 className={s.textarea}
                 placeholder="Введите текст"
                 value={data.value}
-                onChange={(e) =>
-                    updateNode({ ...data, value: e.target.value })
-                }
+                {...(isEditable && {...textareaHandlers})}
+                {...(!!data.style && {style: data.style})}
+                onChange={(e) => textareaHandlers.onChange(e)}
             />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
-          {resizeDots.map((resizeDot, index) => (
-            <div
-                        key={index}
+                {resizeDots.map((resizeDot) => (
+                    <div
+                        key={resizeDot}
                         className={clsx(s.resizeDot, s[`_${resizeDot}`])}
                         onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
                     />

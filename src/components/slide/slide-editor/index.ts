@@ -1,1 +1,1 @@
-export { SlideEditor } from "./ui/slide-editor";
+export { SlideEditor } from "./slide-editor";

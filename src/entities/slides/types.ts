@@ -1,19 +1,24 @@
-import { FC, MouseEvent, RefObject } from "react";
+import { FC, MouseEvent } from "react";
+import { Template } from "../templates/types";
+import { Node } from "@/types";
 
-export type SlideOperation = (event: MouseEvent, id: string) => void;
+export type SlideOperation = (event: MouseEvent, id: string, Template: Template) => void;
 
 export interface ISlideProps {
-    type: 'big' | 'small';
     id: string;
+    view: 'big' | 'small';
+    nodes?: Node[];
     index?: number;
-    createSlide?: SlideOperation;
-    removeSlide?: SlideOperation;
-    duplicateSlide?: SlideOperation;
+    createSlide?: (event: MouseEvent, id: string, template: Template) => void;
+    removeSlide?: (event: MouseEvent, id: string) => void;
+    duplicateSlide?:(event: MouseEvent, id: string) => void;
     changeSlide?: (slide: ISlideNew) => void;
+    template?: Template; // To remove
 }
 
 export interface ISlide {
-    Component: FC<ISlideProps>;
+    Component?: FC<ISlideProps>;
+    content: Node[];
     id: string;
 }
 
@@ -24,7 +29,8 @@ export interface ICreateSlideOptions {
 export interface IOptionSlideOperations {
     key: string;
     label: string;
-    method?: SlideOperation;
+    method?: (...args: any[]) => void;
+    close?: boolean;
 }
 
 export interface ISlideNew {

@@ -26,9 +26,9 @@ export function SlideEditor() {
 
     const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
 
-    useEffect(() => {
-        debouncedGeneratePreview();
-    }, [nodes]);
+    useEffect(() => debouncedGeneratePreview(), []);
+
+    useEffect(() => debouncedGeneratePreview(), [nodes]);
 
     useEffect(() => {
         function onClick(e: MouseEvent) {

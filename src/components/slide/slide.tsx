@@ -5,9 +5,38 @@ import SlideOperations from "../slide-operations";
 import { SlideEditor } from "./slide-editor";
 import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
-import { Card, Space } from 'antd';
-import { SlideEmpty } from './slide-empty';
-import { useSlideMediator  } from '@/hooks/useSlideMediatorContext';
+import EditIcon from '@/assets/edittt.svg';
+import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
+import { SlideEmpty } from "./slide-empty";
+
+// export const Slide: FC<ISlideProps> = ({
+//     view,
+//     id,
+//     nodes = [],
+//     index,
+//     createSlide,
+//     removeSlide,
+//     duplicateSlide,
+// }) => {
+//     const isBig = view === 'big';
+//     const isSmall = !isBig;
+
+//     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
+//     const [areTemplatesShown, setAreTemplatesShown] = useState(false);
+
+//     console.log(areTemplatesShown)
+
+//     const ref = useRef();
+
+//     const toggleOptions = (event: MouseEvent) => {
+//         event.stopPropagation();
+//         setAreOptionsOpen((prev) => !prev);
+//     };
+
+//     const closeOptions = () => {
+//         console.log('call closeOptions');
+//         setAreOptionsOpen(false);
+//     };
 
 export const Slide: FC = () => {
   const { currentSlide } = useSlideMediator();
@@ -15,7 +44,7 @@ export const Slide: FC = () => {
     if (!currentSlide) {
         return <SlideEmpty />;
     }
-    
+
     return (
       <div className={s.root}>
         <p style={{zIndex: 10000}}>{currentSlide.id.slice(0, 5)}</p>

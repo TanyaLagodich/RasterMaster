@@ -35,7 +35,6 @@ export function SlidePreview ({
       cover={slide.preview ? <img alt="preview" src={slide.preview} height="100%" /> : ''}
       hoverable
     >
-      <p style={{zIndex: 10000}}>{slide.id.slice(0, 5)}</p>
       {isActive && <Dropdown menu={{ items }} placement="bottomLeft">
         <Button
           className={s.button}

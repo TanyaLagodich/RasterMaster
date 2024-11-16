@@ -5,8 +5,9 @@ interface IOperationProps {
     label: string;
     id: string;
     className: string;
-    method: SlideOperation;
+    method: (...args: any[]) => void;
     onClose: () => void;
+    close?: boolean
 }
 
 const OperationItem: FC<IOperationProps> = ({
@@ -15,11 +16,19 @@ const OperationItem: FC<IOperationProps> = ({
     id,
     method,
     onClose,
+    close = true,
 }) => {
     const onClick = (event: MouseEvent) => {
         method(event, id);
-        onClose();
+        if (close) {
+            console.log('Here');
+            
+            // onClose();
+        }
     }
+
+    // console.log(close);
+    
     return (
         <div onClick={onClick} className={className}>
             {label}

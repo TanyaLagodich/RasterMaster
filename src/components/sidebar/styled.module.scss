@@ -1,6 +1,7 @@
 .root {
     width: 340px;
     height: 100%;
+    box-sizing: border-box;
     background-color: #fff;
     border-right: 1px solid #ccc;
     background-color: var(--common-background);
