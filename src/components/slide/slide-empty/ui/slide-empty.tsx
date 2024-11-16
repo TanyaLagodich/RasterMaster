@@ -8,7 +8,7 @@ export function SlideEmpty() {
   return (
     <Card
       className={s.root}
-      onClick={() => mediator.addSlide()}
+      onClick={() => mediator.pushSlide()}
     >
       <Typography.Title level={2}>
         Щелкните, чтобы добавить первый слайд

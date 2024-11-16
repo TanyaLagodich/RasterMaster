@@ -14,12 +14,12 @@ export function SlidePreview ({
     {
       key: 1,
       label: 'Создать',
-      onClick: () => mediator.addSlide(),
+      onClick: () => mediator.createSlide(slide.id),
     },
     {
       key: 2,
       label: 'Дублировать',
-      onClick: () => mediator.duplicateSlide(slide),
+      onClick: () => mediator.duplicateSlide(slide.id, slide),
     },
     {
       key: 3,
@@ -35,6 +35,7 @@ export function SlidePreview ({
       cover={slide.preview ? <img alt="preview" src={slide.preview} height="100%" /> : ''}
       hoverable
     >
+      <p style={{zIndex: 10000}}>{slide.id.slice(0, 5)}</p>
       {isActive && <Dropdown menu={{ items }} placement="bottomLeft">
         <Button
           className={s.button}

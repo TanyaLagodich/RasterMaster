@@ -95,7 +95,7 @@ const Sidebar: FC = () => {
                         key={id}
                         data-index={index}
                         draggable={true}
-                        onClick={() => mediator.selectSlide(id)}
+                        onClick={() => mediator.selectSlide(slide)}
                         onDragStart={(event) => dragStart(event, index)}
                         onDragOver={(event) => onDragOver(event, index)}
                     >
@@ -113,7 +113,7 @@ const Sidebar: FC = () => {
                 )
             })}
 
-            <Typography className={s.text} onClick={() => mediator.addSlide()}>Новый слайд</Typography>
+            <Typography className={s.text} onClick={() => mediator.pushSlide()}>Новый слайд</Typography>
         </aside>
     );
 }
