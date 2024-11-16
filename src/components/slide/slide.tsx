@@ -1,13 +1,8 @@
-import { FC, MouseEvent, useEffect, useRef, useState } from "react";
-import * as s from "./styled.module.scss";
-import { IOptionSlideOperations, ISlideProps } from "../../entities/slides/types";
-import SlideOperations from "../slide-operations";
-import { SlideEditor } from "./slide-editor";
-import clsx from "clsx";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
-import EditIcon from '@/assets/edittt.svg';
-import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
-import { SlideEmpty } from "./slide-empty";
+import { FC } from 'react';
+import * as s from './styled.module.scss';
+import { SlideEditor } from './slide-editor';
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import { SlideEmpty } from './slide-empty';
 
 // export const Slide: FC<ISlideProps> = ({
 //     view,

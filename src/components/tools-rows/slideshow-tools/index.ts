@@ -1,1 +1,1 @@
-export { SlideshowTools } from "./slideshow-tools";
+export { SlideshowTools } from './slideshow-tools';

@@ -4,7 +4,9 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
-        "start": "webpack serve"
+        "start": "webpack serve",
+        "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+        "lint:fix": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix"
     },
     "author": "",
     "license": "ISC",
@@ -31,8 +33,14 @@
         "@types/react-dom": "^18.3.0",
         "@types/webpack": "^5.28.5",
         "@types/webpack-dev-server": "^4.7.1",
+        "@typescript-eslint/eslint-plugin": "^8.14.0",
         "clsx": "^2.1.1",
         "css-loader": "^7.1.2",
+        "eslint": "^8.57.1",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-refresh": "^0.4.14",
         "html-webpack-plugin": "^5.6.0",
         "mini-css-extract-plugin": "^2.9.1",
         "prettier": "^3.3.3",

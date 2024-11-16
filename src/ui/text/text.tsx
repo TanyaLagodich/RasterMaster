@@ -1,5 +1,5 @@
-import { FC, ReactNode, Component } from "react";
-import * as s from "./styled.module.scss";
+import { FC, Component } from 'react';
+import * as s from './styled.module.scss';
 
 interface IProps extends HTMLParagraphElement {
     type?: 'ordinary' | 'header';

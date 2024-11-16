@@ -1,4 +1,4 @@
-import { Template } from "../templates/types"
+import { Template } from '../templates/types'
 import { v4 as uuidv4 } from 'uuid';
 import { Node, NodeType } from '@/types';
 

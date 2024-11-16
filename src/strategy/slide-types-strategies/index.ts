@@ -1,5 +1,5 @@
-import { DefaultSlideStrategy } from "./default-slide-strategy";
-import { TextLeftTextRightSlideStrategy } from "./text-left-text-right-strategy";
+import { DefaultSlideStrategy } from './default-slide-strategy';
+import { TextLeftTextRightSlideStrategy } from './text-left-text-right-strategy';
 import { TextX4SlideStrategy } from './text-x4-strategy';
 import { SlideTypes, SlideStrategy } from '@/types';
 

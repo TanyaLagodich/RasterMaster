@@ -1,11 +1,11 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo, useState } from 'react';
 
 export enum TAB {
-    FILE = "Файл",
-    INSERTION = "Вставка",
-    DECORATION = "Оформление",
-    SLIDESHOW = "Слайд-шоу",
-    ANIMATION = "Анимации",
+    FILE = 'Файл',
+    INSERTION = 'Вставка',
+    DECORATION = 'Оформление',
+    SLIDESHOW = 'Слайд-шоу',
+    ANIMATION = 'Анимации',
 }
 
 type AppContextType = {

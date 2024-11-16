@@ -5,15 +5,15 @@ import {
     useRef,
     useState,
     ChangeEvent,
-} from "react";
-import clsx from "clsx";
+} from 'react';
+import clsx from 'clsx';
 
-import { useSlideContext } from "@/hooks/useSlideContext";
-import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
+import { useSlideContext } from '@/hooks/useSlideContext';
+import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Text } from '@/types';
-import { isInsideElement } from "@/utils/sizes";
+import { isInsideElement } from '@/utils/sizes';
 
-import * as s from "./text.module.scss";
+import * as s from './text.module.scss';
 
 type TextProps = {
     data: Text;
@@ -23,14 +23,14 @@ type TextProps = {
 };
 
 const resizeDots = [
-    "topLeft",
-    "topMiddle",
-    "topRight",
-    "rightMiddle",
-    "rightBottom",
-    "bottomMiddle",
-    "bottomLeft",
-    "leftMiddle",
+    'topLeft',
+    'topMiddle',
+    'topRight',
+    'rightMiddle',
+    'rightBottom',
+    'bottomMiddle',
+    'bottomLeft',
+    'leftMiddle',
 ];
 
 export function Text(props: TextProps) {
@@ -103,37 +103,37 @@ export function Text(props: TextProps) {
                 ((endY - startY) / editorDimensions.height) * 100;
 
             switch (corner) {
-                case "topLeft":
+                case 'topLeft':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionX = startXPercent + endXPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "topMiddle":
+                case 'topMiddle':
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "topRight":
+                case 'topRight':
                     finalWidth = startWidthPercent + endWidthPercent;
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "rightMiddle":
+                case 'rightMiddle':
                     finalWidth = startWidthPercent + endWidthPercent;
                     break;
-                case "rightBottom":
+                case 'rightBottom':
                     finalWidth = startWidthPercent + endWidthPercent;
                     finalHeight = startHeightPercent + endHeightPercent;
                     break;
-                case "bottomMiddle":
+                case 'bottomMiddle':
                     finalHeight = startHeightPercent + endHeightPercent;
                     break;
-                case "bottomLeft":
+                case 'bottomLeft':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalHeight = startHeightPercent + endHeightPercent;
                     finalPositionX = startXPercent + endXPercent;
                     break;
-                case "leftMiddle":
+                case 'leftMiddle':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalPositionX = startXPercent + endXPercent;
                     break;
@@ -150,12 +150,12 @@ export function Text(props: TextProps) {
         }
 
         function handleMouseUp() {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
         }
 
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
     }
 
     const wrapperHandlers = {
@@ -173,10 +173,10 @@ export function Text(props: TextProps) {
         <div
             ref={outerRef}
             style={{
-                width: data.dimensionsPercent.width + "%",
-                height: data.dimensionsPercent.height + "%",
-                left: data.positionPercent.x + "%",
-                top: data.positionPercent.y + "%",
+                width: data.dimensionsPercent.width + '%',
+                height: data.dimensionsPercent.height + '%',
+                left: data.positionPercent.x + '%',
+                top: data.positionPercent.y + '%',
                 zIndex: isSelected ? zIndex.max + 1 : data.zIndex,
             }}
             className={clsx(s.root, {

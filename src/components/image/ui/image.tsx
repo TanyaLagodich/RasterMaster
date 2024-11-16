@@ -4,17 +4,17 @@ import {
     useEffect,
     useRef,
     useState,
-} from "react";
-import { Checkbox, InputNumber, Select } from "antd";
-import clsx from "clsx";
+} from 'react';
+import { Checkbox, InputNumber, Select } from 'antd';
+import clsx from 'clsx';
 
-import { useSlideContext } from "@/hooks/useSlideContext";
-import { useSlideActionsContext } from "@/hooks/useSlideActionsContext";
-import { Image } from "@/types";
-import { isInsideElement } from "@/utils/sizes";
+import { useSlideContext } from '@/hooks/useSlideContext';
+import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
+import { Image } from '@/types';
+import { isInsideElement } from '@/utils/sizes';
 
-import * as s from "./image.module.scss";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
+import * as s from './image.module.scss';
+import { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 type ImageProps = {
     data: Image;
@@ -23,14 +23,14 @@ type ImageProps = {
 };
 
 const resizeDots = [
-    "topLeft",
-    "topMiddle",
-    "topRight",
-    "rightMiddle",
-    "rightBottom",
-    "bottomMiddle",
-    "bottomLeft",
-    "leftMiddle",
+    'topLeft',
+    'topMiddle',
+    'topRight',
+    'rightMiddle',
+    'rightBottom',
+    'bottomMiddle',
+    'bottomLeft',
+    'leftMiddle',
 ];
 
 export function Image(props: ImageProps) {
@@ -100,37 +100,37 @@ export function Image(props: ImageProps) {
                 ((endY - startY) / editorDimensions.height) * 100;
 
             switch (corner) {
-                case "topLeft":
+                case 'topLeft':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionX = startXPercent + endXPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "topMiddle":
+                case 'topMiddle':
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "topRight":
+                case 'topRight':
                     finalWidth = startWidthPercent + endWidthPercent;
                     finalHeight = startHeightPercent - endHeightPercent;
                     finalPositionY = startYPercent + endYPercent;
                     break;
-                case "rightMiddle":
+                case 'rightMiddle':
                     finalWidth = startWidthPercent + endWidthPercent;
                     break;
-                case "rightBottom":
+                case 'rightBottom':
                     finalWidth = startWidthPercent + endWidthPercent;
                     finalHeight = startHeightPercent + endHeightPercent;
                     break;
-                case "bottomMiddle":
+                case 'bottomMiddle':
                     finalHeight = startHeightPercent + endHeightPercent;
                     break;
-                case "bottomLeft":
+                case 'bottomLeft':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalHeight = startHeightPercent + endHeightPercent;
                     finalPositionX = startXPercent + endXPercent;
                     break;
-                case "leftMiddle":
+                case 'leftMiddle':
                     finalWidth = startWidthPercent - endWidthPercent;
                     finalPositionX = startXPercent + endXPercent;
                     break;
@@ -147,17 +147,17 @@ export function Image(props: ImageProps) {
         }
 
         function handleMouseUp() {
-            window.removeEventListener("mousemove", handleMouseMove);
-            window.removeEventListener("mouseup", handleMouseUp);
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
         }
 
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
     }
 
     function handleBRNumberChange(value: number) {
-        const digits = value ? String(value) : "0";
-        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? "px";
+        const digits = value ? String(value) : '0';
+        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? 'px';
 
         updateNode({
             ...data,
@@ -169,7 +169,7 @@ export function Image(props: ImageProps) {
     }
 
     function handleBRUnitChange(unit: string) {
-        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? "0";
+        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? '0';
 
         updateNode({
             ...data,
@@ -194,10 +194,10 @@ export function Image(props: ImageProps) {
         <div
             ref={outerRef}
             style={{
-                width: data.dimensionsPercent.width + "%",
-                height: data.dimensionsPercent.height + "%",
-                left: data.positionPercent.x + "%",
-                top: data.positionPercent.y + "%",
+                width: data.dimensionsPercent.width + '%',
+                height: data.dimensionsPercent.height + '%',
+                left: data.positionPercent.x + '%',
+                top: data.positionPercent.y + '%',
                 zIndex: isSelected ? zIndex.max + 1 : data.zIndex,
             }}
             className={clsx(s.root, {
@@ -230,15 +230,15 @@ export function Image(props: ImageProps) {
             <div ref={stylerRef} className={s.styler}>
                 <InputNumber
                     defaultValue={0}
-                    style={{ width: "66px" }}
+                    style={{ width: '66px' }}
                     onChange={handleBRNumberChange}
                 />
                 <Select
                     defaultValue="px"
-                    style={{ width: "60px" }}
+                    style={{ width: '60px' }}
                     options={[
-                        { value: "px", label: "px" },
-                        { value: "%", label: "%" },
+                        { value: 'px', label: 'px' },
+                        { value: '%', label: '%' },
                     ]}
                     onChange={handleBRUnitChange}
                 />

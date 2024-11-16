@@ -1,1 +1,1 @@
-export { SlideEditor } from "./slide-editor";
+export { SlideEditor } from './slide-editor';

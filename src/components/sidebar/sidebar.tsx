@@ -1,5 +1,5 @@
-import { memo, FC, useState, useRef } from "react";
-import * as s from "./styled.module.scss";
+import { memo, FC, useState, useRef } from 'react';
+import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { Divider, Typography } from 'antd';
 import { SlidePreview } from '@/components/slide-preview';
@@ -55,7 +55,7 @@ const Sidebar: FC = () => {
 
     const updatedSlides = [...slides];
 
-    let targetIndex = hoverableIndex.index;
+    const targetIndex = hoverableIndex.index;
 
     const temp = updatedSlides[draggableIndex];
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];

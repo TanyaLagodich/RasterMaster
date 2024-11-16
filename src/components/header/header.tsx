@@ -1,30 +1,30 @@
-import { Button, Dropdown, Space } from "antd";
-import type { MenuProps } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { TAB } from "@/context/appContext";
-import { useAppActionsContext } from "@/hooks/useAppActionsContext";
-import { useSlideContext } from "@/hooks/useSlideContext";
-import { useAppContext } from "@/hooks/useAppContext";
+import { Button, Dropdown, Space } from 'antd';
+import type { MenuProps } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { TAB } from '@/context/appContext';
+import { useAppActionsContext } from '@/hooks/useAppActionsContext';
+import { useSlideContext } from '@/hooks/useSlideContext';
+import { useAppContext } from '@/hooks/useAppContext';
 import { NodeType } from '@/types';
 
-import * as s from "./styled.module.scss";
+import * as s from './styled.module.scss';
 
 export function Header() {
     const { activeTab } = useAppContext();
     const { setActiveTab } = useAppActionsContext();
     const { addNode } = useSlideContext();
 
-    const fileMenuItems: MenuProps["items"] = [
-        { key: "new", label: "Создать" },
-        { key: "open", label: "Экспорт в PDF" },
-        { key: "save", label: "Пригласить" },
+    const fileMenuItems: MenuProps['items'] = [
+        { key: 'new', label: 'Создать' },
+        { key: 'open', label: 'Экспорт в PDF' },
+        { key: 'save', label: 'Пригласить' },
     ];
 
-    const insertionMenuItems: MenuProps["items"] = [
-        { key: "text", label: "Текст", onClick: () => addNode(NodeType.TEXT) },
-        { key: "image", label: "Изображение", onClick: () => addNode(NodeType.IMAGE) },
-        { key: "table", label: "Таблица" },
-        { key: "figure", label: "Фигура" },
+    const insertionMenuItems: MenuProps['items'] = [
+        { key: 'text', label: 'Текст', onClick: () => addNode(NodeType.TEXT) },
+        { key: 'image', label: 'Изображение', onClick: () => addNode(NodeType.IMAGE) },
+        { key: 'table', label: 'Таблица' },
+        { key: 'figure', label: 'Фигура' },
     ];
 
     return (
@@ -62,7 +62,7 @@ export function Header() {
                         .map((tab: keyof typeof TAB) => (
                             <Button
                                 type={
-                                    activeTab === TAB[tab] ? "primary" : "text"
+                                    activeTab === TAB[tab] ? 'primary' : 'text'
                                 }
                                 onClick={() => setActiveTab(TAB[tab])}
                                 key={tab}

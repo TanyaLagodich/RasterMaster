@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { Button, ColorPicker, Space } from "antd";
+import { Button, ColorPicker, Space } from 'antd';
 import type { ColorPickerProps, GetProp } from 'antd';
-import { BgColorsOutlined } from "@ant-design/icons";
+import { BgColorsOutlined } from '@ant-design/icons';
 
 type Color = Extract<GetProp<ColorPickerProps, 'value'>, string | { cleared: any }>;
 
@@ -42,4 +42,4 @@ export function BackgroundPicker() {
             </Space>
         </ColorPicker>
     );
-};
+}
