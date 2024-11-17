@@ -30,7 +30,7 @@ export function exportToHtml(slides: Slide[]) {
                       border-radius: ${node.style?.borderRadius || '0'};" />`;
                     break;
 
-                case 'iframe':
+                case NodeType.IFRAME:
                     slideHTML += `<iframe src="${node.src}" class="iframe-node" style="
                       position: absolute; 
                       top: ${node.positionPercent.y}%; 
