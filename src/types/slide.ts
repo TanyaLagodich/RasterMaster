@@ -77,19 +77,3 @@ export enum Template {
     TEXT_LEFT_FRAME_RIGHT = 'textLeftFrameRight',
     IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
-
-export class SlidesListItem {
-    value: Slide;
-    next: SlidesListItem | null;
-    prev: SlidesListItem | null;
-
-    constructor(value, next = null, prev = null) {
-        this.value = value;
-        this.next = next;
-        this.prev = prev;
-    }
-}
-
-export class SlidesList {
-    value: Slide;
-}
