@@ -1,4 +1,5 @@
-import { Button, Dropdown, Space } from 'antd';
+import { useState } from 'react';
+import { Button, Dropdown, Input, Modal, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { TAB } from '@/context/appContext';
@@ -14,6 +15,19 @@ export function Header() {
     const { setActiveTab } = useAppActionsContext();
     const { addNode } = useSlideContext();
 
+    const [isIframeModal, setIsIframeModal] = useState(false);
+    const [iframeUrl, setIframeUrl] = useState('');
+
+    function closeIframeModal() {
+        setIsIframeModal(false);
+    }
+
+    function submitIframeUrl() {
+        addNode(NodeType.IFRAME, { src: iframeUrl });
+        setIframeUrl('');
+        closeIframeModal();
+    }
+
     const fileMenuItems: MenuProps['items'] = [
         { key: 'new', label: 'Создать' },
         { key: 'open', label: 'Экспорт в PDF' },
@@ -22,56 +36,81 @@ export function Header() {
 
     const insertionMenuItems: MenuProps['items'] = [
         { key: 'text', label: 'Текст', onClick: () => addNode(NodeType.TEXT) },
-        { key: 'image', label: 'Изображение', onClick: () => addNode(NodeType.IMAGE) },
-        { key: 'table', label: 'Таблица' },
-        { key: 'figure', label: 'Фигура' },
+        {
+            key: 'image',
+            label: 'Изображение',
+            onClick: () => addNode(NodeType.IMAGE),
+        },
+        {
+            key: 'iframe',
+            label: 'iframe',
+            onClick: () => setIsIframeModal(true),
+        },
     ];
 
     return (
-        <nav className={s.root}>
-            <ul className={s.tabs}>
-                <Space>
-                    <Dropdown
-                        menu={{ items: fileMenuItems }}
-                        placement="bottomLeft"
-                        arrow={{ pointAtCenter: true }}
-                    >
-                        <Button type="text">
-                            <Space>
-                                {TAB.FILE}
-                                <DownOutlined />
-                            </Space>
-                        </Button>
-                    </Dropdown>
-
-                    <Dropdown
-                        menu={{ items: insertionMenuItems }}
-                        placement="bottomLeft"
-                        arrow={{ pointAtCenter: true }}
-                    >
-                        <Button type="text">
-                            <Space>
-                                {TAB.INSERTION}
-                                <DownOutlined />
-                            </Space>
-                        </Button>
-                    </Dropdown>
-
-                    {Object.keys(TAB)
-                        .slice(2)
-                        .map((tab: keyof typeof TAB) => (
-                            <Button
-                                type={
-                                    activeTab === TAB[tab] ? 'primary' : 'text'
-                                }
-                                onClick={() => setActiveTab(TAB[tab])}
-                                key={tab}
-                            >
-                                {TAB[tab]}
+        <>
+            <nav className={s.root}>
+                <ul className={s.tabs}>
+                    <Space>
+                        <Dropdown
+                            menu={{ items: fileMenuItems }}
+                            placement="bottomLeft"
+                            arrow={{ pointAtCenter: true }}
+                        >
+                            <Button type="text">
+                                <Space>
+                                    {TAB.FILE}
+                                    <DownOutlined />
+                                </Space>
                             </Button>
-                        ))}
-                </Space>
-            </ul>
-        </nav>
+                        </Dropdown>
+
+                        <Dropdown
+                            menu={{ items: insertionMenuItems }}
+                            placement="bottomLeft"
+                            arrow={{ pointAtCenter: true }}
+                        >
+                            <Button type="text">
+                                <Space>
+                                    {TAB.INSERTION}
+                                    <DownOutlined />
+                                </Space>
+                            </Button>
+                        </Dropdown>
+
+                        {Object.keys(TAB)
+                            .slice(2)
+                            .map((tab: keyof typeof TAB) => (
+                                <Button
+                                    type={
+                                        activeTab === TAB[tab]
+                                            ? 'primary'
+                                            : 'text'
+                                    }
+                                    onClick={() => setActiveTab(TAB[tab])}
+                                    key={tab}
+                                >
+                                    {TAB[tab]}
+                                </Button>
+                            ))}
+                    </Space>
+                </ul>
+            </nav>
+
+            <Modal
+                open={isIframeModal}
+                onOk={submitIframeUrl}
+                onCancel={closeIframeModal}
+                onClose={closeIframeModal}
+            >
+                <Input
+                    className={s.iframeInput}
+                    placeholder="Введите url"
+                    value={iframeUrl}
+                    onChange={(e) => setIframeUrl(e.target.value)}
+                />
+            </Modal>
+        </>
     );
 }

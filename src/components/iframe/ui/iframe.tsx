@@ -5,19 +5,17 @@ import {
     useRef,
     useState,
 } from 'react';
-import { Checkbox, InputNumber, Select } from 'antd';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import clsx from 'clsx';
 
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { Image } from '@/types';
+import { IFrame } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
 
-import * as s from './image.module.scss';
+import * as s from './iframe.module.scss';
 
-type ImageProps = {
-    data: Image;
+type IFrameProps = {
+    data: IFrame;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
 };
@@ -33,7 +31,7 @@ const resizeDots = [
     'leftMiddle',
 ];
 
-export function Image(props: ImageProps) {
+export function IFrame(props: IFrameProps) {
     const { data, onDragStart, onDragEnd } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
@@ -155,41 +153,6 @@ export function Image(props: ImageProps) {
         window.addEventListener('mouseup', handleMouseUp);
     }
 
-    function handleBRNumberChange(value: number) {
-        const digits = value ? String(value) : '0';
-        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? 'px';
-
-        updateNode({
-            ...data,
-            style: {
-                ...data.style,
-                borderRadius: digits + unit,
-            },
-        });
-    }
-
-    function handleBRUnitChange(unit: string) {
-        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? '0';
-
-        updateNode({
-            ...data,
-            style: {
-                ...data.style,
-                borderRadius: digits + unit,
-            },
-        });
-    }
-
-    function handleCoverChange(e: CheckboxChangeEvent) {
-        updateNode({
-            ...data,
-            style: {
-                ...data.style,
-                cover: e.target.checked,
-            },
-        });
-    }
-
     return (
         <div
             ref={outerRef}
@@ -202,20 +165,13 @@ export function Image(props: ImageProps) {
             }}
             className={clsx(s.root, {
                 [s._selected]: isSelected,
-                [s._cover]: data.style.cover,
             })}
             onClick={() => setSelectedNode(data)}
             draggable
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >
-            <img
-                className={s.image}
-                style={{
-                    borderRadius: data.style.borderRadius,
-                }}
-                src={data.src}
-            />
+            <iframe className={s.iframe} src={data.src} title="iframe" />
 
             <div ref={dotsRef} className={s.resizeDotsContainer}>
                 {resizeDots.map((resizeDot) => (
@@ -225,26 +181,6 @@ export function Image(props: ImageProps) {
                         onMouseDown={(e) => handleDotMouseDown(e, resizeDot)}
                     />
                 ))}
-            </div>
-
-            <div ref={stylerRef} className={s.styler}>
-                <InputNumber
-                    defaultValue={0}
-                    style={{ width: '66px' }}
-                    onChange={handleBRNumberChange}
-                />
-                <Select
-                    defaultValue="px"
-                    style={{ width: '60px' }}
-                    options={[
-                        { value: 'px', label: 'px' },
-                        { value: '%', label: '%' },
-                    ]}
-                    onChange={handleBRUnitChange}
-                />
-                <Checkbox onChange={handleCoverChange}>
-                    Пропорционально
-                </Checkbox>
             </div>
         </div>
     );

@@ -5,16 +5,16 @@ import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
-   selectedNode: Node | null;
+    selectedNode: Node | null;
 }
 
 export interface ISlideContent {
     id: string;
-    preview: string,
-    nodes: Node[] | [],
-    editorDimensions: Dimensions,
-    zIndex: ZIndex,
-  }
+    preview: string;
+    nodes: Node[] | [];
+    editorDimensions: Dimensions;
+    zIndex: ZIndex;
+}
 
 type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
@@ -44,11 +44,14 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         setCurrNode(node);
     }
 
-    async function addNode(type: NodeType): Promise<Node> {
-      const newNode = await currentSlide.addNode(type);
-      mediator.editCurrentSlide(currentSlide);
-      return newNode;
-  }
+    async function addNode(
+        type: NodeType,
+        params?: Partial<Node>
+    ): Promise<Node> {
+        const newNode = await currentSlide.addNode(type, params);
+        mediator.editCurrentSlide(currentSlide);
+        return newNode;
+    }
 
     function updateNode(newData: Node) {
         currentSlide.updateNode(newData);
@@ -92,12 +95,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             updateNode,
             updatePreview,
         }),
-        [
-            setEditorDimensions,
-            setSelectedNode,
-            updateNode,
-            updatePreview,
-        ]
+        [setEditorDimensions, setSelectedNode, updateNode, updatePreview]
     );
 
     function updatePreview(preview: string) {
