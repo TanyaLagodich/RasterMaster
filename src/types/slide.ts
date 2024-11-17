@@ -22,6 +22,7 @@ type BaseNode = {
 export enum NodeType {
     TEXT = 'text',
     IMAGE = 'image',
+    IFRAME = 'iframe',
 }
 
 export type ZIndex = {
@@ -45,18 +46,23 @@ export type Image = {
     style: ImageStyle;
 } & BaseNode;
 
-export type Node = Text | Image;
+export type IFrame = {
+    type: NodeType.IFRAME;
+    src: string;
+} & BaseNode;
+
+export type Node = Text | Image | IFrame;
 
 export interface Slide {
-  id: string;
-  preview: string;
-  nodes: Node[] | [];
-  editorDimensions: Dimensions;
-  zIndex: ZIndex;
-  addNode: (type: NodeType) => Promise<Node>;
-  updateNode: (node: Node) => void;
-  update: (newData: Partial<Slide>) => void;
-  clone: () => Slide;
+    id: string;
+    preview: string;
+    nodes: Node[] | [];
+    editorDimensions: Dimensions;
+    zIndex: ZIndex;
+    addNode: (type: NodeType, params?: Partial<Node>) => Promise<Node>;
+    updateNode: (node: Node) => void;
+    update: (newData: Partial<Slide>) => void;
+    clone: () => Slide;
 }
 
 export enum SlideTypes {
@@ -67,12 +73,12 @@ export enum SlideTypes {
 }
 
 export type Template =
-    SlideTypes.DEFAULT |
-    SlideTypes.EMPTY |
-    SlideTypes.TEXT_LEFT_TEXT_RIGHT |
-    SlideTypes.TEXT_X4;
-    // 'Image',
-    // 'TextLeftImageRight',
-    // 'ImageLeftTextRight',
-    // 'ImageLeftImageRight',
-    // 'ImageX4'
+    | SlideTypes.DEFAULT
+    | SlideTypes.EMPTY
+    | SlideTypes.TEXT_LEFT_TEXT_RIGHT
+    | SlideTypes.TEXT_X4;
+// 'Image',
+// 'TextLeftImageRight',
+// 'ImageLeftTextRight',
+// 'ImageLeftImageRight',
+// 'ImageX4'

@@ -10,16 +10,13 @@ import { Image } from '@/components/image';
 import * as s from './slide-editor.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
+import { IFrame } from '@/components/iframe';
 
 export function SlideEditor() {
-  const { currentSlide } = useSlideMediator();
-  const { nodes } = currentSlide;
-    const {
-        setEditorDimensions,
-        setSelectedNode,
-        updateNode,
-        updatePreview,
-    } = useSlideActionsContext();
+    const { currentSlide } = useSlideMediator();
+    const { nodes } = currentSlide;
+    const { setEditorDimensions, setSelectedNode, updateNode, updatePreview } =
+        useSlideActionsContext();
 
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
@@ -101,9 +98,7 @@ export function SlideEditor() {
                     <Text
                         key={node.id}
                         data={node}
-                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
-                            dragStartHandler(e)
-                        }
+                        onDragStart={dragStartHandler}
                         onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
                             dragEndHandler(e, node);
                         }}
@@ -111,11 +106,17 @@ export function SlideEditor() {
                 ) : node.type === NodeType.IMAGE ? (
                     <Image
                         data={node}
-                        onDragStart={(e: IDragEvent<HTMLDivElement>) =>
-                        dragStartHandler(e)
-                        }
+                        onDragStart={dragStartHandler}
                         onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                        dragEndHandler(e, node);
+                            dragEndHandler(e, node);
+                        }}
+                    />
+                ) : node.type === NodeType.IFRAME ? (
+                    <IFrame
+                        data={node}
+                        onDragStart={dragStartHandler}
+                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
+                            dragEndHandler(e, node);
                         }}
                     />
                 ) : (
