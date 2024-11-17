@@ -1,8 +1,8 @@
 import { Card, Dropdown, Button, type MenuProps } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons'
 import { Slide } from '@/types';
-import * as s from './slide-preview.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import * as s from './slide-preview.module.scss';
 
 export function SlidePreview ({
     slide,

@@ -65,20 +65,31 @@ export interface Slide {
     clone: () => Slide;
 }
 
-export enum SlideTypes {
+export enum Template {
     DEFAULT = 'default',
     EMPTY = 'empty',
-    TEXT_LEFT_TEXT_RIGHT = 'TextLeftTextRight',
-    TEXT_X4 = 'TextX4',
+    TEXT_LEFT_TEXT_RIGHT = 'textLeftTextRight',
+    TEXT_LEFT_IMAGE_RIGHT = 'textLeftImageRight',
+    IMAGE_LEFT_TEXT_RIGHT = 'imageLeftTextRight',
+    IMAGE_LEFT_IMAGE_RIGHT = 'imageLeftImageRight',
+    TEXT_X4 = 'textX4',
+    IMAGE_X4 = 'imageX4',
+    TEXT_LEFT_FRAME_RIGHT = 'textLeftFrameRight',
+    IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
 
-export type Template =
-    | SlideTypes.DEFAULT
-    | SlideTypes.EMPTY
-    | SlideTypes.TEXT_LEFT_TEXT_RIGHT
-    | SlideTypes.TEXT_X4;
-// 'Image',
-// 'TextLeftImageRight',
-// 'ImageLeftTextRight',
-// 'ImageLeftImageRight',
-// 'ImageX4'
+export class SlidesListItem {
+    value: Slide;
+    next: SlidesListItem | null;
+    prev: SlidesListItem | null;
+
+    constructor(value, next = null, prev = null) {
+        this.value = value;
+        this.next = next;
+        this.prev = prev;
+    }
+}
+
+export class SlidesList {
+    value: Slide;
+}

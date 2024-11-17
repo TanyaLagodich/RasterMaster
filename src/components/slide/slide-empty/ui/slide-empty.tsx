@@ -1,6 +1,6 @@
 import { Card, Typography } from 'antd';
-import * as s from './slide-empty.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import * as s from './slide-empty.module.scss';
 
 export function SlideEmpty() {
   const { mediator } = useSlideMediator();

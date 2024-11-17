@@ -1,6 +1,7 @@
 import { Template } from '../templates/types'
 import { v4 as uuidv4 } from 'uuid';
-import { Node, NodeType } from '@/types';
+import { Node, NodeType, Slide } from '@/types';
+import { SlidesList } from '@/mediator';
 
 export class SlideFactory {
     static createSlide(type: Template = 'Default'): Node[] {
@@ -125,5 +126,9 @@ export class SlideFactory {
                 ]
         }
     }
+}
+
+export function llToArray(slidesList: SlidesList): Slide[] {
+    return [...slidesList];
 }
   

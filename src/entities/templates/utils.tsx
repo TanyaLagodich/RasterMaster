@@ -1,14 +1,19 @@
 import { Node } from '@/types';
-import { Template } from '@/types';
 import { Text } from '@/components/text';
 import { DragEvent } from 'react';
-import { NodeType,SlideTypes } from '@/types';
+import { NodeType, Template } from '@/types';
 
 export const templatesDict: Record<Template, string> = {
-    [SlideTypes.DEFAULT]: 'Стандартный слайд',
-    [SlideTypes.EMPTY]: 'Пустой слайд',
-    [SlideTypes.TEXT_LEFT_TEXT_RIGHT]: '2 колонки текста',
-    [SlideTypes.TEXT_X4]: '4 секции текста',
+    [Template.DEFAULT]: 'Стандартный слайд',
+    [Template.EMPTY]: 'Пустой слайд',
+    [Template.TEXT_LEFT_TEXT_RIGHT]: '2 колонки текста',
+    [Template.TEXT_X4]: '4 секции текста',
+    [Template.TEXT_LEFT_IMAGE_RIGHT]: 'Текст + Картинка',
+    [Template.IMAGE_LEFT_TEXT_RIGHT]: 'Картинка + Текст',
+    [Template.IMAGE_LEFT_IMAGE_RIGHT]: '2 картинки',
+    [Template.IMAGE_X4]: '4 картинки',
+    [Template.TEXT_LEFT_FRAME_RIGHT]: 'Текст + Фрейм',
+    [Template.IMAGE_LEFT_FRAME_RIGHT]: 'Картинка + Фрейм',
 }
 
 interface INodeFactoryArgs {
