@@ -39,7 +39,6 @@ export function IFrame(props: IFrameProps) {
 
     const outerRef = useRef<HTMLDivElement | null>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
-    const stylerRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
 
@@ -48,7 +47,7 @@ export function IFrame(props: IFrameProps) {
     }, [data, selectedNode]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
-        if (!dotsRef.current || !stylerRef.current) return;
+        if (!dotsRef.current) return;
 
         const isDot = [...dotsRef.current.children].some(
             (dot: HTMLDivElement) =>
@@ -58,13 +57,8 @@ export function IFrame(props: IFrameProps) {
                     dot.getBoundingClientRect()
                 )
         );
-        const isStyler = isInsideElement(
-            e.clientX,
-            e.clientY,
-            stylerRef.current.getBoundingClientRect()
-        );
 
-        if (isDot || isStyler) {
+        if (isDot) {
             e.preventDefault();
             return;
         }
