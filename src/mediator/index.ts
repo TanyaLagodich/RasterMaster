@@ -163,6 +163,7 @@ export class SlidesList {
 
   public setCurrentSlide(slide: Slide) {
     if (this.setCurrentSlideIncoming) {
+      console.log('setCurrentSlideIncoming', slide);
       this.setCurrentSlideIncoming(slide);
     }
   }
@@ -178,6 +179,8 @@ export class SlidesList {
   private insertSlide(id: string, slide: Slide) {
       const newSlideItem = new SlidesListItem(slide);
       const currentSlideItem = this.getSlide(id);
+
+      this.map.set(slide.id, newSlideItem);
 
       const temp = currentSlideItem.next;
       currentSlideItem.next = newSlideItem;
@@ -198,17 +201,21 @@ export class SlidesList {
       
       if (this.isEmpty()) {
           this.map.set(newSlide.id, newSlideItem);
+        
           this.first = newSlideItem;
           this.last = newSlideItem;
-          this.setSlides(this.toArray());
+          this.setSlides(this.toArray());          
           this.setCurrentSlide(newSlide);
+
           return;
       }
       
       this.map.set(newSlide.id, newSlideItem);
+
       this.last.next = newSlideItem;
       newSlideItem.prev = this.last;
       this.last = newSlideItem;
+
       this.setSlides(this.toArray());
       this.setCurrentSlide(newSlide);
   }
@@ -235,22 +242,30 @@ export class SlidesList {
   public deleteSlide(id: string) {
       this.resetCurrentSlide(id);
 
+      this.map.delete(id);
+
+      if (this.first.value.id === id) {
+        this.first = this.first.next;
+        this.first.prev = null;
+
+        this.setSlides(this.toArray());
+        return;
+      }
+
+      if (this.last.value.id === id) {
+        this.last = this.last.prev;
+        this.last.next = null;
+
+        this.setSlides(this.toArray());
+        return;
+      }
+
       const slideToDelete = this.getSlide(id);
       const prevSlide = slideToDelete.prev;
       const nextSlide = slideToDelete.next;
 
-      // if (this.first.value.id === id) {
-      //   this.first = newSlideItem;
-      // }
-
-      // if (this.first.value.id === id) {
-      //   this.first = newSlideItem;
-      // }
-
       prevSlide.next = nextSlide;
       nextSlide.prev = prevSlide;
-
-      this.map.delete(id);
 
       this.setSlides(this.toArray());
   }
