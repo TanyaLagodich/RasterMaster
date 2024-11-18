@@ -1,46 +1,70 @@
 import { Card, Dropdown, Button, type MenuProps } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons'
-import { Slide } from '@/types';
+import { IOptionSlideOperations, Slide } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import { useState, MouseEvent, useRef } from 'react';
+import SlideOperations from '@/components/slide-operations';
 import * as s from './slide-preview.module.scss';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 export function SlidePreview ({
     slide,
     isActive,
 }: {slide: Slide; isActive: boolean}) {
-  const { mediator } = useSlideMediator();
+    const { mediator } = useSlideMediator();
+
+    const [areOptionsOpen, setAreOptionsOpen] = useState(false);
+    const [areTemplatesShown, setAreTemplatesShown] = useState(false);
+
+    const ref = useRef<HTMLDivElement>(null);
+
+    const slideOperations: IOptionSlideOperations[] = [
+        { key: "add", label: "Создать", method: () => mediator.createSlide(slide.id)},
+        { key: "duplicate", label: "Дублировать", method: () => mediator.duplicateSlide(slide.id, slide)},
+        { key: "remove", label: "Удалить", method: () => mediator.deleteSlide(slide.id)},
+        { key: "templates", label: "Макеты", method: () => mediator.createSlide(slide.id)},
+    ];
+
+    const closeOptions = () => {
+        setAreOptionsOpen(false);
+    };
+
+    const toggleOptions = (event: MouseEvent) => {
+        event.stopPropagation();
+        setAreOptionsOpen(prev => !prev);
+    };
+
+    useOutsideClick(
+        ref,
+        closeOptions,
+        {isCancelled: !areOptionsOpen},
+    )
   
-  const items: MenuProps['items'] = [
-    {
-      key: 1,
-      label: 'Создать',
-      onClick: () => mediator.createSlide(slide.id),
-    },
-    {
-      key: 2,
-      label: 'Дублировать',
-      onClick: () => mediator.duplicateSlide(slide.id, slide),
-    },
-    {
-      key: 3,
-      label: 'Удалить',
-      onClick: () => mediator.deleteSlide(slide.id),
-    },
-  ];
-  
-  return (
-    <Card
-      size="small"
-      className={`${s.root} ${isActive ? s.active : ''}`}
-      cover={slide.preview ? <img alt="preview" src={slide.preview} height="100%" /> : ''}
-      hoverable
-    >
-      {isActive && <Dropdown menu={{ items }} placement="bottomLeft">
-        <Button
-          className={s.button}
-          icon={<EllipsisOutlined />}
-        />
-      </Dropdown>}
-    </Card>
-  );
+    return (
+        <div>
+            <div className={s.paranja} ref={ref}/>
+
+            <Card
+                size="small"
+                className={`${s.root} ${isActive ? s.active : ''}`}
+                cover={slide.preview ? <img alt="preview" src={slide.preview} height="100%" /> : ''}
+                hoverable
+            >
+                <Button
+                    className={s.button}
+                    icon={<EllipsisOutlined />}
+                    onClick={toggleOptions}
+                />
+            </Card>
+
+            {areOptionsOpen &&
+                <SlideOperations
+                    options={slideOperations}
+                    id={slide.id}
+                    onClose={closeOptions}
+                    createSlide={mediator.createSlide}
+                />
+            }
+        </div>
+    );
 }

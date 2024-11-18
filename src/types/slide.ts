@@ -77,3 +77,10 @@ export enum Template {
     TEXT_LEFT_FRAME_RIGHT = 'textLeftFrameRight',
     IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
+
+export interface IOptionSlideOperations {
+    key: string;
+    label: string;
+    method?: (...args: any[]) => void;
+    close?: boolean;
+}

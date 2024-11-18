@@ -1,8 +1,9 @@
-import { SlideOperation } from '@/entities/slides/types';
 import { FC, MouseEvent } from 'react';
+import * as s from './styled.module.scss';
 
 interface IOperationProps {
     label: string;
+    key: string;
     id: string;
     className: string;
     method: (...args: any[]) => void;
@@ -12,25 +13,28 @@ interface IOperationProps {
 
 const OperationItem: FC<IOperationProps> = ({
     label,
+    key,
     className,
     id,
     method,
     onClose,
-    close = true,
 }) => {
     const onClick = (event: MouseEvent) => {
         method(event, id);
-        if (close) {
-            console.log('Here');
-            
-            // onClose();
-        }
+        onClose();
     }
 
-    // console.log(close);
+    const onHover = () => {
+        
+    }
     
     return (
-        <div onClick={onClick} className={className}>
+        <div
+            {...(key !== 'Templates' && {onClick})}
+            {...(key === 'Templates' && {onHover})}
+            onClick={onClick}
+            className={className}
+        >
             {label}
         </div>
     )

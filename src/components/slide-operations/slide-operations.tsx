@@ -1,4 +1,4 @@
-import { IOptionSlideOperations } from '@/entities/slides/types';
+import { IOptionSlideOperations } from '@/types';
 import { FC, MouseEvent, useMemo, useState } from 'react';
 import OperationItem from '../slide-operation/slide-operation';
 import { templatesDict } from '@/entities/templates/utils';
@@ -6,14 +6,16 @@ import { Template } from '@/entities/templates/types';
 import * as s from './styled.module.scss';
 
 interface IProps {
-    options: IOptionSlideOperations[],
+    options?: IOptionSlideOperations[],
     id: string;
     onClose: () => void;
-    areTemplatesShown: boolean;
-    createSlide: (event: MouseEvent, id: string, template: Template) => void;
+    areTemplatesShown?: boolean;
+    createSlide: (id: string, template: Template) => void;
 }
 
-const SlideOperations: FC<IProps> = ({options, id, onClose, areTemplatesShown, createSlide}) => {
+const SlideOperations: FC<IProps> = ({options = [], id, onClose, areTemplatesShown, createSlide}) => {
+    console.log('SlideOperations');
+    
     const optionsList = useMemo(() => {
         return options.map(({key, label, method, close}) => (
             <OperationItem 
