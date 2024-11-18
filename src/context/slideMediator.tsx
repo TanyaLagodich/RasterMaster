@@ -31,8 +31,8 @@ export const SlideMediatorProvider = ({ children }) => {
         mediatorRef.current = new SlidesList();
         mediatorRef.current.registerSlideList(setSlides);
         mediatorRef.current.registerCurrentSlide(setCurrentSlide);
-        mediatorRef.current.setSlidesList(slides);
-        mediatorRef.current.setSlide(currentSlide);
+        mediatorRef.current.setSlides(slides);
+        mediatorRef.current.setCurrentSlide(currentSlide);
     }
 
     useEffect(() => {

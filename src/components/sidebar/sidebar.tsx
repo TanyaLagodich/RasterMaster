@@ -63,7 +63,7 @@ const Sidebar: FC = () => {
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];
     updatedSlides[targetIndex] = temp;
 
-    mediator.setSlidesList(updatedSlides);
+    mediator.setSlides(updatedSlides);
     setDraggableIndex(null);
     setHoverableIndex(null);
     }

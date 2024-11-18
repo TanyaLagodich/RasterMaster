@@ -134,47 +134,49 @@ export class SlidesList {
   map: Map<string, SlidesListItem>;
   currentSlide: Slide | null;
   currentItem: SlidesListItem | null; // For iterator
-  private setSlides: Dispatch<SetStateAction<Slide[]>> | null = null;
-  private setCurrentSlide: Dispatch<SetStateAction<Slide | null>> | null = null;
+  private setSlidesIncoming: Dispatch<SetStateAction<Slide[]>> | null;
+  private setCurrentSlideIncoming: Dispatch<SetStateAction<Slide | null>> | null;
 
   constructor() {
       this.first = null;
       this.last = null;
       this.map = new Map();
       this.currentSlide = null;
+      this.currentItem = this.first;
+      this.setSlidesIncoming = null;
+      this.setCurrentSlideIncoming = null;
   }
 
-  registerSlideList(setSlides: React.Dispatch<React.SetStateAction<Slide[]>>) {
-    this.setSlides = setSlides;
+  public registerSlideList(setSlides: Dispatch<SetStateAction<Slide[]>>) {
+    this.setSlidesIncoming = setSlides;
   }
 
-  registerCurrentSlide(setCurrentSlide: React.Dispatch<React.SetStateAction<Slide>>) {
-    this.setCurrentSlide = setCurrentSlide;
+  public registerCurrentSlide(setCurrentSlide: Dispatch<SetStateAction<Slide>>) {
+    this.setCurrentSlideIncoming = setCurrentSlide;
   }
 
-  public setSlidesList(slides: Slide[]) {
-    this.setSlides(slides);
+  public setSlides(slides: Slide[]) {
+    if (this.setSlidesIncoming) {
+      this.setSlidesIncoming(slides);
+    }
   }
 
-  public setSlide(slide: Slide) {
-    this.setCurrentSlide(slide);
+  public setCurrentSlide(slide: Slide) {
+    if (this.setCurrentSlideIncoming) {
+      this.setCurrentSlideIncoming(slide);
+    }
   }
 
   private getSlide(id) {
     return this.map.get(id);
   }
 
+  private isEmpty() {
+    return this.map.size === 0;
+  }
+
   private insertSlide(id: string, slide: Slide) {
       const newSlideItem = new SlidesListItem(slide);
-      this.map.set(slide.id, newSlideItem);
-
-      if (this.isEmpty()) {
-          this.last = newSlideItem;
-          this.first = newSlideItem;
-          this.setSlides(this.toArray());
-          return;
-      }
-
       const currentSlideItem = this.getSlide(id);
 
       const temp = currentSlideItem.next;
@@ -187,35 +189,28 @@ export class SlidesList {
       }
 
       this.setSlides(this.toArray());
-  }
-
-  private isEmpty() {
-      return this.map.size === 0;
+      this.setCurrentSlide(slide);
   }
 
   public pushSlide(type: Template = Template.DEFAULT) {    
       const newSlide = SlideFactory.createSlide(type);
       const newSlideItem = new SlidesListItem(newSlide);
-
+      
       if (this.isEmpty()) {
-          console.log('Empty');
-
           this.map.set(newSlide.id, newSlideItem);
           this.first = newSlideItem;
           this.last = newSlideItem;
-
           this.setSlides(this.toArray());
-          console.log(this);
-          
+          this.setCurrentSlide(newSlide);
           return;
       }
-      console.log('pushSlide');
-
+      
+      this.map.set(newSlide.id, newSlideItem);
       this.last.next = newSlideItem;
       newSlideItem.prev = this.last;
       this.last = newSlideItem;
-
       this.setSlides(this.toArray());
+      this.setCurrentSlide(newSlide);
   }
 
   public createSlide(id: string, type: Template = Template.DEFAULT) {
@@ -243,6 +238,15 @@ export class SlidesList {
       const slideToDelete = this.getSlide(id);
       const prevSlide = slideToDelete.prev;
       const nextSlide = slideToDelete.next;
+
+      // if (this.first.value.id === id) {
+      //   this.first = newSlideItem;
+      // }
+
+      // if (this.first.value.id === id) {
+      //   this.first = newSlideItem;
+      // }
+
       prevSlide.next = nextSlide;
       nextSlide.prev = prevSlide;
 
@@ -276,8 +280,8 @@ export class SlidesList {
 
   editCurrentSlide(slide: Partial<Slide>) {
     // TODO: need refactoring
-    this.setCurrentSlide(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, slide));
-    this.setSlides(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));
+    this.setCurrentSlideIncoming(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, slide));
+    this.setSlidesIncoming(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));
   }
 
   private toArray() {
@@ -285,6 +289,7 @@ export class SlidesList {
   }
 
   [Symbol.iterator]() {
+    this.currentItem = this.first;
     return this;
   }
 
