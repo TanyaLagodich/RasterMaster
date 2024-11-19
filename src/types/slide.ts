@@ -59,6 +59,7 @@ export interface Slide {
     nodes: Node[] | [];
     editorDimensions: Dimensions;
     zIndex: ZIndex;
+    backgroundColor: string;
     addNode: (type: NodeType, params?: Partial<Node>) => Promise<Node>;
     updateNode: (node: Node) => void;
     update: (newData: Partial<Slide>) => void;
