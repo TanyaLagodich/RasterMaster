@@ -12,7 +12,9 @@ import { exportToHtml } from '@/utils/htmlExport';
 
 import * as s from './styled.module.scss';
 
-export function Header() {
+export function Header({
+   onOenSlideShow
+}) {
     const { activeTab } = useAppContext();
     const { setActiveTab } = useAppActionsContext();
     const { addNode } = useSlideContext();
@@ -86,7 +88,14 @@ export function Header() {
                             </Button>
                         </Dropdown>
 
-                        {Object.keys(TAB)
+                        <Button
+                        type={
+                            activeTab === TAB.SLIDESHOW ? 'primary' : 'text'
+                        }
+                        onClick={onOenSlideShow}
+                    >
+                        Слайдшоу
+                    </Button>{Object.keys(TAB)
                             .slice(2)
                             .map((tab: keyof typeof TAB) => (
                                 <Button
