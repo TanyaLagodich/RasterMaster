@@ -81,26 +81,10 @@ export function SlideEditor() {
     async function generatePreview() {
         try {
             if (editorRef.current) {
-                // TODO вынести в либу
-                const width = 1280; // Например, ширина в пикселях
-                const height = 720; // Пропорция 16:9
-
-                // Масштабируем содержимое
-                const scale = 2; // Для увеличения резкости
-                const options = {
-                    width: width * scale,
-                    height: height * scale,
-                    style: {
-                        transform: `scale(${scale})`,
-                        transformOrigin: 'top left',
-                    },
-                };
-
-                const dataUrl = await toPng(editorRef.current, options);
+                const dataUrl = await toPng(editorRef.current);
                 updatePreview(dataUrl);
             }
         } catch (e) {
-            console.log('update preview', e);
             console.error(e);
         }
     }
