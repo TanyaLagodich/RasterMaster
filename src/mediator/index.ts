@@ -312,10 +312,10 @@ export class SlidesList {
     this.setCurrentSlide(slide);
   }
 
-  editCurrentSlide(slide: Partial<Slide>) {
-    // TODO: need refactoring
-    this.setCurrentSlideIncoming(prev => Object.assign(Object.create(Object.getPrototypeOf(prev)), prev, slide));
-    this.setSlidesIncoming(prev => prev.map(s => (s.id === slide.id ? Object.assign(Object.create(Object.getPrototypeOf(s)), s, slide) : s)));
+  editCurrentSlide(slide: Slide) {
+    const slideItemToEdit = this.getSlide(slide.id);
+    slideItemToEdit.value = slide as Slide;
+    this.setSlides(this.toArray());
   }
 
   private toArray() {
@@ -334,6 +334,7 @@ export class SlidesList {
 
     const saved = this.currentItem;
     this.currentItem = this.currentItem.next;
+    
     return {done: false, value: saved.value};
   }
 }
