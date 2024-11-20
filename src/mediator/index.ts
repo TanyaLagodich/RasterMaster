@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, MouseEvent } from 'react';
 import { type Slide, Template } from '@/types';
 import { SlideFactory } from '@/factories/slide';
 
@@ -140,7 +140,7 @@ export class SlidesList {
   constructor() {
       this.first = null;
       this.last = null;
-      this.map = new Map();
+      this.map = new Map()
       this.currentSlide = null;
       this.currentItem = this.first;
       this.setSlidesIncoming = null;
@@ -163,8 +163,8 @@ export class SlidesList {
 
   public setCurrentSlide(slide: Slide) {
     if (this.setCurrentSlideIncoming) {
-      console.log('setCurrentSlideIncoming', slide);
       this.setCurrentSlideIncoming(slide);
+      this.currentSlide = slide;
     }
   }
 
@@ -184,8 +184,11 @@ export class SlidesList {
 
       const temp = currentSlideItem.next;
       currentSlideItem.next = newSlideItem;
-      newSlideItem.prev = currentSlideItem;
       newSlideItem.next = temp;
+      if (temp) {
+        temp.prev = newSlideItem;
+      }
+      newSlideItem.prev = currentSlideItem;
 
       if (this.last.value.id === id) {
           this.last = newSlideItem;
@@ -193,6 +196,7 @@ export class SlidesList {
 
       this.setSlides(this.toArray());
       this.setCurrentSlide(slide);
+      
   }
 
   public pushSlide(type: Template = Template.DEFAULT) {    
@@ -206,7 +210,6 @@ export class SlidesList {
           this.last = newSlideItem;
           this.setSlides(this.toArray());          
           this.setCurrentSlide(newSlide);
-
           return;
       }
       
@@ -220,7 +223,9 @@ export class SlidesList {
       this.setCurrentSlide(newSlide);
   }
 
-  public createSlide(id: string, type: Template = Template.DEFAULT) {
+  public createSlide(event: MouseEvent, id: string, type: Template = Template.DEFAULT) {
+      event.stopPropagation();
+
       if (this.isEmpty()) {
           this.pushSlide(type);
           return;
@@ -230,7 +235,9 @@ export class SlidesList {
       this.insertSlide(id, newSlide);
   }
 
-  public duplicateSlide(id: string, slide: Slide) {
+  public duplicateSlide(event: MouseEvent, id: string, slide: Slide) {
+      event.stopPropagation();
+  
       if (this.isEmpty()) {
           return;
       }
@@ -239,15 +246,24 @@ export class SlidesList {
       this.insertSlide(id, newSlide);
   }
 
-  public deleteSlide(id: string) {
+  public deleteSlide(event: MouseEvent, id: string) {      
+      event.stopPropagation();
       this.resetCurrentSlide(id);
 
-      this.map.delete(id);
+      if (this.map.size === 1) {
+        this.first = null;
+        this.last = null;
+
+        this.map.delete(id);
+        this.setSlides(this.toArray());
+        return;
+      }
 
       if (this.first.value.id === id) {
         this.first = this.first.next;
         this.first.prev = null;
 
+        this.map.delete(id);
         this.setSlides(this.toArray());
         return;
       }
@@ -256,11 +272,14 @@ export class SlidesList {
         this.last = this.last.prev;
         this.last.next = null;
 
+        this.map.delete(id);
         this.setSlides(this.toArray());
         return;
       }
 
       const slideToDelete = this.getSlide(id);
+      this.map.delete(id);
+
       const prevSlide = slideToDelete.prev;
       const nextSlide = slideToDelete.next;
 

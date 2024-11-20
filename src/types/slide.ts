@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, MouseEvent } from 'react';
 
 type Position = {
     x: number;
@@ -81,6 +81,6 @@ export enum Template {
 export interface IOptionSlideOperations {
     key: string;
     label: string;
-    method?: (...args: any[]) => void;
+    onClick: (event?: MouseEvent) => void;
     close?: boolean;
 }

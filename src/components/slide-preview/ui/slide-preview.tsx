@@ -1,11 +1,11 @@
-import { Card, Dropdown, Button, type MenuProps } from 'antd';
+import { Card, Button } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons'
 import { IOptionSlideOperations, Slide } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useState, MouseEvent, useRef } from 'react';
 import SlideOperations from '@/components/slide-operations';
-import * as s from './slide-preview.module.scss';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+import * as s from './slide-preview.module.scss';
 
 export function SlidePreview ({
     slide,
@@ -18,16 +18,28 @@ export function SlidePreview ({
 
     const ref = useRef<HTMLDivElement>(null);
 
-    const slideOperations: IOptionSlideOperations[] = [
-        { key: "add", label: "Создать", method: () => mediator.createSlide(slide.id)},
-        { key: "duplicate", label: "Дублировать", method: () => mediator.duplicateSlide(slide.id, slide)},
-        { key: "remove", label: "Удалить", method: () => mediator.deleteSlide(slide.id)},
-        { key: "templates", label: "Макеты", method: () => mediator.createSlide(slide.id)},
-    ];
-
     const closeOptions = () => {
         setAreOptionsOpen(false);
     };
+
+    const slideOperations: IOptionSlideOperations[] = [
+        { key: "add", label: "Создать", onClick: (event) => {
+            mediator.createSlide(event, slide.id);
+            closeOptions();
+        }},
+        { key: "duplicate", label: "Дублировать", onClick: (event) => {
+            mediator.duplicateSlide(event, slide.id, slide);
+            closeOptions();
+        }},
+        { key: "remove", label: "Удалить", onClick: (event) => {
+            mediator.deleteSlide(event, slide.id);
+            closeOptions();
+        }},
+        { key: "templates", label: "Макеты", onClick: (event) => {
+            event.stopPropagation();
+            setAreTemplatesShown(prev => !prev);
+        }},
+    ];
 
     const toggleOptions = (event: MouseEvent) => {
         event.stopPropagation();
@@ -62,6 +74,7 @@ export function SlidePreview ({
                     options={slideOperations}
                     id={slide.id}
                     onClose={closeOptions}
+                    areTemplatesShown={areTemplatesShown}
                     createSlide={mediator.createSlide}
                 />
             }

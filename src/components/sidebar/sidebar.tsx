@@ -10,8 +10,7 @@ const Sidebar: FC = () => {
   const [ draggableIndex, setDraggableIndex ] = useState<number | null>(null);
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
   const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);
-  console.log('slides =>', slides);
-  
+
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const dragStart = (e: React.DragEvent<HTMLElement>, index: number) => {
@@ -80,7 +79,7 @@ const Sidebar: FC = () => {
 
         setHoverableIndex(null);
     };
-
+    
     return (
         <aside
             ref={sidebarRef}
@@ -105,7 +104,7 @@ const Sidebar: FC = () => {
                             <Divider className={`${s.dropLine}`} style={{ bottom: '83%' }} />
                         )}
                         <SlidePreview
-                            isActive={currentSlide.id === id}
+                            isActive={currentSlide?.id === id}
                             slide={slide}
                         />
                         {hoverableIndex && hoverableIndex?.index === index && hoverableIndex.position === 'after' && (

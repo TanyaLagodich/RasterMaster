@@ -1,12 +1,11 @@
-import { Template } from '../templates/types'
 import { v4 as uuidv4 } from 'uuid';
-import { Node, NodeType, Slide } from '@/types';
+import { Node, NodeType, Template } from '@/types';
 import { SlidesList } from '@/mediator';
 
 export class SlideFactory {
-    static createSlide(type: Template = 'Default'): Node[] {
+    static createSlide(type: Template = Template.DEFAULT): Node[] {
         switch (type) {
-            case 'Default':
+            case Template.DEFAULT:
                 return [
                     {
                         id: uuidv4(),
@@ -27,10 +26,10 @@ export class SlideFactory {
                     },
                 ]
 
-            case 'Empty':
+            case Template.EMPTY:
                 return [];
 
-            case 'TextLeftTextRight':
+            case Template.TEXT_LEFT_TEXT_RIGHT:
                 return [
                     {
                         id: uuidv4(),
@@ -59,7 +58,7 @@ export class SlideFactory {
                     },
                 ]
 
-            case 'TextX4':
+            case Template.TEXT_X4:
                 return [
                     {
                         id: uuidv4(),
@@ -126,9 +125,5 @@ export class SlideFactory {
                 ]
         }
     }
-}
-
-export function llToArray(slidesList: SlidesList): Slide[] {
-    return [...slidesList];
 }
   

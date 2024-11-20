@@ -10,7 +10,7 @@ export function SlideEmpty() {
       className={s.root}
       onClick={() => mediator.pushSlide()}
     >
-      <Typography.Title level={2}>
+      <Typography.Title level={2} className={s.firstSlide}>
         Щелкните, чтобы добавить первый слайд
       </Typography.Title>
     </Card>

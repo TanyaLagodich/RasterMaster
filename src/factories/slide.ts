@@ -29,7 +29,7 @@ class Slide implements SlideType {
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {
         const strategy = await NodeStrategyFactory.createStrategy(type);
-        console.log(type, params);
+        // console.log(type, params);
         const node = await strategy.addNode(params);
         this.nodes.push(node);
         return node;
