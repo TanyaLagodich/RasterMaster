@@ -314,7 +314,7 @@ export class SlidesList {
 
   editCurrentSlide(slide: Slide) {
     const slideItemToEdit = this.getSlide(slide.id);
-    slideItemToEdit.value = slide as Slide;
+    slideItemToEdit.value = slide;
     this.setSlides(this.toArray());
   }
 
