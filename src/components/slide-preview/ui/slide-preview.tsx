@@ -35,10 +35,10 @@ export function SlidePreview ({
             mediator.deleteSlide(event, slide.id);
             closeOptions();
         }},
-        { key: "templates", label: "Макеты", onClick: (event) => {
-            event.stopPropagation();
-            setAreTemplatesShown(prev => !prev);
-        }},
+        // { key: "templates", label: "Макеты", onClick: (event) => {
+        //     event.stopPropagation();
+        //     setAreTemplatesShown(prev => !prev);
+        // }},
     ];
 
     const toggleOptions = (event: MouseEvent) => {

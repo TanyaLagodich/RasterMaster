@@ -7,14 +7,14 @@ import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 interface IProps {
-    options?: IOptionSlideOperations[],
+    options: IOptionSlideOperations[],
     id: string;
     onClose: () => void;
     areTemplatesShown?: boolean;
     createSlide: (event: MouseEvent, id: string, template?: Template) => void;
 }
 
-const SlideOperations: FC<IProps> = ({options = [], id, areTemplatesShown, onClose}) => {    
+const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) => {    
     const optionsList = useMemo(() => (
         <ul className={s.root}>
             {options.map(({key, label, onClick}) => (
@@ -30,25 +30,23 @@ const SlideOperations: FC<IProps> = ({options = [], id, areTemplatesShown, onClo
         </ul>
     ), [options])
 
-    const { mediator } = useSlideMediator();
+    // const { mediator } = useSlideMediator();
 
-    const [template, setTemplate] = useState<Template | null>(null);
+    // const [template, setTemplate] = useState<Template | null>(null);
 
-    const onSelectTemplate = (event: MouseEvent) => {
-        event.stopPropagation();
-
-        if (template) {
-            mediator.createSlide(event, id, template);
-        }
-
-        onClose();
-    }
+    // const onSelectTemplate = (event: MouseEvent) => {
+    //     event.stopPropagation();
+    //     if (template) {
+    //         mediator.createSlide(event, id, template);
+    //     }
+    //     onClose();
+    // }
 
     return (
         <div>
             {optionsList}
 
-            {areTemplatesShown &&
+            {/* {areTemplatesShown &&
                 <div className={s.templatesList}>
                     <ul>
                         {Object.entries(templatesDict).map(([template, name]) => (
@@ -60,7 +58,7 @@ const SlideOperations: FC<IProps> = ({options = [], id, areTemplatesShown, onClo
 
                     <button onClick={onSelectTemplate}>Создать</button>
                 </div>
-            }
+            } */}
          </div>
     )
 }
