@@ -1,5 +1,5 @@
 import { createContext, useRef, useState, useEffect } from 'react';
-import { SlidesList, SlidesListItem, buildUpSlidesList } from '@/mediator';
+import { SlidesList, buildUpSlidesList } from '@/mediator';
 import { Slide as SlideType, SlideMediatorContextType  } from '@/types';
 import { SlideFactory } from '@/factories/slide';
 
