@@ -112,6 +112,52 @@ import { SlideFactory } from '@/factories/slide';
 
 ///
 
+interface SlidesListBuilderArgs {
+  slides: Slide[];
+  currentSlide: Slide;
+  setSlides: Dispatch<SetStateAction<Slide[]>>;
+  setCurrentSlide: Dispatch<SetStateAction<Slide>>;
+}
+
+export const buildUpSlidesList = (args: SlidesListBuilderArgs): SlidesList => {
+  const {slides, currentSlide, setSlides, setCurrentSlide} = args;
+
+  const list = new SlidesList();
+
+  if (slides.length) {
+    let prev = null;
+
+    slides.forEach((slide, i, arr) => {
+      const slideItem = new SlidesListItem(slide);
+      if (!!prev) {
+        prev.next = slideItem;
+      }
+      slideItem.prev = prev;
+      prev = slideItem;
+      slideItem.next = i === arr.length - 1
+        ? null
+        : new SlidesListItem(arr[i + 1]);
+      
+      if (i === 0) {
+        list.first = slideItem;
+      }
+      if (i === arr.length - 1) {
+        list.last = slideItem;
+      }
+
+      list.map.set(slide.id, slideItem);
+    })
+  }
+
+  list.registerSlideList(setSlides);
+  list.registerCurrentSlide(setCurrentSlide);
+  list.setSlides(slides);
+  list.setCurrentSlide(currentSlide);
+
+  return list;
+}
+
+
 export class SlidesListItem {
   value: Slide;
   next: SlidesListItem | null;

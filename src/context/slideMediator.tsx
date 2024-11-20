@@ -1,5 +1,5 @@
 import { createContext, useRef, useState, useEffect } from 'react';
-import { SlidesList } from '@/mediator';
+import { SlidesList, SlidesListItem, buildUpSlidesList } from '@/mediator';
 import { Slide as SlideType, SlideMediatorContextType  } from '@/types';
 import { SlideFactory } from '@/factories/slide';
 
@@ -13,6 +13,8 @@ export const SlideMediatorProvider = ({ children }) => {
         return Object.assign(SlideFactory.createSlide(), slideData);
     }
 
+    const mediatorRef = useRef<SlidesList | null>(null);
+
     useEffect(() => {
         const storedSlides = localStorage.getItem('slides');
         if (storedSlides) {
@@ -23,9 +25,16 @@ export const SlideMediatorProvider = ({ children }) => {
         if (storedCurrentSlide) {
             setCurrentSlide(reconstructSlide(JSON.parse(storedCurrentSlide)));
         }
-    }, []);
 
-    const mediatorRef = useRef<SlidesList | null>(null);
+        if (mediatorRef && storedSlides && storedCurrentSlide) {
+            mediatorRef.current = buildUpSlidesList({
+                slides: JSON.parse(storedSlides).map((slide) => reconstructSlide(slide)),
+                currentSlide: reconstructSlide(JSON.parse(storedCurrentSlide)),
+                setSlides,
+                setCurrentSlide,
+            })
+        }
+    }, []);
 
     if (!mediatorRef.current) {
         mediatorRef.current = new SlidesList();
