@@ -4,21 +4,19 @@ import Sidebar from '@/components/sidebar';
 import Notes from '@/components/notes';
 import { Slide } from '@/components/slide/slide';
 import * as s from './styled.module.scss';
-import { useState } from "react";
+import { AppMode } from '@/types';
 import { SlideShow } from '@/components/slide-show';
-
-enum AppModes {
-    EDITOR = 'EDITOR',
-    SLIDESHOW = 'SLIDESHOW',
-}
+import { useAppContext } from '@/hooks/useAppContext';
+import { useAppActionsContext } from '@/hooks/useAppActionsContext';
 
 export function App() {
-    const [mode, setMode] = useState<AppModes>(AppModes.EDITOR);
+    const { mode } = useAppContext();
+    const { setMode } = useAppActionsContext();
 
     return (
         <>
-            {mode === AppModes.SLIDESHOW && <SlideShow onExit={() => setMode(AppModes.EDITOR)} />}
-            <Header onOenSlideShow={() => setMode(AppModes.SLIDESHOW)} />
+            {mode === AppMode.SLIDESHOW && <SlideShow onExit={() => setMode(AppMode.EDITOR)} />}
+            <Header />
 
             <ToolsHeader />
 

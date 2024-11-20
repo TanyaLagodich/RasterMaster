@@ -13,9 +13,7 @@ const ToolsHeader = () => {
 
     return (
         <div className={s.root}>
-            {activeTab === TAB.SLIDESHOW ? (
-                <SlideshowTools />
-            ) : activeTab === TAB.ANIMATION ? (
+            {activeTab === TAB.ANIMATION ? (
                 <AnimationTools />
             ) : (
                 <DecorationTools />

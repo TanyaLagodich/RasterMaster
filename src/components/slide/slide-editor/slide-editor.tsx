@@ -97,7 +97,6 @@ export function SlideEditor() {
                 };
 
                 const dataUrl = await toPng(editorRef.current, options);
-                console.log({ dataUrl });
                 updatePreview(dataUrl);
             }
         } catch (e) {

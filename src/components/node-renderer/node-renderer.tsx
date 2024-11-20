@@ -1,8 +1,8 @@
-import React from "react";
-import { Node as SlideNode, NodeType } from "@/types";
-import { Text } from "@/components/text";
-import { Image } from "@/components/image";
-import { IFrame } from "@/components/iframe";
+import React from 'react';
+import { Node as SlideNode, NodeType } from '@/types';
+import { Text } from '@/components/text';
+import { Image } from '@/components/image';
+import { IFrame } from '@/components/iframe';
 
 interface NodeRendererProps {
     node: SlideNode;
@@ -23,6 +23,7 @@ export function NodeRenderer({
                 <Text
                     key={node.id}
                     data={node}
+                    isEditable={isEditable}
                     onDragStart={onDragStart}
                     onDragEnd={(e) => onDragEnd?.(e, node)}
                 />
@@ -32,6 +33,7 @@ export function NodeRenderer({
                 <Image
                     key={node.id}
                     data={node}
+                    isEditable={isEditable}
                     onDragStart={onDragStart}
                     onDragEnd={(e) => onDragEnd?.(e, node)}
                 />
@@ -41,6 +43,7 @@ export function NodeRenderer({
                 <IFrame
                     key={node.id}
                     data={node}
+                    isEditable={isEditable}
                     onDragStart={onDragStart}
                     onDragEnd={(e) => onDragEnd?.(e, node)}
                 />

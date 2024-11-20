@@ -23,13 +23,16 @@
   position: absolute;
   bottom: 8px;
   left: 8px;
-  background-color: rgba(255, 255, 255, 0.55);
   height: 32px;
   border-right: 4px;
-  width: 250px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 2000px inset;
+  width: auto;
   display: flex;
   align-items: center;
+}
+
+.controlsWrapper {
+  background-color: white;
+  border-radius: 6px;
 }
 
 .endText {
