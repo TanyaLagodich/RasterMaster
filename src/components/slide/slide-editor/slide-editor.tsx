@@ -1,16 +1,13 @@
 import { DragEvent as IDragEvent, useEffect, useRef } from 'react';
 import { toPng } from 'html-to-image';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-
 import { Node as SlideNode, NodeType } from '@/types';
-
 import { Text } from '@/components/text';
 import { Image } from '@/components/image';
-
-import * as s from './slide-editor.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
 import { IFrame } from '@/components/iframe';
+import * as s from './slide-editor.module.scss';
 
 export function SlideEditor() {
     const { currentSlide } = useSlideMediator();
@@ -21,9 +18,7 @@ export function SlideEditor() {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
-
-    useEffect(() => debouncedGeneratePreview(), []);
+    const debouncedGeneratePreview = useDebounce(generatePreview, 1000);
 
     useEffect(() => debouncedGeneratePreview(), [nodes]);
 

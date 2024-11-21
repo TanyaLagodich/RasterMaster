@@ -1,6 +1,6 @@
 import { Card, Typography } from 'antd';
-import * as s from './slide-empty.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import * as s from './slide-empty.module.scss';
 
 export function SlideEmpty() {
   const { mediator } = useSlideMediator();
@@ -10,7 +10,7 @@ export function SlideEmpty() {
       className={s.root}
       onClick={() => mediator.pushSlide()}
     >
-      <Typography.Title level={2}>
+      <Typography.Title level={2} className={s.firstSlide}>
         Щелкните, чтобы добавить первый слайд
       </Typography.Title>
     </Card>
