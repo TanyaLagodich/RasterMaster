@@ -94,10 +94,7 @@ export function SlideShow({ onExit }: { onExit: () => void }) {
             className={s.root}
             onClick={nextSlide}
         >
-            <div
-                className={s.slideContent}
-                style={{ backgroundColor: slides[currentIndex]?.backgroundColor }}
-            >
+            <div className={s.slideContent}>
                 {renderSlideContent()}
 
                 <div className={s.controls}>

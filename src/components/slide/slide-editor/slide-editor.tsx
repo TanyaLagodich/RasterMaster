@@ -89,7 +89,6 @@ export function SlideEditor() {
         <div
             ref={editorRef}
             className={s.root}
-            style={{ backgroundColor: currentSlide.backgroundColor }}
         >
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
