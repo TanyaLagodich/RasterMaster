@@ -18,6 +18,7 @@ type IFrameProps = {
     data: IFrame;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
+    isEditable: boolean;
 };
 
 const resizeDots = [
@@ -32,7 +33,7 @@ const resizeDots = [
 ];
 
 export function IFrame(props: IFrameProps) {
-    const { data, onDragStart, onDragEnd } = props;
+    const { data, onDragStart, onDragEnd, isEditable = true } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
     const { setSelectedNode, updateNode } = useSlideActionsContext();
@@ -43,8 +44,10 @@ export function IFrame(props: IFrameProps) {
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        setIsSelected(data.id === selectedNode?.id);
-    }, [data, selectedNode]);
+        if (isEditable) {
+            setIsSelected(data.id === selectedNode?.id);
+        }
+    }, [data, selectedNode, isEditable]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
         if (!dotsRef.current) return;
@@ -161,7 +164,7 @@ export function IFrame(props: IFrameProps) {
                 [s._selected]: isSelected,
             })}
             onClick={() => setSelectedNode(data)}
-            draggable
+            draggable={isEditable}
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >

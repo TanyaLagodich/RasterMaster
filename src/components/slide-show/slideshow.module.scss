@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slideContent {
+  background-color: white;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 90%;
+}
+
+.controls {
+  padding: 10px;
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  height: 32px;
+  border-right: 4px;
+  width: auto;
+  display: flex;
+  align-items: center;
+}
+
+.controlsWrapper {
+  background-color: white;
+  border-radius: 6px;
+}
+
+.endText {
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  width: 100%;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 20px;
+}
+
+.endScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: black;
+  color: white;
+}

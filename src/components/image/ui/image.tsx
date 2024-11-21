@@ -20,6 +20,7 @@ type ImageProps = {
     data: Image;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
+    isEditable: boolean;
 };
 
 const resizeDots = [
@@ -34,7 +35,7 @@ const resizeDots = [
 ];
 
 export function Image(props: ImageProps) {
-    const { data, onDragStart, onDragEnd } = props;
+    const { data, onDragStart, onDragEnd, isEditable = true } = props;
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
     const { setSelectedNode, updateNode } = useSlideActionsContext();
@@ -46,8 +47,10 @@ export function Image(props: ImageProps) {
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
-        setIsSelected(data.id === selectedNode?.id);
-    }, [data, selectedNode]);
+        if (isEditable) {
+            setIsSelected(data.id === selectedNode?.id);
+        }
+    }, [data, selectedNode, isEditable]);
 
     function handleDragStart(e: DragEvent<HTMLDivElement>) {
         if (!dotsRef.current || !stylerRef.current) return;
@@ -205,7 +208,7 @@ export function Image(props: ImageProps) {
                 [s._cover]: data.style.cover,
             })}
             onClick={() => setSelectedNode(data)}
-            draggable
+            draggable={isEditable}
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >

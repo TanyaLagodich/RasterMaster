@@ -129,7 +129,7 @@ export const buildUpSlidesList = (args: SlidesListBuilderArgs): SlidesList => {
 
     slides.forEach((slide, i, arr) => {
       const slideItem = new SlidesListItem(slide);
-      if (!!prev) {
+      if (prev) {
         prev.next = slideItem;
       }
       slideItem.prev = prev;

@@ -11,10 +11,11 @@ import { NodeType } from '@/types';
 import { exportToHtml } from '@/utils/htmlExport';
 
 import * as s from './styled.module.scss';
+import { AppMode } from '@/types';
 
 export function Header() {
     const { activeTab } = useAppContext();
-    const { setActiveTab } = useAppActionsContext();
+    const { setActiveTab, setMode } = useAppActionsContext();
     const { addNode } = useSlideContext();
     const { slides } = useSlideMediator();
 
@@ -85,8 +86,7 @@ export function Header() {
                                 </Space>
                             </Button>
                         </Dropdown>
-
-                        {Object.keys(TAB)
+                    {Object.keys(TAB)
                             .slice(2)
                             .map((tab: keyof typeof TAB) => (
                                 <Button
@@ -101,6 +101,11 @@ export function Header() {
                                     {TAB[tab]}
                                 </Button>
                             ))}
+                        <Button
+                            onClick={() => setMode(AppMode.SLIDESHOW)}
+                        >
+                            Слайдшоу
+                        </Button>
                     </Space>
                 </ul>
             </nav>

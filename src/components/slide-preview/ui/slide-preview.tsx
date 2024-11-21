@@ -23,15 +23,15 @@ export function SlidePreview ({
     };
 
     const slideOperations: IOptionSlideOperations[] = [
-        { key: "add", label: "Создать", onClick: (event) => {
+        { key: 'add', label: 'Создать', onClick: (event) => {
             mediator.createSlide(event, slide.id);
             closeOptions();
         }},
-        { key: "duplicate", label: "Дублировать", onClick: (event) => {
+        { key: 'duplicate', label: 'Дублировать', onClick: (event) => {
             mediator.duplicateSlide(event, slide.id, slide);
             closeOptions();
         }},
-        { key: "remove", label: "Удалить", onClick: (event) => {
+        { key: 'remove', label: 'Удалить', onClick: (event) => {
             mediator.deleteSlide(event, slide.id);
             closeOptions();
         }},

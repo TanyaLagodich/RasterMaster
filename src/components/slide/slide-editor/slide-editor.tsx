@@ -1,9 +1,8 @@
 import { DragEvent as IDragEvent, useEffect, useRef } from 'react';
 import { toPng } from 'html-to-image';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { Node as SlideNode, NodeType } from '@/types';
-import { Text } from '@/components/text';
-import { Image } from '@/components/image';
+import { Node as SlideNode } from '@/types';
+import { NodeRenderer } from '@/components/node-renderer';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
 import { IFrame } from '@/components/iframe';
@@ -87,36 +86,18 @@ export function SlideEditor() {
     }
 
     return (
-        <div ref={editorRef} className={s.root}>
+        <div
+            ref={editorRef}
+            className={s.root}
+        >
             {nodes.map((node: SlideNode) =>
-                node.type === NodeType.TEXT ? (
-                    <Text
-                        key={node.id}
-                        data={node}
-                        onDragStart={dragStartHandler}
-                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
-                        }}
-                    />
-                ) : node.type === NodeType.IMAGE ? (
-                    <Image
-                        data={node}
-                        onDragStart={dragStartHandler}
-                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
-                        }}
-                    />
-                ) : node.type === NodeType.IFRAME ? (
-                    <IFrame
-                        data={node}
-                        onDragStart={dragStartHandler}
-                        onDragEnd={(e: IDragEvent<HTMLDivElement>) => {
-                            dragEndHandler(e, node);
-                        }}
-                    />
-                ) : (
-                    <div></div>
-                )
+                <NodeRenderer
+                    key={node.id}
+                    node={node}
+                    isEditable={true}
+                    onDragStart={dragStartHandler}
+                    onDragEnd={dragEndHandler}
+                />
             )}
         </div>
     );

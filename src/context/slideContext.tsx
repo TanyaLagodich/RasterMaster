@@ -4,16 +4,8 @@ import type { Slide, Dimensions } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
-interface SlideContext extends Omit<Slide, 'update' | 'clone'> {
+interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone'> {
     selectedNode: Node | null;
-}
-
-export interface ISlideContent {
-    id: string;
-    preview: string;
-    nodes: Node[] | [];
-    editorDimensions: Dimensions;
-    zIndex: ZIndex;
 }
 
 type SlideActionsContextType = {
