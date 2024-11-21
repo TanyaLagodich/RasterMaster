@@ -1,14 +1,13 @@
 import { ISetting } from '@/entities/slides/types';
-import { FC, MouseEvent } from 'react';
-import { Template } from '@/entities/templates/types';
+import { FC } from 'react';
 import * as s from './styled.module.scss';
 
 interface IProps {
     options: ISetting[],
-    onClose: () => void;
+    onClose?: () => void;
 }
 
-export const NodeSettings: FC<IProps> = ({options, onClose}) => {
+export const NodeSettings: FC<IProps> = ({options}) => {
     return (
         <ul className={s.root}>
             {options.map(({key, label, action}) => 
@@ -20,9 +19,6 @@ export const NodeSettings: FC<IProps> = ({options, onClose}) => {
                     {label}
                 </li>
             )}
-            {/* <li onClick={onClose}>
-                Закрыть
-            </li> */}
         </ul>
     )
 }
