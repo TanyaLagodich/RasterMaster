@@ -1,0 +1,21 @@
+.root {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    height: auto;
+    width: auto;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #ccc;
+    border-radius: 8px;
+    z-index: 100;
+}
+
+.option {
+    margin: 4px 0;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: aqua;
+}

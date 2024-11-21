@@ -8,17 +8,16 @@ import {
 import { Checkbox, InputNumber, Select } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import clsx from 'clsx';
-
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Image } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
-
 import * as s from './image.module.scss';
 
 type ImageProps = {
     data: Image;
     isEditable: boolean;
+    onContextMenu: () => void;
 };
 
 export function Image(props: ImageProps) {

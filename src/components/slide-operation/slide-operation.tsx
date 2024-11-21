@@ -36,7 +36,7 @@ const OperationItem: FC<IOperationProps> = ({
             className={className}
         >
             {label}
-        </div>
+        </li>
     )
 }
 

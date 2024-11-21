@@ -43,7 +43,7 @@ class Slide implements SlideType {
         );
     }
 
-    removeNode(nodeId: string) {
+    deleteNode(nodeId: string) {
         this.nodes = this.nodes.filter((node) => node.id !== nodeId);
     }
 

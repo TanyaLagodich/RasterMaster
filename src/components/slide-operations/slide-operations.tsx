@@ -1,4 +1,4 @@
-import { IOptionSlideOperations } from '@/types';
+import { ISetting } from '@/entities/slides/types';
 import { FC, MouseEvent, useMemo, useState } from 'react';
 import OperationItem from '../slide-operation/slide-operation';
 import { templatesDict } from '@/entities/templates/utils';
@@ -7,7 +7,7 @@ import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 interface IProps {
-    options: IOptionSlideOperations[],
+    options: ISetting[],
     id: string;
     onClose: () => void;
     areTemplatesShown?: boolean;

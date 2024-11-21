@@ -13,7 +13,8 @@ type SlideActionsContextType = {
     setSelectedNode: (node: Node | null) => void;
     updateNode: (newData: Node) => void;
     updatePreview: (preview: string) => void;
-};
+    deleteNode: (id: string) =>  void;
+ };
 
 export const SlideContext = createContext<SlideContext | null>(null);
 export const SlideActionsContext =
@@ -26,7 +27,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     );
     const [currNode, setCurrNode] = useState<Node | null>(null);
     const [nodes, setNodes] = useState<Node[]>(currentSlide?.nodes || []);
-    const [zIndex, setZIndex] = useState<ZIndex>(
+    const [zIndex, _] = useState<ZIndex>(
         currentSlide?.zIndex || { min: 0, max: 100 }
     );
     const [preview] = useState<string>(currentSlide?.preview || '');
@@ -53,6 +54,10 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         mediator.editCurrentSlide(currentSlide);
     }
 
+    function deleteNode(id: string) {
+        currentSlide.deleteNode(id);
+    }
+
     const values = useMemo(
         () => ({
             editorDimensions,
@@ -64,6 +69,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             currentSlide,
             addNode,
             updateNode,
+            deleteNode,
             updatePreview,
         }),
         [
@@ -77,6 +83,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             addNode,
             updateNode,
             updatePreview,
+            deleteNode,
         ]
     );
 
@@ -86,8 +93,9 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             setSelectedNode,
             updateNode,
             updatePreview,
+            deleteNode,
         }),
-        [setEditorDimensions, setSelectedNode, updateNode, updatePreview]
+        [setEditorDimensions, setSelectedNode, updateNode, updatePreview, deleteNode]
     );
 
     function updatePreview(preview: string) {

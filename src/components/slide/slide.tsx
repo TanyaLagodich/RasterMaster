@@ -65,7 +65,7 @@ export const Slide: FC = () => {
     //     setAreOptionsOpen(false);
     // };
 
-    // const slideOperationsOptions: IOptionSlideOperations[] = [
+    // const slideOperationsOptions: ISetting[] = [
     //     { key: "add", label: "Создать", method: createSlide },
     //     { key: "duplicate", label: "Дублировать", method: duplicateSlide },
     //     { key: "remove", label: "Удалить", method: removeSlide },

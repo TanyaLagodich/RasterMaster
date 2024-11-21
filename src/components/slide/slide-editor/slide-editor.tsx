@@ -1,8 +1,10 @@
-import { DragEvent as IDragEvent, useEffect, useRef } from 'react';
+import { DragEvent as IDragEvent, useEffect, useRef, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Node as SlideNode } from '@/types';
 import { NodeRenderer } from '@/components/node-renderer';
+import { Text } from '@/components/text';
+import { Image } from '@/components/image';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
 import * as s from './slide-editor.module.scss';
@@ -16,7 +18,9 @@ export function SlideEditor() {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 1000);
+    const [openDelete, setOpenDelete] = useState(false); // ???
+
+    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
 
     useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
 
@@ -97,6 +101,11 @@ export function SlideEditor() {
             className={s.root}
             style={{ backgroundColor: currentSlide.backgroundColor }}
         >
+            {openDelete &&
+                <div className={s.delete}>
+                    <p className={s.deleteText}>Удалить</p>
+                </div>
+            }
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
                     key={node.id}

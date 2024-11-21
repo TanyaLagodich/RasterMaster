@@ -5,12 +5,13 @@ import React, {
 } from 'react';
 import ReactQuill from 'react-quill';
 import clsx from 'clsx';
-
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Text } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
-
+import { useOutsideClick } from '@/hooks/useOutsideClick';
+import SlideOperations from '@/components/slide-operations';
+import { NodeSettings } from '@/components/node-settings';
 import * as s from './text.module.scss';
 
 type TextProps = {
@@ -27,6 +28,12 @@ export function Text(props: TextProps) {
     const textFieldRef = useRef<ReactQuill>(null);
 
     const [isSelected, setIsSelected] = useState(false);
+    const [isOpenSettings, setIsOpenSettings] = useState(false);
+
+    const closeSettings = () => setIsOpenSettings(false);
+
+    useOutsideClick(outerRef, closeSettings)
+
 
     useEffect(() => {
         if (isEditable) {

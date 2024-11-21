@@ -56,13 +56,14 @@ export type Node = Text | Image | IFrame;
 export interface Slide {
     id: string;
     preview: string;
-    nodes: Node[] | [];
+    nodes: Node[];
     editorDimensions: Dimensions;
     zIndex: ZIndex;
     backgroundColor: string;
     addNode: (type: NodeType, params?: Partial<Node>) => Promise<Node>;
     updateNode: (node: Node) => void;
     update: (newData: Partial<Slide>) => void;
+    deleteNode: (id: string) => void;
     clone: () => Slide;
 }
 
