@@ -13,7 +13,8 @@ type SlideActionsContextType = {
     setSelectedNode: (node: Node | null) => void;
     updateNode: (newData: Node) => void;
     updatePreview: (preview: string) => void;
-    deleteNode: (id: string) =>  void;
+    deleteNode: (id: string) => void;
+    copyNode: (id: string) => void;
  };
 
 export const SlideContext = createContext<SlideContext | null>(null);
@@ -60,7 +61,11 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             prevNodes.filter((n) => (n.id === id))
         );
         mediator.editCurrentSlide(currentSlide);
+    }
 
+    function copyNode(id: string) {
+        currentSlide.copyNode(id);
+        mediator.editCurrentSlide(currentSlide);
     }
 
     const values = useMemo(
@@ -76,6 +81,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             updateNode,
             deleteNode,
             updatePreview,
+            copyNode,
         }),
         [
             editorDimensions,
@@ -88,7 +94,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             addNode,
             updateNode,
             updatePreview,
-            deleteNode,
+            copyNode,
         ]
     );
 
@@ -99,8 +105,9 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             updateNode,
             updatePreview,
             deleteNode,
+            copyNode,
         }),
-        [setEditorDimensions, setSelectedNode, updateNode, updatePreview, deleteNode]
+        [setEditorDimensions, setSelectedNode, updateNode, updatePreview, deleteNode, copyNode]
     );
 
     function updatePreview(preview: string) {

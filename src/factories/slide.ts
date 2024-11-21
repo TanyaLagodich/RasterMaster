@@ -31,7 +31,6 @@ class Slide implements SlideType {
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {
         const strategy = await NodeStrategyFactory.createStrategy(type);
-        // console.log(type, params);
         const node = await strategy.addNode(params);
         this.nodes.push(node);
         return node;
@@ -49,6 +48,12 @@ class Slide implements SlideType {
 
     update(newData: Partial<Slide>) {
         Object.assign(this, newData);
+    }
+
+    copyNode(nodeId: string) {
+        const node = this.nodes.find((node) => node.id === nodeId);
+        const newNode = {...node, id: nanoid()}
+        this.nodes = [...this.nodes, newNode];
     }
 
     clone(): Slide {

@@ -22,7 +22,7 @@ export function Text(props: TextProps) {
     const { data, isEditable = true } = props;
 
     const { selectedNode } = useSlideContext();
-    const { updateNode, deleteNode } = useSlideActionsContext();
+    const { updateNode, deleteNode, copyNode } = useSlideActionsContext();
 
     const textFieldRef = useRef<ReactQuill>(null);
 
@@ -50,7 +50,8 @@ export function Text(props: TextProps) {
     }, []);
     
     const settings = [
-        {key: 'Delete', label: 'Удалить', onClick: () => deleteNode(data.id)},
+        {key: 'Delete', label: 'Удалить', onClick: remove},
+        {key: 'Copy', label: 'Скопировать', onClick: copy},
         {key: 'Close', label: 'Закрыть', onClick: closeMenu},
     ]
 

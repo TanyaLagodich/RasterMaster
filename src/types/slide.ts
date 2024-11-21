@@ -64,6 +64,7 @@ export interface Slide {
     updateNode: (node: Node) => void;
     update: (newData: Partial<Slide>) => void;
     deleteNode: (id: string) => void;
+    copyNode: (id: string) => void;
     clone: () => Slide;
 }
 

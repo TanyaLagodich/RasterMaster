@@ -81,8 +81,19 @@ export function Image(props: ImageProps) {
         setIsMenuOpen(false)
     }
 
+    const remove = () => {
+        deleteNode(data.id);
+        closeMenu();
+    }
+
+    const copy = () => {
+        copyNode(data.id);
+        closeMenu();
+    }
+
     const settings = [
-        {key: 'Delete', label: 'Удалить', onClick: () => deleteNode(data.id)},
+        {key: 'Delete', label: 'Удалить', onClick: remove},
+        {key: 'Copy', label: 'Скопировать', onClick: copy},
         {key: 'Close', label: 'Закрыть', onClick: closeMenu},
     ]
 
