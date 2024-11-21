@@ -1,21 +1,21 @@
 import { DefaultSlideStrategy } from './default-slide-strategy';
 import { TextLeftTextRightSlideStrategy } from './text-left-text-right-strategy';
 import { TextX4SlideStrategy } from './text-x4-strategy';
-import { SlideTypes, SlideStrategy } from '@/types';
+import { Template, SlideStrategy } from '@/types';
 
 export class SlideStrategyFactory {
-  static createStrategy(type: SlideTypes): SlideStrategy {
+  static createStrategy(type: Template): SlideStrategy {
     switch (type) {
-      case SlideTypes.DEFAULT:
+      case Template.DEFAULT:
         return new DefaultSlideStrategy();
 
-      case SlideTypes.TEXT_LEFT_TEXT_RIGHT:
+      case Template.TEXT_LEFT_TEXT_RIGHT:
         return new TextLeftTextRightSlideStrategy();
 
-      case SlideTypes.TEXT_X4:
+      case Template.TEXT_X4:
         return new TextX4SlideStrategy();
 
-      case SlideTypes.EMPTY:
+      case Template.EMPTY:
       default:
         return { generateNodes: () => [] }; 
     }

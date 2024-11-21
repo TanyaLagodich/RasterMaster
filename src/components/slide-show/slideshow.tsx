@@ -49,10 +49,14 @@ export function SlideShow({ onExit }: { onExit: () => void }) {
         }
     };
 
+    const fullscreenchange = () => {
+        if (!document.fullscreenElement) onExit();
+    }
 
     useEffect(() => {
         enterFullscreen();
 
+        document.addEventListener('fullscreenchange', fullscreenchange)
         document.addEventListener('keydown', handleKeyDown);
 
         return () => {

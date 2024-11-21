@@ -14,8 +14,6 @@ export const useOutsideClick = (
             const {current} = ref;
     
             if (current && !current.contains(event.target as HTMLElement)) {
-                console.log('Outside');
-                
                 callback();
             }
         };

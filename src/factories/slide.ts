@@ -3,7 +3,7 @@ import { NodeStrategyFactory } from '@/factories/node-strategy';
 import { SlideStrategyFactory } from '@/strategy';
 import {
     Slide as SlideType,
-    SlideTypes,
+    Template,
     NodeType,
     Dimensions,
     ZIndex,
@@ -18,7 +18,7 @@ class Slide implements SlideType {
     zIndex: ZIndex;
     backgroundColor: string;
 
-    constructor(type: SlideTypes = SlideTypes.EMPTY) {
+    constructor(type: Template = Template.DEFAULT) {
         this.id = nanoid();
         this.preview = '';
         this.editorDimensions = { width: 0, height: 0 };
@@ -31,7 +31,7 @@ class Slide implements SlideType {
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {
         const strategy = await NodeStrategyFactory.createStrategy(type);
-        console.log(type, params);
+        // console.log(type, params);
         const node = await strategy.addNode(params);
         this.nodes.push(node);
         return node;
@@ -63,7 +63,7 @@ class Slide implements SlideType {
 }
 
 export class SlideFactory {
-    static createSlide(type: SlideTypes = SlideTypes.EMPTY): Slide {
+    static createSlide(type: Template = Template.DEFAULT): Slide {
         return new Slide(type);
     }
 }

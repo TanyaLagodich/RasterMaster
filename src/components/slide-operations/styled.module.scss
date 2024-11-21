@@ -1,20 +1,24 @@
-.root {
+.root, .templatesList {
     position: absolute;
-    left: 200px;
+    left: 60%;
     height: auto;
-    width: 240px;
+    width: auto;
     padding: 8px;
     box-sizing: border-box;
-    background-color: #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgb(0, 0, 0, .5);
     border-radius: 8px;
-    z-index: 100;
+    z-index: 2;
 }
 
 .option {
-    margin: 4px 0;
+    padding: 4px;
+    font-size: 16px;
+    line-height: 130%;
+    border-radius: 4px;
     cursor: pointer;
 }
 
 .option:hover {
-    background-color: aqua;
+    background-color: #ccc;
 }
