@@ -44,6 +44,8 @@ class Slide implements SlideType {
     }
 
     deleteNode(nodeId: string) {
+        console.log('deleteNode');
+        
         this.nodes = this.nodes.filter((node) => node.id !== nodeId);
     }
 

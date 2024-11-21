@@ -23,7 +23,7 @@ export function Text(props: TextProps) {
     const { data, isEditable = true } = props;
 
     const { selectedNode } = useSlideContext();
-    const { updateNode } = useSlideActionsContext();
+    const { updateNode, deleteNode } = useSlideActionsContext();
 
     const textFieldRef = useRef<ReactQuill>(null);
 
@@ -32,8 +32,7 @@ export function Text(props: TextProps) {
 
     const closeSettings = () => setIsOpenSettings(false);
 
-    useOutsideClick(outerRef, closeSettings)
-
+    // useOutsideClick(outerRef, closeSettings);
 
     useEffect(() => {
         if (isEditable) {
@@ -52,6 +51,10 @@ export function Text(props: TextProps) {
             quillContainer.setAttribute('data-not-draggable', 'true');
         }
     }, []);
+    const settings = [
+        {key: 'Delete', label: 'Удалить', action: () => deleteNode(data.id)},
+        {key: 'Close', label: 'Закрыть', action: closeSettings},
+    ]
 
     return (
             <ReactQuill
