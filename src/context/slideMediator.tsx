@@ -15,26 +15,26 @@ export const SlideMediatorProvider = ({ children }) => {
 
     const mediatorRef = useRef<SlidesList | null>(null);
 
-    useEffect(() => {
-        const storedSlides = localStorage.getItem('slides');
-        if (storedSlides) {
-            setSlides(JSON.parse(storedSlides).map((slide) => reconstructSlide(slide)));
-        }
+    // useEffect(() => {
+    //     const storedSlides = localStorage.getItem('slides');
+    //     if (storedSlides) {
+    //         setSlides(JSON.parse(storedSlides).map((slide) => reconstructSlide(slide)));
+    //     }
     
-        const storedCurrentSlide = localStorage.getItem('currentSlide');
-        if (storedCurrentSlide) {
-            setCurrentSlide(reconstructSlide(JSON.parse(storedCurrentSlide)));
-        }
+    //     const storedCurrentSlide = localStorage.getItem('currentSlide');
+    //     if (storedCurrentSlide) {
+    //         setCurrentSlide(reconstructSlide(JSON.parse(storedCurrentSlide)));
+    //     }
 
-        if (mediatorRef && storedSlides && storedCurrentSlide) {
-            mediatorRef.current = buildUpSlidesList({
-                slides: JSON.parse(storedSlides).map((slide) => reconstructSlide(slide)),
-                currentSlide: reconstructSlide(JSON.parse(storedCurrentSlide)),
-                setSlides,
-                setCurrentSlide,
-            })
-        }
-    }, []);
+    //     if (mediatorRef && storedSlides && storedCurrentSlide) {
+    //         mediatorRef.current = buildUpSlidesList({
+    //             slides: JSON.parse(storedSlides).map((slide) => reconstructSlide(slide)),
+    //             currentSlide: reconstructSlide(JSON.parse(storedCurrentSlide)),
+    //             setSlides,
+    //             setCurrentSlide,
+    //         })
+    //     }
+    // }, []);
 
     if (!mediatorRef.current) {
         mediatorRef.current = new SlidesList();
@@ -44,17 +44,17 @@ export const SlideMediatorProvider = ({ children }) => {
         mediatorRef.current.setCurrentSlide(currentSlide);
     }
 
-    useEffect(() => {
-        localStorage.setItem('slides', JSON.stringify(slides));
-    }, [slides]);
+    // useEffect(() => {
+    //     localStorage.setItem('slides', JSON.stringify(slides));
+    // }, [slides]);
 
-    useEffect(() => {
-        if (currentSlide) {
-            localStorage.setItem('currentSlide', JSON.stringify(currentSlide));
-        } else {
-            localStorage.removeItem('currentSlide');
-        }
-    }, [currentSlide]);
+    // useEffect(() => {
+    //     if (currentSlide) {
+    //         localStorage.setItem('currentSlide', JSON.stringify(currentSlide));
+    //     } else {
+    //         localStorage.removeItem('currentSlide');
+    //     }
+    // }, [currentSlide]);
 
     return (
         <SlideMediatorContext.Provider value={{ mediator: mediatorRef.current, slides, currentSlide }}>

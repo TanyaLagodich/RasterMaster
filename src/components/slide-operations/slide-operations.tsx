@@ -1,53 +1,44 @@
-import { ISetting } from '@/entities/slides/types';
 import { FC, MouseEvent, useMemo, useState } from 'react';
 import OperationItem from '../slide-operation/slide-operation';
 import { templatesDict } from '@/entities/templates/utils';
-import { Template } from '@/types';
+import { ISetting, Template } from '@/types';
 import * as s from './styled.module.scss';
-import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 interface IProps {
     options: ISetting[],
     id: string;
     onClose: () => void;
-    areTemplatesShown?: boolean;
-    createSlide: (event: MouseEvent, id: string, template?: Template) => void;
+    areTemplatesShown: boolean;
+    createSlide: (event: MouseEvent, id: string, template: Template) => void;
 }
 
-const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) => {    
-    const optionsList = useMemo(() => (
-        <ul className={s.root}>
-            {options.map(({key, label, onClick}) => (
-                <li
-                    key={key}
-                    onClick={onClick}
-                    className={s.option}
-                >
-                    {label}
-                </li>
-                ))
-            }
-        </ul>
-    ), [options])
+const SlideOperations: FC<IProps> = ({options, id, onClose, areTemplatesShown, createSlide}) => {
+    const optionsList = useMemo(() => {
+        return options.map(({key, label, onClick}) => (
+            <OperationItem 
+                key={key}
+                method={onClick}
+                onClose={onClose}
+                className={s.option}
+                label={label}
+                id={id}
+                close={!!close}
+            />
+        ))
+    }, [options])
 
-    // const { mediator } = useSlideMediator();
+    const [template, setTemplate] = useState<Template | null>(null);
 
-    // const [template, setTemplate] = useState<Template | null>(null);
-
-    // const onSelectTemplate = (event: MouseEvent) => {
-    //     event.stopPropagation();
-    //     if (template) {
-    //         mediator.createSlide(event, id, template);
-    //     }
-    //     onClose();
-    // }
+    const onSelectTemplate = (event) => {
+        createSlide(event, id, template);
+    }
 
     return (
-        <div>
+        <ul className={s.root}>
             {optionsList}
 
-            {/* {areTemplatesShown &&
-                <div className={s.templatesList}>
+            {areTemplatesShown &&
+                <li style={{zIndex: 1001}}>
                     <ul>
                         {Object.entries(templatesDict).map(([template, name]) => (
                             <li key={template} onClick={() => setTemplate(template as Template)}>
@@ -57,9 +48,9 @@ const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) 
                     </ul>
 
                     <button onClick={onSelectTemplate}>Создать</button>
-                </div>
-            } */}
-         </div>
+                </li>
+            }
+         </ul>
     )
 }
 

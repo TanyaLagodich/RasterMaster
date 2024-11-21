@@ -32,7 +32,6 @@ export class NodeFactory {
                         key={node.id}
                         data={node}
                         isEditable={isEditable}
-                        onContextMenu={() => {console.log('CLICK')}}
                     />
                 )
             // case NodeType.IMAGE:

@@ -56,6 +56,11 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
 
     function deleteNode(id: string) {
         currentSlide.deleteNode(id);
+        setNodes((prevNodes) =>
+            prevNodes.filter((n) => (n.id === id))
+        );
+        mediator.editCurrentSlide(currentSlide);
+
     }
 
     const values = useMemo(

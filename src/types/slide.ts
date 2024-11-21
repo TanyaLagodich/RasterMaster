@@ -80,9 +80,8 @@ export enum Template {
     IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
 
-export interface IOptionSlideOperations {
+export interface ISetting {
     key: string;
     label: string;
-    onClick: (event?: MouseEvent) => void;
-    close?: boolean;
+    onClick: (...args: any[]) => void;
 }

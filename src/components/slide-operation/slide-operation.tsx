@@ -29,7 +29,7 @@ const OperationItem: FC<IOperationProps> = ({
     }
     
     return (
-        <div
+        <li
             // {...(key !== 'Templates' && {onClick})}
             // {...(key === 'Templates' && {onHover})}
             onClick={onClick}

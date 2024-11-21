@@ -10,7 +10,6 @@ import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Text } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
-import SlideOperations from '@/components/slide-operations';
 import { NodeSettings } from '@/components/node-settings';
 import * as s from './text.module.scss';
 
@@ -28,9 +27,7 @@ export function Text(props: TextProps) {
     const textFieldRef = useRef<ReactQuill>(null);
 
     const [isSelected, setIsSelected] = useState(false);
-    const [isOpenSettings, setIsOpenSettings] = useState(false);
-
-    const closeSettings = () => setIsOpenSettings(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     // useOutsideClick(outerRef, closeSettings);
 
@@ -51,9 +48,10 @@ export function Text(props: TextProps) {
             quillContainer.setAttribute('data-not-draggable', 'true');
         }
     }, []);
+    
     const settings = [
-        {key: 'Delete', label: 'Удалить', action: () => deleteNode(data.id)},
-        {key: 'Close', label: 'Закрыть', action: closeSettings},
+        {key: 'Delete', label: 'Удалить', onClick: () => deleteNode(data.id)},
+        {key: 'Close', label: 'Закрыть', onClick: closeMenu},
     ]
 
     return (
