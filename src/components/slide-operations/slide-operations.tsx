@@ -27,17 +27,17 @@ const SlideOperations: FC<IProps> = ({options, id, onClose, areTemplatesShown, c
         ))
     }, [options])
 
-    const [template, setTemplate] = useState<Template | null>(null);
+    // const [template, setTemplate] = useState<Template | null>(null);
 
-    const onSelectTemplate = (event) => {
-        createSlide(event, id, template);
-    }
+    // const onSelectTemplate = (event) => {
+    //     createSlide(event, id, template);
+    // }
 
     return (
         <ul className={s.root}>
             {optionsList}
 
-            {areTemplatesShown &&
+            {/* {areTemplatesShown &&
                 <li style={{zIndex: 1001}}>
                     <ul>
                         {Object.entries(templatesDict).map(([template, name]) => (
@@ -49,7 +49,7 @@ const SlideOperations: FC<IProps> = ({options, id, onClose, areTemplatesShown, c
 
                     <button onClick={onSelectTemplate}>Создать</button>
                 </li>
-            }
+            } */}
          </ul>
     )
 }
