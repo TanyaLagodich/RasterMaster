@@ -15,6 +15,7 @@ export class SlideFactory {
                         zIndex: 2,
                         value: 'Заголовок слайда',
                         style: {textAlign: 'center', fontSize: 32, marginTop: 16},
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -23,6 +24,7 @@ export class SlideFactory {
                         dimensionsPercent: {height: 70, width: 90},
                         zIndex: 1,
                         value: 'Напишите что-нибудь',
+                        isDraggable: true,
                     },
                 ]
 
@@ -39,6 +41,7 @@ export class SlideFactory {
                         zIndex: 2,
                         value: 'Заголовок слайда',
                         style: {textAlign: 'center', fontSize: 32, marginTop: 16},
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -46,7 +49,8 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 25},
                         dimensionsPercent: {height: 70, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -54,7 +58,8 @@ export class SlideFactory {
                         positionPercent: {x: 55, y: 25},
                         dimensionsPercent: {height: 70, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
+                        isDraggable: true,
                     },
                 ]
 
@@ -68,6 +73,7 @@ export class SlideFactory {
                         zIndex: 2,
                         value: 'Заголовок слайда',
                         style: {textAlign: 'center', fontSize: 32, marginTop: 16},
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -75,7 +81,8 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 25},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -83,7 +90,8 @@ export class SlideFactory {
                         positionPercent: {x: 55, y: 25},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -91,7 +99,8 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 65},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -100,6 +109,7 @@ export class SlideFactory {
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
                         value: 'Ваш текст',
+                        isDraggable: true,
                     },
                 ]
 
@@ -113,6 +123,7 @@ export class SlideFactory {
                         zIndex: 1,
                         value: 'Заголовок слайда',
                         style: {textAlign: 'center', fontSize: 32},
+                        isDraggable: true,
                     },
                     {
                         id: uuidv4(),
@@ -121,9 +132,9 @@ export class SlideFactory {
                         dimensionsPercent: {height: 80, width: 100},
                         zIndex: 1,
                         value: 'Напишите что-нибудь',
+                        isDraggable: true,
                     },
                 ]
         }
     }
 }
-  

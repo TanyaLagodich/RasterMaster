@@ -37,30 +37,6 @@ export function Image(props: ImageProps) {
         }
     }, [data, selectedNode, isEditable]);
 
-    // function handleDragStart(e: DragEvent<HTMLDivElement>) {
-    //     if (!dotsRef.current || !stylerRef.current) return;
-    //
-    //     const isDot = [...dotsRef.current.children].some(
-    //         (dot: HTMLDivElement) =>
-    //             isInsideElement(
-    //                 e.clientX,
-    //                 e.clientY,
-    //                 dot.getBoundingClientRect()
-    //             )
-    //     );
-    //     const isStyler = isInsideElement(
-    //         e.clientX,
-    //         e.clientY,
-    //         stylerRef.current.getBoundingClientRect()
-    //     );
-    //
-    //     if (isDot || isStyler) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    //
-    //     onDragStart(e);
-    // }
     function handleBRNumberChange(value: number) {
         const digits = value ? String(value) : '0';
         const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? 'px';
@@ -99,7 +75,6 @@ export function Image(props: ImageProps) {
     return (
         <>
             <img
-                data-interactive
                 className={s.image}
                 style={{
                     borderRadius: data.style.borderRadius,
@@ -107,9 +82,13 @@ export function Image(props: ImageProps) {
                 src={data.src}
             />
 
-            <div ref={stylerRef} className={clsx(s.styler, {
-                [s.stylerVisible]: isSelected,
-            })}>
+            <div
+                ref={stylerRef}
+                className={clsx(s.styler, {
+                    [s.stylerVisible]: isSelected,
+                })}
+                data-not-draggable
+            >
                 <InputNumber
                     defaultValue={0}
                     style={{ width: '66px' }}

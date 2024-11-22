@@ -16,6 +16,7 @@ import * as s from './text.module.scss';
 type TextProps = {
     data: Text;
     isEditable: boolean;
+
 };
 
 export function Text(props: TextProps) {
@@ -82,6 +83,10 @@ export function Text(props: TextProps) {
     };
 
     useEffect(() => {
+        console.log(textFieldRef.current.getEditor().root, textFieldRef.current.getEditor().root.closest('.quill'));
+        if (textFieldRef.current.getEditor().root) {
+            textFieldRef.current.getEditor().root.closest('.quill').setAttribute('data-not-draggable', 'true');
+        }
         // const handleDragStart = (e) => {
         //     e.stopPropagation();
         //     console.log('handleDragStart');
@@ -105,17 +110,8 @@ export function Text(props: TextProps) {
                 theme="snow"
                 value={data.value}
                 onChange={(value) => textareaHandlers.onChange(value)}
-                modules={{
-                    toolbar: [
-                        [{ font: [] }, { size: [] }],
-                        [{ header: '1' }, { header: '2' }, { font: [] }],
-                        ['bold', 'italic', 'underline', 'strike'], // Make sure bold, italic, underline are in the toolbar
-                        [{ list: 'ordered' }, { list: 'bullet' }],
-                        [{ align: [] }],
-                        ['link'],
-                        ['clean'],
-                    ],
-                }}
+                onFocus={() => updateNode({ ...data, isDraggable: false })}
+                onBlur={() => updateNode({ ...data, isDraggable: true })}
             />
     );
 }

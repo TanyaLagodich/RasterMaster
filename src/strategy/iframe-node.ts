@@ -10,6 +10,7 @@ export class IFrameNodeStrategy implements NodeStrategy {
             dimensionsPercent: { width: 20, height: 40 },
             zIndex: 1,
             src: params.src || '',
+            isDraggable: true,
         };
     }
 

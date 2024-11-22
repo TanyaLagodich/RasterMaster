@@ -10,6 +10,8 @@ export function IFrame(props: IFrameProps) {
     const { data } = props;
 
     return (
-        <iframe className={s.iframe} src={data.src} title="iframe" />
+        <div className={s.iframeWrapper}>
+            <iframe className={s.iframe} src={data.src} title="iframe" data-not-draggable />
+        </div>
     );
 }

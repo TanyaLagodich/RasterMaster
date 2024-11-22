@@ -1,6 +1,5 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { Node as SlideNode, NodeType } from '@/types';
-import { BaseNode } from '@/components/base-node';
 import { Text } from '@/components/text';
 import { Image } from '@/components/image';
 import { IFrame } from '@/components/iframe';
