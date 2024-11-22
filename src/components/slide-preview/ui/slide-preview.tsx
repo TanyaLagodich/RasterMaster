@@ -1,6 +1,6 @@
 import { Card, Button } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons'
-import { IOptionSlideOperations, Slide } from '@/types';
+import { ISetting, Slide } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useState, MouseEvent, useRef } from 'react';
 import SlideOperations from '@/components/slide-operations';
@@ -22,7 +22,7 @@ export function SlidePreview ({
         setAreOptionsOpen(false);
     };
 
-    const slideOperations: IOptionSlideOperations[] = [
+    const slideOperations: ISetting[] = [
         { key: 'add', label: 'Создать', onClick: (event) => {
             mediator.createSlide(event, slide.id);
             closeOptions();

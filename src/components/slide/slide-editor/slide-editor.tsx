@@ -5,18 +5,20 @@ import { Node as SlideNode } from '@/types';
 import { NodeRenderer } from '@/components/node-renderer';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useAppContext } from '@/hooks/useAppContext';
 import * as s from './slide-editor.module.scss';
 
 export function SlideEditor() {
-    const { currentSlide } = useSlideMediator();
+    const { mediator, currentSlide } = useSlideMediator();
     const { nodes, backgroundColor } = currentSlide;
     const { setEditorDimensions, setSelectedNode, updateNode, updatePreview } =
         useSlideActionsContext();
-
+    const { isNumerationShown } = useAppContext();
+    
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 1000);
+    const debouncedGeneratePreview = useDebounce(generatePreview, 3000);
 
     useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
 
@@ -97,6 +99,7 @@ export function SlideEditor() {
             className={s.root}
             style={{ backgroundColor: currentSlide.backgroundColor }}
         >
+            {currentSlide.id.slice(0, 3)}
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
                     key={node.id}
@@ -106,6 +109,8 @@ export function SlideEditor() {
                     onDragEnd={dragEndHandler}
                 />
             )}
+
+            {isNumerationShown && <p className={s.pageNumber}>{mediator.getIndex()}</p>}
         </div>
     );
 }

@@ -26,12 +26,11 @@ class Slide implements SlideType {
         this.backgroundColor = '#802424';
 
         const strategy = SlideStrategyFactory.createStrategy(type);
-        this.nodes = strategy.generateNodes();
+        this.nodes = strategy.generateNodes();        
     }
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {
         const strategy = await NodeStrategyFactory.createStrategy(type);
-        // console.log(type, params);
         const node = await strategy.addNode(params);
         this.nodes.push(node);
         return node;
@@ -43,12 +42,18 @@ class Slide implements SlideType {
         );
     }
 
-    removeNode(nodeId: string) {
+    deleteNode(nodeId: string) {
         this.nodes = this.nodes.filter((node) => node.id !== nodeId);
     }
 
     update(newData: Partial<Slide>) {
         Object.assign(this, newData);
+    }
+
+    copyNode(nodeId: string) {
+        const node = this.nodes.find((node) => node.id === nodeId);
+        const newNode = {...node, id: nanoid()}
+        this.nodes = [...this.nodes, newNode];
     }
 
     clone(): Slide {

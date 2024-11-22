@@ -1,13 +1,11 @@
-import { IOptionSlideOperations } from '@/types';
-import { FC, MouseEvent, useMemo, useState } from 'react';
-import OperationItem from '../slide-operation/slide-operation';
-import { templatesDict } from '@/entities/templates/utils';
+import { ISetting } from '@/types';
+import { FC, MouseEvent, useMemo } from 'react';
 import { Template } from '@/types';
-import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import * as s from './styled.module.scss';
 
 interface IProps {
-    options: IOptionSlideOperations[],
+    options: ISetting[],
     id: string;
     onClose: () => void;
     areTemplatesShown?: boolean;
@@ -25,8 +23,7 @@ const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) 
                 >
                     {label}
                 </li>
-                ))
-            }
+            ))}
         </ul>
     ), [options])
 
@@ -47,8 +44,8 @@ const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) 
             {optionsList}
 
             {/* {areTemplatesShown &&
-                <div className={s.templatesList}>
-                    <ul>
+                <>
+                    <ul className={s.templatesList}>
                         {Object.entries(templatesDict).map(([template, name]) => (
                             <li key={template} onClick={() => setTemplate(template as Template)}>
                                 {name}
@@ -57,7 +54,7 @@ const SlideOperations: FC<IProps> = ({options, id, areTemplatesShown, onClose}) 
                     </ul>
 
                     <button onClick={onSelectTemplate}>Создать</button>
-                </div>
+                </>
             } */}
          </div>
     )

@@ -4,7 +4,7 @@ import type { Slide, Dimensions } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
-interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone'> {
+interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone' | 'deleteNode' | 'copyNode'> {
     selectedNode: Node | null;
 }
 
@@ -13,7 +13,9 @@ type SlideActionsContextType = {
     setSelectedNode: (node: Node | null) => void;
     updateNode: (newData: Node) => void;
     updatePreview: (preview: string) => void;
-};
+    deleteNode: (id: string) => void;
+    copyNode: (id: string) => void;
+ };
 
 export const SlideContext = createContext<SlideContext | null>(null);
 export const SlideActionsContext =
@@ -26,7 +28,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     );
     const [currNode, setCurrNode] = useState<Node | null>(null);
     const [nodes, setNodes] = useState<Node[]>(currentSlide?.nodes || []);
-    const [zIndex, setZIndex] = useState<ZIndex>(
+    const [zIndex, _] = useState<ZIndex>(
         currentSlide?.zIndex || { min: 0, max: 100 }
     );
     const [preview] = useState<string>(currentSlide?.preview || '');
@@ -50,6 +52,19 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         setNodes((prevNodes) =>
             prevNodes.map((n) => (n.id === newData.id ? newData : n))
         );
+        mediator.editCurrentSlide(currentSlide);
+    }
+
+    function deleteNode(id: string) {
+        currentSlide.deleteNode(id);
+        setNodes((prevNodes) =>
+            prevNodes.filter((n) => (n.id === id))
+        );
+        mediator.editCurrentSlide(currentSlide);
+    }
+
+    function copyNode(id: string) {
+        currentSlide.copyNode(id);
         mediator.editCurrentSlide(currentSlide);
     }
 
@@ -77,6 +92,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             addNode,
             updateNode,
             updatePreview,
+            copyNode,
         ]
     );
 
@@ -86,8 +102,10 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             setSelectedNode,
             updateNode,
             updatePreview,
+            deleteNode,
+            copyNode,
         }),
-        [setEditorDimensions, setSelectedNode, updateNode, updatePreview]
+        [setEditorDimensions, setSelectedNode, updateNode, updatePreview, deleteNode, copyNode]
     );
 
     function updatePreview(preview: string) {

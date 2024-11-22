@@ -56,13 +56,15 @@ export type Node = Text | Image | IFrame;
 export interface Slide {
     id: string;
     preview: string;
-    nodes: Node[] | [];
+    nodes: Node[];
     editorDimensions: Dimensions;
     zIndex: ZIndex;
     backgroundColor: string;
     addNode: (type: NodeType, params?: Partial<Node>) => Promise<Node>;
     updateNode: (node: Node) => void;
     update: (newData: Partial<Slide>) => void;
+    deleteNode: (id: string) => void;
+    copyNode: (id: string) => void;
     clone: () => Slide;
 }
 
@@ -79,9 +81,8 @@ export enum Template {
     IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
 
-export interface IOptionSlideOperations {
+export interface ISetting {
     key: string;
     label: string;
-    onClick: (event?: MouseEvent) => void;
-    close?: boolean;
+    onClick: (...args: any[]) => void;
 }

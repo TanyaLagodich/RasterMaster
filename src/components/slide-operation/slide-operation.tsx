@@ -6,7 +6,7 @@ interface IOperationProps {
     key: string;
     id: string;
     className: string;
-    method: (...args: any[]) => void;
+    action: (...args: any[]) => void;
     onClose: () => void;
     close?: boolean
 }
@@ -16,27 +16,23 @@ const OperationItem: FC<IOperationProps> = ({
     key,
     className,
     id,
-    method,
+    action,
     onClose,
 }) => {
     const onClick = (event: MouseEvent) => {
-        method(event, id);
+        action(event, id);
         onClose();
-    }
-
-    const onHover = () => {
-        
     }
     
     return (
-        <div
+        <li
             // {...(key !== 'Templates' && {onClick})}
             // {...(key === 'Templates' && {onHover})}
             onClick={onClick}
             className={className}
         >
             {label}
-        </div>
+        </li>
     )
 }
 

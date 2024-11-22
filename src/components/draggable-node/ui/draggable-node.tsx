@@ -13,6 +13,7 @@ interface DraggableNodeProps {
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
     children: React.ReactElement;
+    onContextMenu: () => void;
 }
 
 const resizeDots = [

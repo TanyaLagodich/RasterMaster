@@ -8,12 +8,11 @@ import {
 import { Checkbox, InputNumber, Select } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import clsx from 'clsx';
-
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { Image } from '@/types';
+import { ISetting, Image } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
-
+import { NodeSettings } from '@/components/node-settings';
 import * as s from './image.module.scss';
 
 type ImageProps = {
@@ -25,11 +24,12 @@ export function Image(props: ImageProps) {
     const { data, isEditable = true } = props;
 
     const { selectedNode } = useSlideContext();
-    const { updateNode } = useSlideActionsContext();
+    const { setSelectedNode, updateNode, deleteNode } = useSlideActionsContext();
 
     const stylerRef = useRef<HTMLDivElement | null>(null);
 
     const [isSelected, setIsSelected] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         if (isEditable) {
@@ -72,6 +72,31 @@ export function Image(props: ImageProps) {
         });
     }
 
+    function openMenu(event: IMouseEvent) {
+        event.preventDefault();
+        setIsMenuOpen(true);
+    }
+
+    function closeMenu() {
+        setIsMenuOpen(false)
+    }
+
+    const remove = () => {
+        deleteNode(data.id);
+        closeMenu();
+    }
+
+    const copy = () => {
+        copyNode(data.id);
+        closeMenu();
+    }
+
+    const settings: ISetting[] = [
+        {key: 'Delete', label: 'Удалить', onClick: remove},
+        {key: 'Copy', label: 'Скопировать', onClick: copy},
+        {key: 'Close', label: 'Закрыть', onClick: closeMenu},
+    ]
+
     return (
         <>
             <img
@@ -107,6 +132,8 @@ export function Image(props: ImageProps) {
                     Пропорционально
                 </Checkbox>
             </div>
+
+            {isMenuOpen && <NodeSettings options={settings} />}
         </>
     );
 }
