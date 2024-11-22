@@ -10,7 +10,7 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import clsx from 'clsx';
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { Image } from '@/types';
+import { ISetting, Image } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
 import { NodeSettings } from '@/components/node-settings';
 import * as s from './image.module.scss';
@@ -91,7 +91,7 @@ export function Image(props: ImageProps) {
         closeMenu();
     }
 
-    const settings = [
+    const settings: ISetting[] = [
         {key: 'Delete', label: 'Удалить', onClick: remove},
         {key: 'Copy', label: 'Скопировать', onClick: copy},
         {key: 'Close', label: 'Закрыть', onClick: closeMenu},

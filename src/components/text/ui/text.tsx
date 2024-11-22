@@ -7,7 +7,7 @@ import ReactQuill from 'react-quill';
 import clsx from 'clsx';
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { Text } from '@/types';
+import { ISetting, Text } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
 import { NodeSettings } from '@/components/node-settings';
 import * as s from './text.module.scss';

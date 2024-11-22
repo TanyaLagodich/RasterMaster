@@ -27,7 +27,7 @@ export function IFrame(props: IFrameProps) {
         closeMenu();
     }
 
-    const settings = [
+    const settings: ISetting[] = [
         {key: 'Delete', label: 'Удалить', onClick: remove},
         {key: 'Copy', label: 'Скопировать', onClick: copy},
         {key: 'Close', label: 'Закрыть', onClick: closeMenu},
