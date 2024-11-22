@@ -20,7 +20,6 @@ export class ImageNodeStrategy implements NodeStrategy {
         borderRadius: '0px',
         cover: false,
       },
-      isDraggable: true,
     };
 
     // Открываем выбор файла и обновляем src после загрузки

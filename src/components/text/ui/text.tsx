@@ -83,21 +83,11 @@ export function Text(props: TextProps) {
     };
 
     useEffect(() => {
-        console.log(textFieldRef.current.getEditor().root, textFieldRef.current.getEditor().root.closest('.quill'));
-        if (textFieldRef.current.getEditor().root) {
-            textFieldRef.current.getEditor().root.closest('.quill').setAttribute('data-not-draggable', 'true');
+        const editorRoot = textFieldRef.current.getEditor().root;
+        const quillContainer = editorRoot?.closest('.quill');
+        if (quillContainer) {
+            quillContainer.setAttribute('data-not-draggable', 'true');
         }
-        // const handleDragStart = (e) => {
-        //     e.stopPropagation();
-        //     console.log('handleDragStart');
-        // }
-
-        // const mainWrapper = textFieldRef.current.getEditor().root.closest(`.${s.textField}`);
-        // if (mainWrapper) {
-        //     textFieldRef.current.getEditor().root.addEventListener('dragstart', handleDragStart);
-        // }
-        // console.log(textFieldRef.current.getEditor().root.closest(`.${s.textField}`));
-        // textFieldRef.current.addEventListener('dragstart', handleDragStart);
     }, []);
 
     return (
@@ -110,8 +100,17 @@ export function Text(props: TextProps) {
                 theme="snow"
                 value={data.value}
                 onChange={(value) => textareaHandlers.onChange(value)}
-                onFocus={() => updateNode({ ...data, isDraggable: false })}
-                onBlur={() => updateNode({ ...data, isDraggable: true })}
+                modules={{
+                    toolbar: [
+                        [{ font: [] }, { size: [] }],
+                        [{ header: '1' }, { header: '2' }, { font: [] }],
+                        ['bold', 'italic', 'underline', 'strike'], // Make sure bold, italic, underline are in the toolbar
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        [{ align: [] }],
+                        ['link'],
+                        ['clean'],
+                    ],
+                }}
             />
     );
 }

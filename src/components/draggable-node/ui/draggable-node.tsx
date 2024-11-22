@@ -153,12 +153,12 @@ export function DraggableNode({ data, onDragStart, onDragEnd, children }: Dragga
                 [s._selected]: isSelected,
             })}
             draggable
+            onPointerDown={handlePointerDown}
             onClick={() => setSelectedNode(data)}
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >
             {children}
-            {/*<div ref={childrenRef} className={s.children}>{children}</div>*/}
             <div ref={dotsRef} className={s.resizeDotsContainer}>
                 {resizeDots.map((resizeDot) => (
                     <div
