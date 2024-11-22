@@ -37,7 +37,6 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     const [isNumerationShown, setIsNumerationShown] = useState(false);
 
     const toggleNumeration = useCallback(() => {
-        console.log('toggleNumeration');
         setIsNumerationShown(prev => !prev);
     }, []);
 

@@ -26,9 +26,7 @@ class Slide implements SlideType {
         this.backgroundColor = '#802424';
 
         const strategy = SlideStrategyFactory.createStrategy(type);
-        this.nodes = strategy.generateNodes();
-        console.log('===>', this.nodes);
-        
+        this.nodes = strategy.generateNodes();        
     }
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {

@@ -18,7 +18,7 @@ export function SlideEditor() {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
+    const debouncedGeneratePreview = useDebounce(generatePreview, 3000);
 
     useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
 

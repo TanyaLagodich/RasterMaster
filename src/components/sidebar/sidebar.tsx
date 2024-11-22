@@ -9,7 +9,7 @@ const Sidebar: FC = () => {
   const { mediator, slides, currentSlide } = useSlideMediator();
   const [ draggableIndex, setDraggableIndex ] = useState<number | null>(null);
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
-  const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);
+  const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);  
   
   const { isNumerationShown } = useAppContext();
 
@@ -52,26 +52,18 @@ const Sidebar: FC = () => {
   }
 
   const drop = () => {
-    console.log('drop');
     if (draggableIndex === null || hoverableIndex === null) return;
-
-    // TODO: эту логику более правильно сделать через setSlides(prev => ...)
     const updatedSlides = [...slides];
-
-    console.log('BEFORE =>', updatedSlides.map(s => s.id.slice(0, 3)));
-
     const targetIndex = hoverableIndex.index;
 
     const temp = updatedSlides[draggableIndex];
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];
     updatedSlides[targetIndex] = temp;
 
-    console.log('AFTER =>', updatedSlides.map(s => s.id.slice(0, 3)));
-  
     mediator.rebuild(updatedSlides);
     setDraggableIndex(null);
     setHoverableIndex(null);
-    }
+  }
 
     const dragLeave = (e: React.DragEvent) => {
         const relatedTarget = e.relatedTarget as HTMLElement;
@@ -84,10 +76,7 @@ const Sidebar: FC = () => {
         }
 
         setHoverableIndex(null);
-    };
-
-    console.log(currentSlide?.id);
-    
+    };    
     
     return (
         <aside

@@ -112,6 +112,29 @@ import { SlideFactory } from '@/factories/slide';
 
 ///
 
+const buildLl = (slides: Slide[], context: SlidesList, prev: SlidesListItem) => {
+  slides.forEach((slide, i, arr) => {
+    const slideItem = new SlidesListItem(slide);
+    if (prev) {
+      prev.next = slideItem;
+    }
+    slideItem.prev = prev;
+    prev = slideItem;
+    slideItem.next = i === arr.length - 1
+      ? null
+      : new SlidesListItem(arr[i + 1]);
+    
+    if (i === 0) {
+      context.first = slideItem;
+    }
+    if (i === arr.length - 1) {
+      context.last = slideItem;
+    }
+
+    context.map.set(slide.id, slideItem);
+  })
+}
+
 interface SlidesListBuilderArgs {
   slides: Slide[];
   currentSlide: Slide;
@@ -127,26 +150,27 @@ export const buildUpSlidesList = (args: SlidesListBuilderArgs): SlidesList => {
   if (slides.length) {
     let prev = null;
 
-    slides.forEach((slide, i, arr) => {
-      const slideItem = new SlidesListItem(slide);
-      if (prev) {
-        prev.next = slideItem;
-      }
-      slideItem.prev = prev;
-      prev = slideItem;
-      slideItem.next = i === arr.length - 1
-        ? null
-        : new SlidesListItem(arr[i + 1]);
+    buildLl(slides, list, prev);
+    // slides.forEach((slide, i, arr) => {
+    //   const slideItem = new SlidesListItem(slide);
+    //   if (prev) {
+    //     prev.next = slideItem;
+    //   }
+    //   slideItem.prev = prev;
+    //   prev = slideItem;
+    //   slideItem.next = i === arr.length - 1
+    //     ? null
+    //     : new SlidesListItem(arr[i + 1]);
       
-      if (i === 0) {
-        list.first = slideItem;
-      }
-      if (i === arr.length - 1) {
-        list.last = slideItem;
-      }
+    //   if (i === 0) {
+    //     list.first = slideItem;
+    //   }
+    //   if (i === arr.length - 1) {
+    //     list.last = slideItem;
+    //   }
 
-      list.map.set(slide.id, slideItem);
-    })
+    //   list.map.set(slide.id, slideItem);
+    // })
   }
 
   list.registerSlideList(setSlides);
@@ -373,25 +397,7 @@ export class SlidesList {
     this.last = null;
     let prev = null;
 
-    slides.forEach((slide, i, arr) => {
-      const slideItem = new SlidesListItem(slide);
-      if (prev) {
-        prev.next = slideItem;
-      }
-      slideItem.prev = prev;
-      prev = slideItem;
-      slideItem.next = i === arr.length - 1
-        ? null
-        : new SlidesListItem(arr[i + 1]);
-      
-      if (i === 0) {
-        this.first = slideItem;
-      }
-      if (i === arr.length - 1) {
-        this.last = slideItem;
-      }
-    })
-
+    buildLl(slides, this, prev);
     this.setSlides(this.toArray());
   }
 
