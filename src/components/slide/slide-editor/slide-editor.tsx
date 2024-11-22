@@ -74,11 +74,9 @@ export function SlideEditor() {
     }
 
     async function generatePreview() {
-        console.log('generatePreview');
         try {
             if (editorRef.current) {
                 const filter = (node: HTMLElement) => {
-                    console.log('filter', /resizeDot/.test(node.className));
                     if (/resizeDot/.test(node.className) || node.classList?.contains('ql-toolbar')) {
                         return false;
                     }
