@@ -16,7 +16,6 @@ import * as s from './text.module.scss';
 type TextProps = {
     data: Text;
     isEditable: boolean;
-
 };
 
 export function Text(props: TextProps) {
@@ -34,49 +33,6 @@ export function Text(props: TextProps) {
             setIsSelected(data.id === selectedNode?.id);
         }
     }, [data, selectedNode, isEditable]);
-
-    // function handleDragStart(e: DragEvent<HTMLDivElement>) {
-    //     if (!textFieldRef.current || !dotsRef.current) return;
-    //
-    //     const isTextField = isInsideElement(
-    //         e.clientX,
-    //         e.clientY,
-    //         textFieldRef.current.getEditor().root.getBoundingClientRect()
-    //     );
-    //
-    //     const isDot = [...dotsRef.current.children].some(
-    //         (dot: HTMLDivElement) =>
-    //             isInsideElement(
-    //                 e.clientX,
-    //                 e.clientY,
-    //                 dot.getBoundingClientRect()
-    //             )
-    //     );
-    //
-    //     if (isTextField || isDot) {
-    //         e.preventDefault();
-    //         return;
-    //     }
-    //
-    //     onDragStart(e);
-    // }
-
-    // @ts-ignore
-    const handleMouseDown = (e: React.MouseEvent) => {
-        // Останавливаем событие для предотвращения драг-н-дропа
-        if (!textFieldRef.current) return;
-
-        const isTextField = isInsideElement(
-            e.clientX,
-            e.clientY,
-            textFieldRef.current.getEditor().root.getBoundingClientRect()
-        );
-
-        if (isTextField) {
-            e.stopPropagation();
-        }
-    };
-
 
     const textareaHandlers = {
         onChange: (value: string) => updateNode({ ...data, value }),
