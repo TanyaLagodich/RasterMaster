@@ -5,12 +5,11 @@ import { Node as SlideNode } from '@/types';
 import { NodeRenderer } from '@/components/node-renderer';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useDebounce } from '@/hooks/useDebounce';
-import { IFrame } from '@/components/iframe';
 import * as s from './slide-editor.module.scss';
 
 export function SlideEditor() {
     const { currentSlide } = useSlideMediator();
-    const { nodes } = currentSlide;
+    const { nodes, backgroundColor } = currentSlide;
     const { setEditorDimensions, setSelectedNode, updateNode, updatePreview } =
         useSlideActionsContext();
 
@@ -19,7 +18,7 @@ export function SlideEditor() {
 
     const debouncedGeneratePreview = useDebounce(generatePreview, 1000);
 
-    useEffect(() => debouncedGeneratePreview(), [nodes]);
+    useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
 
     useEffect(() => {
         function onClick(e: MouseEvent) {
@@ -75,9 +74,18 @@ export function SlideEditor() {
     }
 
     async function generatePreview() {
+        console.log('generatePreview');
         try {
             if (editorRef.current) {
-                const dataUrl = await toPng(editorRef.current);
+                const filter = (node: HTMLElement) => {
+                    console.log('filter', /resizeDot/.test(node.className));
+                    if (/resizeDot/.test(node.className) || node.classList?.contains('ql-toolbar')) {
+                        return false;
+                    }
+                    return true;
+                };
+
+                const dataUrl = await toPng(editorRef.current, { filter });
                 updatePreview(dataUrl);
             }
         } catch (e) {
@@ -89,6 +97,7 @@ export function SlideEditor() {
         <div
             ref={editorRef}
             className={s.root}
+            style={{ backgroundColor: currentSlide.backgroundColor }}
         >
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
