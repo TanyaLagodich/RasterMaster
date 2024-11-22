@@ -40,7 +40,7 @@ export function Text(props: TextProps) {
 
     useEffect(() => {
         const editorRoot = textFieldRef.current.getEditor().root;
-        const quillContainer = editorRoot?.closest('.quill');
+        const quillContainer = editorRoot?.closest('.ql-container');
         if (quillContainer) {
             quillContainer.setAttribute('data-not-draggable', 'true');
         }
