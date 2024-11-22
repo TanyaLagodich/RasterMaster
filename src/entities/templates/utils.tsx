@@ -31,8 +31,6 @@ export class NodeFactory {
                     <Text
                         key={node.id}
                         data={node}
-                        onDragStart={onDragStart}
-                        onDragEnd={onDragEnd}
                         isEditable={isEditable}
                     />
                 )

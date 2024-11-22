@@ -12,7 +12,7 @@ export class TextNodeStrategy implements NodeStrategy {
       value: 'Test',
     };
   }
-  
+
   updateNode(node: Text, newData: Text): Text {
     return { ...node, ...newData }
   }

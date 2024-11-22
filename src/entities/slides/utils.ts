@@ -46,7 +46,7 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 25},
                         dimensionsPercent: {height: 70, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
                     },
                     {
                         id: uuidv4(),
@@ -54,7 +54,7 @@ export class SlideFactory {
                         positionPercent: {x: 55, y: 25},
                         dimensionsPercent: {height: 70, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
                     },
                 ]
 
@@ -75,7 +75,7 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 25},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
                     },
                     {
                         id: uuidv4(),
@@ -83,7 +83,7 @@ export class SlideFactory {
                         positionPercent: {x: 55, y: 25},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
                     },
                     {
                         id: uuidv4(),
@@ -91,7 +91,7 @@ export class SlideFactory {
                         positionPercent: {x: 5, y: 65},
                         dimensionsPercent: {height: 30, width: 40},
                         zIndex: 1,
-                        value: 'Ваш текст',                      
+                        value: 'Ваш текст',
                     },
                     {
                         id: uuidv4(),
@@ -126,4 +126,3 @@ export class SlideFactory {
         }
     }
 }
-  
