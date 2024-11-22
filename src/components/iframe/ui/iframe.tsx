@@ -16,6 +16,7 @@ export function IFrame(props: IFrameProps) {
     }
 
     const closeMenu = () => setIsMenuOpen(false);
+    
     const remove = () => {
         deleteNode(data.id);
         closeMenu();

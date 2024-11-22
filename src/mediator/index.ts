@@ -364,6 +364,19 @@ export class SlidesList {
     this.setSlides(this.toArray());
   }
 
+  public getIndex() {
+    if (!this.first) return 0;
+
+    let current = this.first;
+    let index = 1;
+    while (current.value.id !== this.currentSlide.id) {
+      current = current.next;
+      index += 1;
+    }
+    
+    return index;
+  }
+
   private toArray() {
     return [...this];
   }

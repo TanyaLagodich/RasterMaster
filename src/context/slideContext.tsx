@@ -4,7 +4,7 @@ import type { Slide, Dimensions } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
-interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone'> {
+interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone' | 'deleteNode' | 'copyNode'> {
     selectedNode: Node | null;
 }
 
@@ -79,9 +79,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
             currentSlide,
             addNode,
             updateNode,
-            deleteNode,
             updatePreview,
-            copyNode,
         }),
         [
             editorDimensions,

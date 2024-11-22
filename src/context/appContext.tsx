@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
 import { AppMode } from '@/types';
 
 export enum TAB {
@@ -12,12 +12,14 @@ type AppContextType = {
     activeTab: TAB;
     activeTabDropdown?: TAB;
     mode: AppMode;
+    isNumerationShown: boolean;
 };
 
 type AppActionsContextType = {
     setActiveTab: (tab: TAB) => void;
     setActiveTabDropdown: (tab: TAB | undefined) => void;
     setMode: (mode: AppMode) => void;
+    toggleNumeration: () => void;
 };
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -32,10 +34,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     );
 
     const [mode, setMode] = useState(AppMode.EDITOR);
+    const [isNumerationShown, setIsNumerationShown] = useState(false);
+
+    const toggleNumeration = useCallback(() => {
+        console.log('toggleNumeration');
+        setIsNumerationShown(prev => !prev);
+    }, []);
 
     const values = useMemo(
-        () => ({ activeTab, activeTabDropdown, mode }),
-        [activeTab, activeTabDropdown, mode]
+        () => ({ activeTab, activeTabDropdown, mode, isNumerationShown }),
+        [activeTab, activeTabDropdown, mode, isNumerationShown]
     );
 
     const actions = useMemo(
@@ -43,8 +51,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             setActiveTab,
             setActiveTabDropdown,
             setMode,
+            toggleNumeration,
         }),
-        [setActiveTab, setActiveTabDropdown, setMode]
+        [setActiveTab, setActiveTabDropdown, setMode, toggleNumeration]
     );
 
     return (

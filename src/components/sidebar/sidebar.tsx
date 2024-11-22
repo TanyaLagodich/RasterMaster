@@ -1,9 +1,9 @@
 import { memo, FC, useState, useRef } from 'react';
-import * as s from './styled.module.scss';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { Divider, Typography } from 'antd';
 import { SlidePreview } from '@/components/slide-preview';
-
+import { useAppContext } from '@/hooks/useAppContext';
+import * as s from './styled.module.scss';
 
 const Sidebar: FC = () => {
   const { mediator, slides, currentSlide } = useSlideMediator();
@@ -11,6 +11,8 @@ const Sidebar: FC = () => {
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
   const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);
   
+  const { isNumerationShown } = useAppContext();
+
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const dragStart = (e: React.DragEvent<HTMLElement>, index: number) => {
@@ -110,6 +112,8 @@ const Sidebar: FC = () => {
                         {hoverableIndex && hoverableIndex?.index === index && hoverableIndex.position === 'after' && (
                             <Divider className={`${s.dropLine}`} style={{ top: '83%' }} />
                         )}
+
+                        {isNumerationShown && <p className={s.pageNumber}>{index + 1}</p>}
                     </div>
                 )
             })}

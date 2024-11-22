@@ -27,6 +27,8 @@ class Slide implements SlideType {
 
         const strategy = SlideStrategyFactory.createStrategy(type);
         this.nodes = strategy.generateNodes();
+        console.log('===>', this.nodes);
+        
     }
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {

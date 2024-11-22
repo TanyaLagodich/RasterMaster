@@ -9,7 +9,6 @@ import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Text } from '@/types';
 import { isInsideElement } from '@/utils/sizes';
-import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { NodeSettings } from '@/components/node-settings';
 import * as s from './text.module.scss';
 
@@ -28,8 +27,6 @@ export function Text(props: TextProps) {
 
     const [isSelected, setIsSelected] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    // useOutsideClick(outerRef, closeSettings);
 
     useEffect(() => {
         if (isEditable) {
@@ -76,6 +73,7 @@ export function Text(props: TextProps) {
                         ['clean'],
                     ],
                 }}
+                {...(!!data.style && {style: data.style})}
             />
     );
 }

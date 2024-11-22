@@ -42,7 +42,6 @@ export const Slide: FC = () => {
 
     return (
       <div className={s.root}>
-        <p style={{zIndex: 10000}}>{currentSlide.id.slice(0, 5)}</p>
         {currentSlide !== null ?
           <SlideEditor /> :
           <SlideEmpty />
