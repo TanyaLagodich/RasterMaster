@@ -1,19 +1,18 @@
 import React, { DragEvent, MouseEvent as IMouseEvent, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { Node } from '@/types';
+import { ISetting, Node } from '@/types';
 import { useSlideContext } from '@/hooks/useSlideContext';
-
-import * as s from './draggable-node.module.scss';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { isInsideElement } from '@/utils/sizes';
 import { computeNodeStyle } from '@/utils/computedNodeStyles';
+import { NodeSettings } from '@/components/node-settings';
+import * as s from './draggable-node.module.scss';
 
 interface DraggableNodeProps {
     data: Node;
     onDragStart: (e: DragEvent<HTMLDivElement>) => void;
     onDragEnd: (e: DragEvent<HTMLDivElement>) => void;
     children: React.ReactElement;
-    onContextMenu: () => void;
 }
 
 const resizeDots = [
@@ -30,13 +29,13 @@ const resizeDots = [
 export function DraggableNode({ data, onDragStart, onDragEnd, children }: DraggableNodeProps) {
     const [isSelected, setIsSelected] = useState(false);
     const [isDraggable, setIsDraggable] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const { editorDimensions, zIndex, selectedNode } = useSlideContext();
-    const { setSelectedNode, updateNode } = useSlideActionsContext();
+    const { setSelectedNode, updateNode, deleteNode, copyNode } = useSlideActionsContext();
 
     const outerRef = useRef<HTMLDivElement | null>(null);
     const dotsRef = useRef<HTMLDivElement | null>(null);
-    const childrenRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         setIsSelected(data.id === selectedNode?.id);
@@ -146,6 +145,29 @@ export function DraggableNode({ data, onDragStart, onDragEnd, children }: Dragga
         setIsDraggable(!notDraggableElement);
     }
 
+    const openMenu = (event: IMouseEvent) => {
+        event.preventDefault();
+        setIsMenuOpen(true);
+    }
+
+    const closeMenu = () => setIsMenuOpen(false);
+    
+    const remove = () => {
+        deleteNode(data.id);
+        closeMenu();
+    }
+
+    const copy = () => {
+        copyNode(data.id);
+        closeMenu();
+    }
+
+    const settings: ISetting[] = [
+        {key: 'Delete', label: 'Удалить', onClick: remove},
+        {key: 'Copy', label: 'Скопировать', onClick: copy},
+        {key: 'Close', label: 'Закрыть', onClick: closeMenu},
+    ]
+
     return (
         <div
             ref={outerRef}
@@ -158,6 +180,8 @@ export function DraggableNode({ data, onDragStart, onDragEnd, children }: Dragga
             onClick={() => setSelectedNode(data)}
             onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
+            onContextMenu={openMenu}
+            onBlur={closeMenu}
         >
             {children}
             <div ref={dotsRef} className={s.resizeDotsContainer}>
@@ -169,6 +193,8 @@ export function DraggableNode({ data, onDragStart, onDragEnd, children }: Dragga
                     />
                 ))}
             </div>
+
+            {isMenuOpen && <NodeSettings options={settings} />}
         </div>
-        )
-    }
+    )
+}
