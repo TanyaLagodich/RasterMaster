@@ -99,6 +99,7 @@ export function SlideEditor() {
             className={s.root}
             style={{ backgroundColor: currentSlide.backgroundColor }}
         >
+            {currentSlide.id.slice(0, 3)}
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
                     key={node.id}

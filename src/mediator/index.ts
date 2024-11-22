@@ -364,6 +364,37 @@ export class SlidesList {
     this.setSlides(this.toArray());
   }
 
+  public rebuild(slides: Slide[]) {
+    if (!slides.length) {
+      return;
+    }
+
+    this.first = null;
+    this.last = null;
+    let prev = null;
+
+    slides.forEach((slide, i, arr) => {
+      const slideItem = new SlidesListItem(slide);
+      if (prev) {
+        prev.next = slideItem;
+      }
+      slideItem.prev = prev;
+      prev = slideItem;
+      slideItem.next = i === arr.length - 1
+        ? null
+        : new SlidesListItem(arr[i + 1]);
+      
+      if (i === 0) {
+        this.first = slideItem;
+      }
+      if (i === arr.length - 1) {
+        this.last = slideItem;
+      }
+    })
+
+    this.setSlides(this.toArray());
+  }
+
   public getIndex() {
     if (!this.first) return 0;
 

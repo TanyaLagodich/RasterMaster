@@ -58,13 +58,17 @@ const Sidebar: FC = () => {
     // TODO: эту логику более правильно сделать через setSlides(prev => ...)
     const updatedSlides = [...slides];
 
+    console.log('BEFORE =>', updatedSlides.map(s => s.id.slice(0, 3)));
+
     const targetIndex = hoverableIndex.index;
 
     const temp = updatedSlides[draggableIndex];
     updatedSlides[draggableIndex] = updatedSlides[targetIndex];
     updatedSlides[targetIndex] = temp;
 
-    mediator.setSlides(updatedSlides);
+    console.log('AFTER =>', updatedSlides.map(s => s.id.slice(0, 3)));
+  
+    mediator.rebuild(updatedSlides);
     setDraggableIndex(null);
     setHoverableIndex(null);
     }
@@ -81,6 +85,9 @@ const Sidebar: FC = () => {
 
         setHoverableIndex(null);
     };
+
+    console.log(currentSlide?.id);
+    
     
     return (
         <aside
