@@ -1,7 +1,9 @@
-import { IFrame } from '@/types';
+import { IFrame, ISetting } from '@/types';
 
 import * as s from './iframe.module.scss';
 import { NodeSettings } from '@/components/node-settings';
+import { MouseEvent, useState } from 'react';
+import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 
 type IFrameProps = {
     data: IFrame;
@@ -10,7 +12,11 @@ type IFrameProps = {
 export function IFrame(props: IFrameProps) {
     const { data } = props;
 
-    const openMenu = (event: IMouseEvent) => {
+    const{ deleteNode, copyNode } = useSlideActionsContext();
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const openMenu = (event: MouseEvent) => {
         event.preventDefault();
         setIsMenuOpen(true);
     }
@@ -33,8 +39,14 @@ export function IFrame(props: IFrameProps) {
         {key: 'Close', label: 'Закрыть', onClick: closeMenu},
     ]
     return (
-        <div className={s.iframeWrapper}>
+        <div
+            className={s.iframeWrapper}
+            onContextMenu={openMenu}
+            onBlur={closeMenu}
+        >
             <iframe className={s.iframe} src={data.src} title="iframe" data-not-draggable />
+
+            {isMenuOpen && <NodeSettings options={settings} />}
         </div>
     );
 }

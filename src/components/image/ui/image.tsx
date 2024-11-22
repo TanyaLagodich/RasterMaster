@@ -1,9 +1,9 @@
 import {
-    MouseEvent as IMouseEvent,
     DragEvent,
     useEffect,
     useRef,
     useState,
+    MouseEvent,
 } from 'react';
 import { Checkbox, InputNumber, Select } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
@@ -24,7 +24,7 @@ export function Image(props: ImageProps) {
     const { data, isEditable = true } = props;
 
     const { selectedNode } = useSlideContext();
-    const { setSelectedNode, updateNode, deleteNode } = useSlideActionsContext();
+    const { setSelectedNode, updateNode, deleteNode, copyNode } = useSlideActionsContext();
 
     const stylerRef = useRef<HTMLDivElement | null>(null);
 
@@ -72,30 +72,30 @@ export function Image(props: ImageProps) {
         });
     }
 
-    function openMenu(event: IMouseEvent) {
-        event.preventDefault();
-        setIsMenuOpen(true);
-    }
+    // function openMenu(event: MouseEvent) {
+    //     event.preventDefault();
+    //     setIsMenuOpen(true);
+    // }
 
-    function closeMenu() {
-        setIsMenuOpen(false)
-    }
+    // function closeMenu() {
+    //     setIsMenuOpen(false)
+    // }
 
-    const remove = () => {
-        deleteNode(data.id);
-        closeMenu();
-    }
+    // const remove = () => {
+    //     deleteNode(data.id);
+    //     closeMenu();
+    // }
 
-    const copy = () => {
-        copyNode(data.id);
-        closeMenu();
-    }
+    // const copy = () => {
+    //     copyNode(data.id);
+    //     closeMenu();
+    // }
 
-    const settings: ISetting[] = [
-        {key: 'Delete', label: 'Удалить', onClick: remove},
-        {key: 'Copy', label: 'Скопировать', onClick: copy},
-        {key: 'Close', label: 'Закрыть', onClick: closeMenu},
-    ]
+    // const settings: ISetting[] = [
+    //     {key: 'Delete', label: 'Удалить', onClick: remove},
+    //     {key: 'Copy', label: 'Скопировать', onClick: copy},
+    //     {key: 'Close', label: 'Закрыть', onClick: closeMenu},
+    // ]
 
     return (
         <>
@@ -133,7 +133,7 @@ export function Image(props: ImageProps) {
                 </Checkbox>
             </div>
 
-            {isMenuOpen && <NodeSettings options={settings} />}
+            {/* {isMenuOpen && <NodeSettings options={settings} />} */}
         </>
     );
 }

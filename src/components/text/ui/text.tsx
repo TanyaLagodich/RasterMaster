@@ -1,15 +1,9 @@
-import React, {
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import ReactQuill from 'react-quill';
 import clsx from 'clsx';
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
-import { ISetting, Text } from '@/types';
-import { isInsideElement } from '@/utils/sizes';
-import { NodeSettings } from '@/components/node-settings';
+import { Text } from '@/types';
 import * as s from './text.module.scss';
 
 type TextProps = {
@@ -21,12 +15,12 @@ export function Text(props: TextProps) {
     const { data, isEditable = true } = props;
 
     const { selectedNode } = useSlideContext();
-    const { updateNode, deleteNode, copyNode } = useSlideActionsContext();
+    const { updateNode } = useSlideActionsContext();
 
     const textFieldRef = useRef<ReactQuill>(null);
 
     const [isSelected, setIsSelected] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         if (isEditable) {
@@ -45,14 +39,9 @@ export function Text(props: TextProps) {
             quillContainer.setAttribute('data-not-draggable', 'true');
         }
     }, []);
-    
-    const settings = [
-        {key: 'Delete', label: 'Удалить', onClick: remove},
-        {key: 'Copy', label: 'Скопировать', onClick: copy},
-        {key: 'Close', label: 'Закрыть', onClick: closeMenu},
-    ]
 
     return (
+        <>
             <ReactQuill
                 ref={textFieldRef}
                 className={clsx(s.textField, {
@@ -75,5 +64,8 @@ export function Text(props: TextProps) {
                 }}
                 {...(!!data.style && {style: data.style})}
             />
+
+            {/* {isMenuOpen && <NodeSettings options={settings} />} */}
+        </>
     );
 }
