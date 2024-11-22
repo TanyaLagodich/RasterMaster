@@ -30,7 +30,7 @@ export function Image(props: ImageProps) {
 
     function handleBRNumberChange(value: number) {
         const digits = value ? String(value) : '0';
-        const unit = data.style.borderRadius.match(/px|%/)?.[0] ?? 'px';
+        const unit = data.imgStyle.borderRadius.match(/px|%/)?.[0] ?? 'px';
 
         updateNode({
             ...data,
@@ -42,7 +42,7 @@ export function Image(props: ImageProps) {
     }
 
     function handleBRUnitChange(unit: string) {
-        const digits = data.style.borderRadius.match(/\d+/)?.[0] ?? '0';
+        const digits = data.imgStyle.borderRadius.match(/\d+/)?.[0] ?? '0';
 
         updateNode({
             ...data,
@@ -56,8 +56,8 @@ export function Image(props: ImageProps) {
     function handleCoverChange(e: CheckboxChangeEvent) {
         updateNode({
             ...data,
-            style: {
-                ...data.style,
+            imgStyle: {
+                ...data.imgStyle,
                 cover: e.target.checked,
             },
         });

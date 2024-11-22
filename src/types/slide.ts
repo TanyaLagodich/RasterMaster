@@ -43,7 +43,7 @@ export type Text = {
 export type Image = {
     type: NodeType.IMAGE;
     src: string;
-    style: ImageStyle;
+    imgStyle: ImageStyle;
 } & BaseNode;
 
 export type IFrame = {
@@ -76,9 +76,6 @@ export enum Template {
     IMAGE_LEFT_TEXT_RIGHT = 'imageLeftTextRight',
     IMAGE_LEFT_IMAGE_RIGHT = 'imageLeftImageRight',
     TEXT_X4 = 'textX4',
-    IMAGE_X4 = 'imageX4',
-    TEXT_LEFT_FRAME_RIGHT = 'textLeftFrameRight',
-    IMAGE_LEFT_FRAME_RIGHT = 'imageLeftFrameRight',
 }
 
 export interface ISetting {
