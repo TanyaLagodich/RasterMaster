@@ -68,7 +68,7 @@ export function Image(props: ImageProps) {
             <img
                 className={s.image}
                 style={{
-                    borderRadius: data.style.borderRadius,
+                    borderRadius: data.imgStyle.borderRadius,
                 }}
                 src={data.src}
             />

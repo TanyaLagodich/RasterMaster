@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { SlideStrategy, Node, NodeType } from '@/types';
+import { src } from '@/utils/defaultImage';
 
 export class TextLeftImageRightSlideStrategy implements SlideStrategy {
   generateNodes(): Node[] {
@@ -27,7 +28,7 @@ export class TextLeftImageRightSlideStrategy implements SlideStrategy {
         positionPercent: { x: 55, y: 25 },
         dimensionsPercent: { height: 25, width: 30 },
         zIndex: 1,
-        src: 'https://i.pinimg.com/originals/ba/bd/6d/babd6d37eb2dd965c7f1dfb516d54094.jpg',
+        src,
         imgStyle: {
             borderRadius: '0px',
             cover: false,
