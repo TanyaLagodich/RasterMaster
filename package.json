@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.ts",
     "type": "module",
-    "homepage": "https://TanyaLagodich.github.io/RasterMaster",
+    "homepage": "https://TanyaLagodich.github.io/SlideEngine",
     "scripts": {
         "start": "webpack serve",
         "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",

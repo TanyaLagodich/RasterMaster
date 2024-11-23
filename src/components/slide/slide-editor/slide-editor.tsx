@@ -14,7 +14,7 @@ export function SlideEditor() {
     const { setEditorDimensions, setSelectedNode, updateNode, updatePreview } =
         useSlideActionsContext();
     const { isNumerationShown } = useAppContext();
-    
+
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
@@ -80,8 +80,8 @@ export function SlideEditor() {
             if (editorRef.current) {
                 const filter = (node: HTMLElement) => {
                     if (
-                        /resizeDot/.test(node.className) || 
-                        /node-setting/.test(node.className) || 
+                        /resizeDot/.test(node.className) ||
+                        /node-setting/.test(node.className) ||
                         node.classList?.contains('ql-toolbar')
                     ) {
                         return false;
@@ -101,12 +101,11 @@ export function SlideEditor() {
         <div
             ref={editorRef}
             className={s.root}
-            style={{ 
+            style={{
                 backgroundColor: currentSlide.backgroundColor,
                 backgroundImage: !!currentSlide.backgroundImage ? `url(${currentSlide.backgroundImage})` : undefined,
             }}
         >
-            {currentSlide.id.slice(0, 3)}
             {nodes.map((node: SlideNode) =>
                 <NodeRenderer
                     key={node.id}
