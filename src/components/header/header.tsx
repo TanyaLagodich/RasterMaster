@@ -33,13 +33,13 @@ export function Header() {
     }
 
     const fileMenuItems: MenuProps['items'] = [
-        { key: 'new', label: 'Создать' },
+        // { key: 'new', label: 'Создать' },
         {
             key: 'open',
             label: 'Экспорт в HTML',
             onClick: () => exportToHtml(slides),
         },
-        { key: 'save', label: 'Пригласить' },
+        // { key: 'save', label: 'Пригласить' },
     ];
 
     const insertionMenuItems: MenuProps['items'] = [

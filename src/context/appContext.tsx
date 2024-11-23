@@ -5,7 +5,7 @@ export enum TAB {
     FILE = 'Файл',
     INSERTION = 'Вставка',
     DECORATION = 'Оформление',
-    ANIMATION = 'Анимации',
+    // ANIMATION = 'Анимации',
 }
 
 type AppContextType = {

@@ -24,7 +24,11 @@ class Slide implements SlideType {
         this.preview = '';
         this.editorDimensions = { width: 0, height: 0 };
         this.zIndex = { max: 0, min: 0 };
+<<<<<<< HEAD
         this.backgroundColor = '#fff';
+=======
+        this.backgroundColor = '#ffffff';
+>>>>>>> c4f9b92 (feat: ui fixes)
 
         const strategy = SlideStrategyFactory.createStrategy(type);
         this.nodes = strategy.generateNodes();        

@@ -45,7 +45,7 @@ export function DraggableNode({ data, onDragStart, onDragEnd, children }: Dragga
         if (!isSelected || !isDraggable || !dotsRef.current) {
             e.preventDefault();
             return;
-        };
+        }
 
         const isDot = [...dotsRef.current.children].some((dot: HTMLDivElement) =>
             isInsideElement(e.clientX, e.clientY, dot.getBoundingClientRect())

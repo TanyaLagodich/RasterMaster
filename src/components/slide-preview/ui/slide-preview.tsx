@@ -63,7 +63,7 @@ export function SlidePreview ({
         closeOptions,
         {isCancelled: !slideWithOpenMenu},
     )
-  
+
     return (
         <div>
             <div className={s.paranja} ref={ref}/>

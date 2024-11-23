@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
 import { Button, ColorPicker, Space } from 'antd';
 import type { ColorPickerProps, GetProp } from 'antd';
 import { BgColorsOutlined } from '@ant-design/icons';
-import { useSlideMediator } from "@/hooks/useSlideMediatorContext";
+import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
+import { isColorLight} from '@/utils/isColorLight';
 
 type Color = Extract<GetProp<ColorPickerProps, 'value'>, string | { cleared: any }>;
 
@@ -63,9 +64,17 @@ export function BackgroundPicker() {
         </div>
     );
 
+    const isLight = useMemo(() => isColorLight(bgColor), [bgColor]);
+    const textColor = isLight ? '#000' : '#fff'; // Чёрный для светлого фона, белый для тёмного
+
     const btnStyle: React.CSSProperties = {
+<<<<<<< HEAD
         backgroundColor: '1677ff',
         color: '#fff',
+=======
+        backgroundColor: bgColor,
+        color: textColor,
+>>>>>>> c4f9b92 (feat: ui fixes)
         border: 'none',
     };
 
@@ -75,6 +84,7 @@ export function BackgroundPicker() {
             value={color}
             panelRender={customPanelRender}
             allowClear
+            showText
             onOpenChange={setIsOpen}
             onChange={setColor}
         >

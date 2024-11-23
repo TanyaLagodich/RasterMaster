@@ -13,11 +13,11 @@ const ToolsHeader = () => {
 
     return (
         <div className={s.root}>
-            {activeTab === TAB.ANIMATION ? (
-                <AnimationTools />
-            ) : (
+            {/*{activeTab === TAB.ANIMATION ? (*/}
+            {/*    // <AnimationToolols />*/}
+            {/*) : (*/}
                 <DecorationTools />
-            )}
+            {/*)}*/}
         </div>
     );
 }

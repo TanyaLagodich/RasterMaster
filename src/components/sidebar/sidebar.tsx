@@ -1,6 +1,7 @@
 import { memo, FC, useState, useRef } from 'react';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
-import { Divider, Typography } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Divider } from 'antd';
 import { SlidePreview } from '@/components/slide-preview';
 import { useAppContext } from '@/hooks/useAppContext';
 import * as s from './styled.module.scss';
@@ -9,9 +10,13 @@ const Sidebar: FC = () => {
   const { mediator, slides, currentSlide } = useSlideMediator();
   const [ draggableIndex, setDraggableIndex ] = useState<number | null>(null);
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
+<<<<<<< HEAD
   const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);  
     
   const { isNumerationShown } = useAppContext();
+=======
+  const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);
+>>>>>>> c4f9b92 (feat: ui fixes)
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
@@ -76,8 +81,13 @@ const Sidebar: FC = () => {
         }
 
         setHoverableIndex(null);
+<<<<<<< HEAD
     };    
     
+=======
+    };
+
+>>>>>>> c4f9b92 (feat: ui fixes)
     return (
         <aside
             ref={sidebarRef}
@@ -114,7 +124,14 @@ const Sidebar: FC = () => {
                 )
             })}
 
-            <Typography className={s.text} onClick={() => mediator.pushSlide()}>Новый слайд</Typography>
+            <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                className={s.button}
+                onClick={() => mediator.pushSlide()}
+            >
+                Новый слайд
+            </Button>
         </aside>
     );
 }

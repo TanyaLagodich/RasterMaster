@@ -24,9 +24,11 @@ export function App() {
                 <Sidebar />
 
                 <div className={s.content}>
-                    <Slide />
+                    <div className={s.contentWrapper}>
+                        <Slide />
+                    </div>
 
-                    <Notes />
+                    {/*<Notes />*/}
                 </div>
             </div>
         </>

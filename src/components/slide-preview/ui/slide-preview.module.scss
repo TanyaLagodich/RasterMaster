@@ -5,13 +5,17 @@
     outline: 1px solid #d2d2ce;
     overflow: hidden;
 
+    :global(.ant-card-cover) {
+        height: 100%;
+    }
+
     &:hover {
       border-width: 2px;
-      outline: 2px solid #777777
+      outline: 2px solid #003eb3
     }
 
     &.active {
-      outline: 4px solid #c43e1c;
+      outline: 4px solid #4096ff;
     }
   }
 
