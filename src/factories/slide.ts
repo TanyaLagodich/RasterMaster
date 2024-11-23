@@ -17,6 +17,7 @@ class Slide implements SlideType {
     editorDimensions: Dimensions;
     zIndex: ZIndex;
     backgroundColor: string;
+    backgroundImage?: string;
 
     constructor(type: Template = Template.DEFAULT) {
         this.id = nanoid();
@@ -47,8 +48,6 @@ class Slide implements SlideType {
     }
 
     update(newData: Partial<Slide>) {
-        console.log({newData});
-        
         Object.assign(this, newData);
     }
 

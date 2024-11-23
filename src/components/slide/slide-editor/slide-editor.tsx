@@ -10,7 +10,7 @@ import * as s from './slide-editor.module.scss';
 
 export function SlideEditor() {
     const { mediator, currentSlide } = useSlideMediator();
-    const { nodes, backgroundColor } = currentSlide;
+    const { nodes, backgroundColor, backgroundImage } = currentSlide;
     const { setEditorDimensions, setSelectedNode, updateNode, updatePreview } =
         useSlideActionsContext();
     const { isNumerationShown } = useAppContext();
@@ -20,7 +20,7 @@ export function SlideEditor() {
 
     const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
 
-    useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
+    useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor, backgroundImage]);
 
     useEffect(() => {
         function onClick(e: MouseEvent) {
@@ -103,7 +103,7 @@ export function SlideEditor() {
             className={s.root}
             style={{ 
                 backgroundColor: currentSlide.backgroundColor,
-                backgroundImage: `url(${currentSlide.backgroundImage})` ,
+                backgroundImage: !!currentSlide.backgroundImage ? `url(${currentSlide.backgroundImage})` : undefined,
             }}
         >
             {currentSlide.id.slice(0, 3)}

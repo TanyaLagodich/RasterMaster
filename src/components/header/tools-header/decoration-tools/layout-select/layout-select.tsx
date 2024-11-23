@@ -6,13 +6,14 @@ import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
 const { Option } = Select;
 
+const initValue = 'Создать слайд';
+
 export const LayoutSelect = () => {
     const { mediator } = useSlideMediator();
-    const [selectedLayout, setSelectedLayout] = useState<string>('Создать слайд');
+    const [selectedLayout, _] = useState<string>(initValue);
 
     const handleLayoutSelect = (layout: Template) => {
         mediator.pushSlide(layout);
-        setSelectedLayout(templatesDict[layout]);
     };
 
     const dropdownRender = () => (
