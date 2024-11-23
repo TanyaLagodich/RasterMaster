@@ -23,6 +23,10 @@ export function BackgroundPicker() {
     );
 
     const applyToCurrentSlide = () => {
+        if (!currentSlide) {
+            return;
+        }
+
         currentSlide.update({
             backgroundColor: bgColor,
         });
@@ -31,6 +35,10 @@ export function BackgroundPicker() {
     }
 
     const applyToAllSlides = () => {
+        if (!slides.length) {
+            return;
+        }
+        
         slides.forEach((slide) => {
             slide.update({ backgroundColor: bgColor });
             mediator.editCurrentSlide(currentSlide);
@@ -56,7 +64,7 @@ export function BackgroundPicker() {
     );
 
     const btnStyle: React.CSSProperties = {
-        backgroundColor: bgColor,
+        backgroundColor: '1677ff',
         color: '#fff',
         border: 'none',
     };

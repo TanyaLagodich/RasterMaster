@@ -10,7 +10,7 @@ const Sidebar: FC = () => {
   const [ draggableIndex, setDraggableIndex ] = useState<number | null>(null);
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
   const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);  
-  
+    
   const { isNumerationShown } = useAppContext();
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);

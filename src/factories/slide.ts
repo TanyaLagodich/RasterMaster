@@ -17,13 +17,14 @@ class Slide implements SlideType {
     editorDimensions: Dimensions;
     zIndex: ZIndex;
     backgroundColor: string;
+    backgroundImage?: string;
 
     constructor(type: Template = Template.DEFAULT) {
         this.id = nanoid();
         this.preview = '';
         this.editorDimensions = { width: 0, height: 0 };
         this.zIndex = { max: 0, min: 0 };
-        this.backgroundColor = '#802424';
+        this.backgroundColor = '#fff';
 
         const strategy = SlideStrategyFactory.createStrategy(type);
         this.nodes = strategy.generateNodes();        
