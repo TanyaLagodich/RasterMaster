@@ -5,13 +5,17 @@ import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 import { useState, MouseEvent, useRef } from 'react';
 import SlideOperations from '@/components/slide-operations';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { useAppActionsContext } from '@/hooks/useAppActionsContext';
 import * as s from './slide-preview.module.scss';
+import { useAppContext } from '@/hooks/useAppContext';
 
 export function SlidePreview ({
     slide,
     isActive,
 }: {slide: Slide; isActive: boolean}) {
     const { mediator } = useSlideMediator();
+    const { setSlideWithOpenMenu } = useAppActionsContext();
+    const { slideWithOpenMenu } = useAppContext();
 
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
     const [areTemplatesShown, setAreTemplatesShown] = useState(false);
@@ -19,7 +23,8 @@ export function SlidePreview ({
     const ref = useRef<HTMLDivElement>(null);
 
     const closeOptions = () => {
-        setAreOptionsOpen(false);
+        // setAreOptionsOpen(false);
+        setSlideWithOpenMenu(null);
     };
 
     const slideOperations: ISetting[] = [
@@ -43,13 +48,20 @@ export function SlidePreview ({
 
     const toggleOptions = (event: MouseEvent) => {
         event.stopPropagation();
-        setAreOptionsOpen(prev => !prev);
+        setSlideWithOpenMenu(prev => {
+            if (!prev) {
+                return slide;
+            } else {
+                return null;
+            }
+        })
+        // setAreOptionsOpen(prev => !prev);
     };
 
     useOutsideClick(
         ref,
         closeOptions,
-        {isCancelled: !areOptionsOpen},
+        {isCancelled: !slideWithOpenMenu},
     )
   
     return (
@@ -69,7 +81,7 @@ export function SlidePreview ({
                 />
             </Card>
 
-            {areOptionsOpen &&
+            {slideWithOpenMenu && slideWithOpenMenu.id === slide.id &&
                 <SlideOperations
                     options={slideOperations}
                     id={slide.id}

@@ -1,5 +1,5 @@
-import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
-import { AppMode } from '@/types';
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { AppMode, Slide } from '@/types';
 
 export enum TAB {
     FILE = 'Файл',
@@ -13,6 +13,7 @@ type AppContextType = {
     activeTabDropdown?: TAB;
     mode: AppMode;
     isNumerationShown: boolean;
+    slideWithOpenMenu: Slide | null;
 };
 
 type AppActionsContextType = {
@@ -20,6 +21,7 @@ type AppActionsContextType = {
     setActiveTabDropdown: (tab: TAB | undefined) => void;
     setMode: (mode: AppMode) => void;
     toggleNumeration: () => void;
+    setSlideWithOpenMenu: Dispatch<SetStateAction<Slide | null>>;
 };
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -35,14 +37,15 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
     const [mode, setMode] = useState(AppMode.EDITOR);
     const [isNumerationShown, setIsNumerationShown] = useState(false);
+    const [slideWithOpenMenu, setSlideWithOpenMenu] = useState<Slide | null>(null);
 
     const toggleNumeration = useCallback(() => {
         setIsNumerationShown(prev => !prev);
     }, []);
 
     const values = useMemo(
-        () => ({ activeTab, activeTabDropdown, mode, isNumerationShown }),
-        [activeTab, activeTabDropdown, mode, isNumerationShown]
+        () => ({ activeTab, activeTabDropdown, mode, isNumerationShown, slideWithOpenMenu }),
+        [activeTab, activeTabDropdown, mode, isNumerationShown, slideWithOpenMenu]
     );
 
     const actions = useMemo(
@@ -51,8 +54,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
             setActiveTabDropdown,
             setMode,
             toggleNumeration,
+            setSlideWithOpenMenu,
         }),
-        [setActiveTab, setActiveTabDropdown, setMode, toggleNumeration]
+        [setActiveTab, setActiveTabDropdown, setMode, toggleNumeration, setSlideWithOpenMenu]
     );
 
     return (
