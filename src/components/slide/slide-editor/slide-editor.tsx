@@ -18,7 +18,7 @@ export function SlideEditor() {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 3000);
+    const debouncedGeneratePreview = useDebounce(generatePreview, 5000);
 
     useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
 
@@ -101,7 +101,10 @@ export function SlideEditor() {
         <div
             ref={editorRef}
             className={s.root}
-            style={{ backgroundColor: currentSlide.backgroundColor }}
+            style={{ 
+                backgroundColor: currentSlide.backgroundColor,
+                backgroundImage: `url(${currentSlide.backgroundImage})` ,
+            }}
         >
             {currentSlide.id.slice(0, 3)}
             {nodes.map((node: SlideNode) =>

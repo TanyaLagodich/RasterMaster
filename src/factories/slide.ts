@@ -23,7 +23,7 @@ class Slide implements SlideType {
         this.preview = '';
         this.editorDimensions = { width: 0, height: 0 };
         this.zIndex = { max: 0, min: 0 };
-        this.backgroundColor = '#802424';
+        this.backgroundColor = '#fff';
 
         const strategy = SlideStrategyFactory.createStrategy(type);
         this.nodes = strategy.generateNodes();        
@@ -47,6 +47,8 @@ class Slide implements SlideType {
     }
 
     update(newData: Partial<Slide>) {
+        console.log({newData});
+        
         Object.assign(this, newData);
     }
 
