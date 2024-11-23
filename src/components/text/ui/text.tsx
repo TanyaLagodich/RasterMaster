@@ -1,17 +1,13 @@
 import React, {
     useEffect,
-    useRef,
     useState,
 } from 'react';
-import ReactQuill from 'react-quill';
-import clsx from 'clsx';
 
 import { useSlideContext } from '@/hooks/useSlideContext';
 import { useSlideActionsContext } from '@/hooks/useSlideActionsContext';
 import { Text } from '@/types';
-import { isInsideElement } from '@/utils/sizes';
 
-import * as s from './text.module.scss';
+import { BaseText } from "@/components/text/ui/base-text";
 
 type TextProps = {
     data: Text;
@@ -24,8 +20,6 @@ export function Text(props: TextProps) {
     const { selectedNode } = useSlideContext();
     const { updateNode } = useSlideActionsContext();
 
-    const textFieldRef = useRef<ReactQuill>(null);
-
     const [isSelected, setIsSelected] = useState(false);
 
     useEffect(() => {
@@ -35,38 +29,17 @@ export function Text(props: TextProps) {
     }, [data, selectedNode, isEditable]);
 
     const textareaHandlers = {
-        onChange: (value: string) => updateNode({ ...data, value }),
+        onChange: (value: string, delta, source, editor) => {
+            updateNode({ ...data, value });
+        }
     };
 
-    useEffect(() => {
-        const editorRoot = textFieldRef.current.getEditor().root;
-        const quillContainer = editorRoot?.closest('.ql-container');
-        if (quillContainer) {
-            quillContainer.setAttribute('data-not-draggable', 'true');
-        }
-    }, []);
-
     return (
-            <ReactQuill
-                ref={textFieldRef}
-                className={clsx(s.textField, {
-                    [s.textFieldSelected]: isSelected,
-                    [s._toolbarBottom]: data.positionPercent.y < 20,
-                })}
-                theme="snow"
-                value={data.value}
-                onChange={(value) => textareaHandlers.onChange(value)}
-                modules={{
-                    toolbar: [
-                        [{ font: [] }, { size: [] }],
-                        [{ header: '1' }, { header: '2' }, { font: [] }],
-                        ['bold', 'italic', 'underline', 'strike'], // Make sure bold, italic, underline are in the toolbar
-                        [{ list: 'ordered' }, { list: 'bullet' }],
-                        [{ align: [] }],
-                        ['link'],
-                        ['clean'],
-                    ],
-                }}
-            />
+        <BaseText
+            data={data}
+            isSelected={isSelected}
+            isEditable={isEditable}
+            onChange={textareaHandlers.onChange}
+        />
     );
 }

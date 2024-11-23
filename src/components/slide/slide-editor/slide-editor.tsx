@@ -16,11 +16,12 @@ export function SlideEditor() {
     const editorRef = useRef<HTMLDivElement | null>(null);
     const dragOffsetRef = useRef({ x: 0, y: 0 });
 
-    const debouncedGeneratePreview = useDebounce(generatePreview, 1000);
+    const debouncedGeneratePreview = useDebounce(() => currentSlide.updatePreview(), 1000);
 
-    useEffect(() => debouncedGeneratePreview(), [nodes, backgroundColor]);
+    useEffect(() => debouncedGeneratePreview, [nodes, backgroundColor]);
 
     useEffect(() => {
+        console.log(currentSlide.nodes);
         function onClick(e: MouseEvent) {
             if (editorRef.current === e.target) {
                 setSelectedNode(null);
@@ -73,23 +74,23 @@ export function SlideEditor() {
         });
     }
 
-    async function generatePreview() {
-        try {
-            if (editorRef.current) {
-                const filter = (node: HTMLElement) => {
-                    if (/resizeDot/.test(node.className) || node.classList?.contains('ql-toolbar')) {
-                        return false;
-                    }
-                    return true;
-                };
-
-                const dataUrl = await toPng(editorRef.current, { filter });
-                updatePreview(dataUrl);
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    // async function generatePreview() {
+    //     try {
+    //         if (editorRef.current) {
+    //             const filter = (node: HTMLElement) => {
+    //                 if (/resizeDot/.test(node.className) || node.classList?.contains('ql-toolbar')) {
+    //                     return false;
+    //                 }
+    //                 return true;
+    //             };
+    //
+    //             const dataUrl = await toPng(editorRef.current, { filter });
+    //             updatePreview(dataUrl);
+    //         }
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // }
 
     return (
         <div

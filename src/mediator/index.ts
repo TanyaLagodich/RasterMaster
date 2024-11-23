@@ -137,7 +137,7 @@ export const buildUpSlidesList = (args: SlidesListBuilderArgs): SlidesList => {
       slideItem.next = i === arr.length - 1
         ? null
         : new SlidesListItem(arr[i + 1]);
-      
+
       if (i === 0) {
         list.first = slideItem;
       }
@@ -165,8 +165,8 @@ export class SlidesListItem {
 
   constructor(
       value: Slide,
-      next: SlidesListItem | null = null, 
-      prev: SlidesListItem | null = null, 
+      next: SlidesListItem | null = null,
+      prev: SlidesListItem | null = null,
   ) {
       this.value = value;
       this.next = next;
@@ -242,23 +242,23 @@ export class SlidesList {
 
       this.setSlides(this.toArray());
       this.setCurrentSlide(slide);
-      
+
   }
 
-  public pushSlide(type: Template = Template.DEFAULT) {    
+  public pushSlide(type: Template = Template.DEFAULT) {
       const newSlide = SlideFactory.createSlide(type);
       const newSlideItem = new SlidesListItem(newSlide);
-      
+
       if (this.isEmpty()) {
           this.map.set(newSlide.id, newSlideItem);
-        
+
           this.first = newSlideItem;
           this.last = newSlideItem;
-          this.setSlides(this.toArray());          
+          this.setSlides(this.toArray());
           this.setCurrentSlide(newSlide);
           return;
       }
-      
+
       this.map.set(newSlide.id, newSlideItem);
 
       this.last.next = newSlideItem;
@@ -283,7 +283,7 @@ export class SlidesList {
 
   public duplicateSlide(event: MouseEvent, id: string, slide: Slide) {
       event.stopPropagation();
-  
+
       if (this.isEmpty()) {
           return;
       }
@@ -292,7 +292,7 @@ export class SlidesList {
       this.insertSlide(id, newSlide);
   }
 
-  public deleteSlide(event: MouseEvent, id: string) {      
+  public deleteSlide(event: MouseEvent, id: string) {
       event.stopPropagation();
       this.resetCurrentSlide(id);
 
@@ -339,7 +339,7 @@ export class SlidesList {
       if (this.currentSlide.id !== id) {
         return;
       }
-      
+
       if (this.map.size === 1) {
         this.setCurrentSlide(null);
         return;
@@ -364,6 +364,20 @@ export class SlidesList {
     this.setSlides(this.toArray());
   }
 
+    // public async updateSlide(slideId: string, updates: Partial<Slide>) {
+    //     const slide = this.getSlide(slideId)?.value;
+    //     if (!slide) {
+    //         console.warn(`Slide with ID ${slideId} not found`);
+    //         return;
+    //     }
+    //
+    //     Object.assign(slide, updates);
+    //
+    //     await slide.updatePreview();
+    //
+    //     this.setSlides(this.toArray());
+    // }
+
   private toArray() {
     return [...this];
   }
@@ -380,7 +394,7 @@ export class SlidesList {
 
     const saved = this.currentItem;
     this.currentItem = this.currentItem.next;
-    
+
     return {done: false, value: saved.value};
   }
 }

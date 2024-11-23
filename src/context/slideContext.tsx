@@ -4,7 +4,7 @@ import type { Slide, Dimensions } from '@/types';
 import { ZIndex, NodeType, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
 
-interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone'> {
+interface SlideContext extends Omit<Slide, 'backgroundColor' | 'update' | 'clone' | 'updatePreview'> {
     selectedNode: Node | null;
 }
 
@@ -12,7 +12,7 @@ type SlideActionsContextType = {
     setEditorDimensions: (dimensions: Dimensions) => void;
     setSelectedNode: (node: Node | null) => void;
     updateNode: (newData: Node) => void;
-    updatePreview: (preview: string) => void;
+    updatePreview: (preview: Blob) => void;
 };
 
 export const SlideContext = createContext<SlideContext | null>(null);
@@ -29,7 +29,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
     const [zIndex, setZIndex] = useState<ZIndex>(
         currentSlide?.zIndex || { min: 0, max: 100 }
     );
-    const [preview] = useState<string>(currentSlide?.preview || '');
+    const [preview] = useState<Blob>(currentSlide?.preview || null);
     const [id] = useState<string>(currentSlide?.id || nanoid());
 
     function setSelectedNode(node: Node | null) {
@@ -90,7 +90,7 @@ export const SlideContextProvider = ({ children }: { children: ReactNode }) => {
         [setEditorDimensions, setSelectedNode, updateNode, updatePreview]
     );
 
-    function updatePreview(preview: string) {
+    function updatePreview(preview: Blob) {
         currentSlide.update({
             ...currentSlide,
             preview,

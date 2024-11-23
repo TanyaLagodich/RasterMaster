@@ -19,6 +19,7 @@
         "@svgr/webpack": "^8.1.0",
         "@types/uuid": "^10.0.0",
         "antd": "^5.20.6",
+        "dom-to-image-more": "^3.5.0",
         "file-loader": "^6.2.0",
         "html-to-image": "^1.11.11",
         "html2canvas": "^1.4.1",

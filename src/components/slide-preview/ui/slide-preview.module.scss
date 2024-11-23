@@ -4,6 +4,14 @@
     background-color: white;
     outline: 1px solid #d2d2ce;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    :global(.ant-card-cover) {
+        height: 100%;
+        width: 100%;
+    }
 
     &:hover {
       border-width: 2px;

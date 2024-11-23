@@ -96,7 +96,7 @@ export function SlideShow({ onExit }: { onExit: () => void }) {
         >
             <div
                 className={s.slideContent}
-                style={{ backgroundColor: slides[currentIndex].backgroundColor }}
+                style={{ backgroundColor: slides[currentIndex]?.backgroundColor }}
             >
                 {renderSlideContent()}
 

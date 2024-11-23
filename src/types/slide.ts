@@ -55,11 +55,12 @@ export type Node = Text | Image | IFrame;
 
 export interface Slide {
     id: string;
-    preview: string;
+    preview: Blob;
     nodes: Node[] | [];
     editorDimensions: Dimensions;
     zIndex: ZIndex;
     backgroundColor: string;
+    updatePreview: () => void;
     addNode: (type: NodeType, params?: Partial<Node>) => Promise<Node>;
     updateNode: (node: Node) => void;
     update: (newData: Partial<Slide>) => void;

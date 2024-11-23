@@ -1,8 +1,8 @@
 import { Card, Button } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons'
-import { IOptionSlideOperations, Slide } from '@/types';
+import { IOptionSlideOperations, Slide, Node } from '@/types';
 import { useSlideMediator } from '@/hooks/useSlideMediatorContext';
-import { useState, MouseEvent, useRef } from 'react';
+import { useState, MouseEvent, useRef, useEffect } from "react";
 import SlideOperations from '@/components/slide-operations';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import * as s from './slide-preview.module.scss';
@@ -15,6 +15,7 @@ export function SlidePreview ({
 
     const [areOptionsOpen, setAreOptionsOpen] = useState(false);
     const [areTemplatesShown, setAreTemplatesShown] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState<string>('');
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -51,17 +52,25 @@ export function SlidePreview ({
         closeOptions,
         {isCancelled: !areOptionsOpen},
     )
-  
+
+    useEffect(() => {
+        setPreviewUrl(slide.preview ? URL.createObjectURL(slide.preview) : '');
+        console.log(slide.preview);
+    }, [slide.preview]);
+
     return (
         <div>
-            <div className={s.paranja} ref={ref}/>
-
             <Card
                 size="small"
                 className={`${s.root} ${isActive ? s.active : ''}`}
-                cover={slide.preview ? <img alt="preview" src={slide.preview} height="100%" /> : ''}
+                cover={slide.preview ? <img alt="preview" src={previewUrl} height="100%" /> : ''}
                 hoverable
             >
+                {/*<div*/}
+                {/*    className=""*/}
+                {/*>*/}
+                {/*    {slide.nodes.map((node) => renderNode(node))}*/}
+                {/*</div>*/}
                 <Button
                     className={s.button}
                     icon={<EllipsisOutlined />}
@@ -69,7 +78,7 @@ export function SlidePreview ({
                 />
             </Card>
 
-            {areOptionsOpen &&
+            {areOptionsOpen && (
                 <SlideOperations
                     options={slideOperations}
                     id={slide.id}
@@ -77,7 +86,7 @@ export function SlidePreview ({
                     areTemplatesShown={areTemplatesShown}
                     createSlide={mediator.createSlide}
                 />
-            }
+            )}
         </div>
     );
 }

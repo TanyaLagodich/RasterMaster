@@ -9,10 +9,11 @@ import {
     ZIndex,
     Node,
 } from '@/types';
+import { generateSlidePreview } from "@/utils/generatePreview";
 
 class Slide implements SlideType {
     id: string;
-    preview: string;
+    preview: Blob;
     nodes: Node[];
     editorDimensions: Dimensions;
     zIndex: ZIndex;
@@ -20,10 +21,10 @@ class Slide implements SlideType {
 
     constructor(type: Template = Template.DEFAULT) {
         this.id = nanoid();
-        this.preview = '';
+        this.preview = null;
         this.editorDimensions = { width: 0, height: 0 };
         this.zIndex = { max: 0, min: 0 };
-        this.backgroundColor = '#802424';
+        this.backgroundColor = '#ffffff';
 
         const strategy = SlideStrategyFactory.createStrategy(type);
         this.nodes = strategy.generateNodes();
@@ -31,7 +32,6 @@ class Slide implements SlideType {
 
     async addNode(type: NodeType, params?: Partial<Node>): Promise<Node> {
         const strategy = await NodeStrategyFactory.createStrategy(type);
-        // console.log(type, params);
         const node = await strategy.addNode(params);
         this.nodes.push(node);
         return node;
@@ -49,6 +49,14 @@ class Slide implements SlideType {
 
     update(newData: Partial<Slide>) {
         Object.assign(this, newData);
+        console.log('update', this.backgroundColor);
+        this.updatePreview();
+    }
+
+    updatePreview() {
+        generateSlidePreview(this, (_, blob) => {
+            this.preview = blob;
+        })
     }
 
     clone(): Slide {
