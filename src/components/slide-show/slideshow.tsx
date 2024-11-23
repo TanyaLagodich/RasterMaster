@@ -96,16 +96,12 @@ export function SlideShow({ onExit }: { onExit: () => void }) {
         >
             <div
                 className={s.slideContent}
-<<<<<<< HEAD
-                style={{ 
+                style={{
                     backgroundColor: slides[currentIndex]?.backgroundColor,
-                    backgroundImage: slides[currentIndex]?.backgroundImage 
+                    backgroundImage: slides[currentIndex]?.backgroundImage
                         ? `url(${slides[currentIndex]?.backgroundImage})`
                         : undefined
                  }}
-=======
-                style={{ backgroundColor: slides[currentIndex]?.backgroundColor }}
->>>>>>> c4f9b92 (feat: ui fixes)
             >
                 {renderSlideContent()}
 

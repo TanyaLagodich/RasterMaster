@@ -39,7 +39,7 @@ export function BackgroundPicker() {
         if (!slides.length) {
             return;
         }
-        
+
         slides.forEach((slide) => {
             slide.update({ backgroundColor: bgColor });
             mediator.editCurrentSlide(currentSlide);
@@ -68,13 +68,8 @@ export function BackgroundPicker() {
     const textColor = isLight ? '#000' : '#fff'; // Чёрный для светлого фона, белый для тёмного
 
     const btnStyle: React.CSSProperties = {
-<<<<<<< HEAD
-        backgroundColor: '1677ff',
-        color: '#fff',
-=======
         backgroundColor: bgColor,
         color: textColor,
->>>>>>> c4f9b92 (feat: ui fixes)
         border: 'none',
     };
 

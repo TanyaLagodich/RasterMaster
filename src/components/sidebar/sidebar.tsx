@@ -10,13 +10,8 @@ const Sidebar: FC = () => {
   const { mediator, slides, currentSlide } = useSlideMediator();
   const [ draggableIndex, setDraggableIndex ] = useState<number | null>(null);
   const [ draggableElement, setDraggableElement ] = useState<HTMLDivElement | null>(null);
-<<<<<<< HEAD
-  const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);  
-    
   const { isNumerationShown } = useAppContext();
-=======
   const [ hoverableIndex, setHoverableIndex ] = useState<{ index: number; position: 'before' | 'after' } | null>(null);
->>>>>>> c4f9b92 (feat: ui fixes)
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
@@ -81,13 +76,8 @@ const Sidebar: FC = () => {
         }
 
         setHoverableIndex(null);
-<<<<<<< HEAD
-    };    
-    
-=======
     };
 
->>>>>>> c4f9b92 (feat: ui fixes)
     return (
         <aside
             ref={sidebarRef}
