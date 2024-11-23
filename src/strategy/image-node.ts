@@ -16,7 +16,7 @@ export class ImageNodeStrategy implements NodeStrategy {
       },
       zIndex: 1,
       src: '',
-      style: {
+      imgStyle: {
         borderRadius: '0px',
         cover: false,
       },

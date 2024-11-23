@@ -79,7 +79,11 @@ export function SlideEditor() {
         try {
             if (editorRef.current) {
                 const filter = (node: HTMLElement) => {
-                    if (/resizeDot/.test(node.className) || node.classList?.contains('ql-toolbar')) {
+                    if (
+                        /resizeDot/.test(node.className) || 
+                        /node-setting/.test(node.className) || 
+                        node.classList?.contains('ql-toolbar')
+                    ) {
                         return false;
                     }
                     return true;
